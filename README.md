@@ -1,2 +1,0 @@
-# AppVideo
-Practicas TDS

@@ -1,4 +1,4 @@
-package tds.practicas;
+package um.tds.projects.appvideo;
 
 import static org.junit.Assert.assertTrue;
 
