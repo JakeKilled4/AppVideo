@@ -1,14 +1,11 @@
 package um.tds.projects.appvideo.view;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.awt.Dimension;
 
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -16,87 +13,70 @@ import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class LoginPanel extends JPanel
-{
-	private MainWindow mainWindow;
-	private JLabel     loginLabel;
-	private JPanel     centerPanel;
-	private JButton    loginButton;
-	private JButton    registerButton;
-	private JLabel     usernameLabel;
-	private JLabel     passwordLabel;
-	private JTextField usernameText;
-	private JTextField passwordText;
-	
-	public LoginPanel(MainWindow mainWindow)
-	{
-		this.mainWindow = mainWindow;
-		createScreen();
-	}
-	
-	private void createScreen()
-	{
-		setSize  (Constants.X_SIZE, Constants.Y_SIZE);
-		fixSize  (this, Constants.WINDOW_X_SIZE, Constants.WINDOW_Y_SIZE);
-		setLayout(new BorderLayout());
+{    
+	private JTextField textField;
 
-		loginLabel = new JLabel("Inicio de sesión", JLabel.CENTER);
-		fixSize(loginLabel, Constants.X_SIZE, 60);
-		add    (loginLabel, BorderLayout.NORTH);
+    LoginPanel() {
+    	setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+    	
+		Dimension miDim = new Dimension(1,1);
+		Dimension maxDim = new Dimension(Short.MAX_VALUE, Short.MAX_VALUE);
+		Dimension preDim = new Dimension(Short.MAX_VALUE, Short.MAX_VALUE);
+		
+		
+		add(new Box.Filler(miDim, preDim, maxDim));
+		
+		JPanel panel_0 = new JPanel();
+		panel_0.setLayout(new BoxLayout(panel_0, BoxLayout.Y_AXIS));
+		
+		panel_0.add(new Box.Filler(miDim, preDim, maxDim));
+		
+		// Panel horiontal de usuario
+		JPanel panel_1 = new JPanel();
+		
+		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
+		
+		JLabel lblUserame = new JLabel("Userame:");
+		panel_1.add(lblUserame);
+		
+		textField = new JTextField();
+		textField.setColumns(10);
+		panel_1.add(textField);
+		
+		panel_0.add(panel_1);
+		
+		panel_0.add(Box.createRigidArea(new Dimension(20,20)));
+		
+		// Panel horiontal de password
+		JPanel panel_2 = new JPanel();
+		
+		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
+		
+		JLabel lblPassword = new JLabel("Password:");
+		panel_2.add(lblPassword);
+		
+		textField = new JTextField();
+		textField.setColumns(10);
+		panel_2.add(textField);
+		
+		panel_0.add(panel_2);
+		
+		panel_0.add(Box.createRigidArea(new Dimension(20,20)));
+		
+		// Boton de login y register
+		JPanel panel_3 = new JPanel();
+		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
+		JButton btnLogin = new JButton("Login");
+		JButton btnRegister = new JButton("Register");
+		panel_3.add(btnLogin);
+		panel_3.add(Box.createRigidArea(new Dimension(20,20)));
+		panel_3.add(btnRegister);
+		panel_0.add(panel_3);
+		
+		panel_0.add(new Box.Filler(miDim, preDim, maxDim));
+		
+		add(panel_0);
+		add(new Box.Filler(miDim, preDim, maxDim));
 
-		centerPanel = new JPanel();
-		centerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-		usernameLabel  = new JLabel("Usuario",    JLabel.RIGHT);
-		passwordLabel  = new JLabel("Contraseña", JLabel.RIGHT);
-		usernameText   = new JTextField();
-		passwordText   = new JTextField();
-		loginButton    = new JButton("Login");
-		registerButton = new JButton("Registrar");
-		fixSize(usernameLabel,  170, 24);
-		fixSize(passwordLabel,  170, 24);
-		fixSize(usernameText,   300, 24);
-		fixSize(passwordText,   300, 24);
-		fixSize(loginButton,    100, 30);
-		fixSize(registerButton, 100, 30);
-		
-		centerPanel.add(Box.createRigidArea(new Dimension(Constants.X_SIZE, 75)));
-		centerPanel.add(usernameLabel); centerPanel.add(usernameText);
-		centerPanel.add(passwordLabel); centerPanel.add(passwordText);
-		centerPanel.add(Box.createRigidArea(new Dimension(Constants.X_SIZE, 75)));
-		centerPanel.add(Box.createRigidArea(new Dimension(170, 20)));
-		centerPanel.add(loginButton);
-		centerPanel.add(Box.createRigidArea(new Dimension(90, 20)));
-		centerPanel.add(registerButton);
-		
-		add(centerPanel, BorderLayout.CENTER);
-		
-		// Dummy implementation: Just start the application.
-		// Eventually, this will be the place to check whether the user is
-		// actually on the user DB.
-		loginButton.addActionListener(
-				new ActionListener()
-				{
-					@Override
-					public void actionPerformed(ActionEvent e)
-					{
-						mainWindow.setSearchPanel();
-					}
-				});
-		registerButton.addActionListener(
-				new ActionListener()
-				{
-					@Override
-					public void actionPerformed(ActionEvent e)
-					{
-						mainWindow.setSearchPanel();
-					}
-				});
-	}
-	
-	private void fixSize(JComponent component, int x, int y)
-	{
-		component.setMinimumSize  (new Dimension(x, y));
-		component.setMaximumSize  (new Dimension(x, y));
-		component.setPreferredSize(new Dimension(x, y));
-	}
+    }
 }
