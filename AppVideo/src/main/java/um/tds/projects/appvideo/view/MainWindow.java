@@ -4,10 +4,15 @@ package um.tds.projects.appvideo.view;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class MainWindow {
 
 	private JFrame frame;
+	private JPanel loginPanel;
+	private JPanel playlistsPanel;
+	private JPanel preferencesPanel;
+	private JPanel searchPanel;
 
 	/**
 	 * Launch the application.
@@ -37,10 +42,15 @@ public class MainWindow {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setContentPane(new LoginPanel());
+
+		loginPanel       = new LoginPanel      ();
+		playlistsPanel   = new PlaylistsPanel  (frame);
+		preferencesPanel = new PreferencesPanel(frame);
+		searchPanel      = new SearchPanel     (frame);
+
+		frame.setContentPane(searchPanel);
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
 	}
 
 }
