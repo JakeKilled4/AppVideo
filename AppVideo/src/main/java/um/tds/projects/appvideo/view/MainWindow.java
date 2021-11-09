@@ -44,13 +44,29 @@ public class MainWindow {
 		frame = new JFrame();
 
 		loginPanel       = new LoginPanel      ();
-		playlistsPanel   = new PlaylistsPanel  (frame);
-		preferencesPanel = new PreferencesPanel(frame);
-		searchPanel      = new SearchPanel     (frame);
+		playlistsPanel   = new PlaylistsPanel  (this);
+		preferencesPanel = new PreferencesPanel(this);;
+		searchPanel      = new SearchPanel     (this);
 
 		frame.setContentPane(searchPanel);
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	public void activateLoginPanel() {
+		frame.setContentPane(loginPanel);
+	}
+
+	public void activatePlaylistsPanel() {
+		frame.setContentPane(playlistsPanel);
+	}
+
+	public void activatePreferencesPanel() {
+		frame.setContentPane(preferencesPanel);
+	}
+
+	public void activateSearchPanel() {
+		frame.setContentPane(searchPanel);
 	}
 
 }

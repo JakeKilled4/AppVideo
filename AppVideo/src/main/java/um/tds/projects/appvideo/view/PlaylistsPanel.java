@@ -11,11 +11,13 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class PlaylistsPanel extends JPanel {
-	private JFrame mainFrame;
+
+	private MainWindow mainWindow;
+	private JPanel toolbarPanel;
 	private JLabel dummyLabel;
 
-	public PlaylistsPanel(JFrame mainFrame) {
-		this.mainFrame = mainFrame;
+	public PlaylistsPanel(MainWindow mainWindow) {
+		this.mainWindow = mainWindow;
 		createScreen();
 	}
 
@@ -24,8 +26,11 @@ public class PlaylistsPanel extends JPanel {
 		fixSize  (this, Constants.WINDOW_X_SIZE, Constants.WINDOW_Y_SIZE);
 		setLayout(new BorderLayout());
 
-		dummyLabel = new JLabel("Ventana de búsqueda");
-		add(dummyLabel, BorderLayout.CENTER);
+		toolbarPanel = new ToolbarPanel(mainWindow);
+		dummyLabel   = new JLabel("Ventana con listas de reproducción");
+
+		add(toolbarPanel, BorderLayout.WEST);
+		add(dummyLabel,   BorderLayout.CENTER);
 	}
 	
 	private void fixSize(JComponent component, int x, int y) {
