@@ -1,6 +1,7 @@
 package um.tds.projects.appvideo.view;
 
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -48,7 +49,8 @@ public class MainWindow {
 		preferencesPanel = new PreferencesPanel(frame);
 		searchPanel      = new SearchPanel     (frame);
 
-		frame.setContentPane(searchPanel);
+		frame.setContentPane(loginPanel);
+		frame.setMinimumSize(new Dimension(250, 150));
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
