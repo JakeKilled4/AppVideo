@@ -50,11 +50,13 @@ public class ToolbarPanel extends JPanel {
 
 	private void adjustSize() {
 		if (open == true) {
+			setBackground(Constants.FOREGROUND_COLOR);
 			setPreferredSize(new Dimension(Constants.TOOLBAR_OPEN_SIZE, Short.MAX_VALUE));
 			entryPlaylists.setVisible(true);
 			entryPreferences.setVisible(true);
 			entrySearch.setVisible(true);
 		} else {
+			setBackground(Constants.BACKGROUND_COLOR);
 			setPreferredSize(new Dimension(Constants.TOOLBAR_CLOSED_SIZE, Short.MIN_VALUE));
 			entryPlaylists.setVisible(false);
 			entryPreferences.setVisible(false);
@@ -76,6 +78,7 @@ public class ToolbarPanel extends JPanel {
 			});
 		entryPlaylists.addMouseListener(new MouseListener() {
 				public void mouseClicked(MouseEvent e) {
+					entryPlaylists.setBackground(Constants.BUTTON_COLOR);
 					mainWindow.activatePlaylistsPanel();
 				}
 				public void mousePressed(MouseEvent e) {}
@@ -87,9 +90,10 @@ public class ToolbarPanel extends JPanel {
 				public void mouseExited(MouseEvent e) {
 					entryPlaylists.setBackground(Constants.BUTTON_COLOR);
 				}
-		});
+			});
 		entryPreferences.addMouseListener(new MouseListener() {
 				public void mouseClicked(MouseEvent e) {
+					entryPreferences.setBackground(Constants.BUTTON_COLOR);
 					mainWindow.activatePreferencesPanel();
 				}
 				public void mousePressed(MouseEvent e) {}
@@ -101,9 +105,10 @@ public class ToolbarPanel extends JPanel {
 				public void mouseExited(MouseEvent e) {
 					entryPreferences.setBackground(Constants.BUTTON_COLOR);
 				}
-		});
+			});
 		entrySearch.addMouseListener(new MouseListener() {
 				public void mouseClicked(MouseEvent e) {
+					entrySearch.setBackground(Constants.BUTTON_COLOR);
 					mainWindow.activateSearchPanel();
 				}
 				public void mousePressed(MouseEvent e) {}
@@ -114,7 +119,7 @@ public class ToolbarPanel extends JPanel {
 				public void mouseExited(MouseEvent e) {
 					entrySearch.setBackground(Constants.BUTTON_COLOR);
 				}
-		});
+			});
 
 		add(btnToggle);
 		add(Box.createRigidArea(new Dimension(0, 10)));

@@ -22,6 +22,7 @@ public class SearchPanel extends JPanel {
 	}
 
 	private void createScreen() {
+		setBackground(Constants.BACKGROUND_COLOR);
 		setSize  (Constants.X_SIZE, Constants.Y_SIZE);
 		fixSize  (this, Constants.WINDOW_X_SIZE, Constants.WINDOW_Y_SIZE);
 		setLayout(new BorderLayout());

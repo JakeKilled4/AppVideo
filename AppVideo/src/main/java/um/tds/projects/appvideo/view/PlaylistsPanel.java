@@ -25,6 +25,7 @@ public class PlaylistsPanel extends JPanel {
 		setSize  (Constants.X_SIZE, Constants.Y_SIZE);
 		fixSize  (this, Constants.WINDOW_X_SIZE, Constants.WINDOW_Y_SIZE);
 		setLayout(new BorderLayout());
+		setBackground(Constants.BACKGROUND_COLOR);
 
 		toolbarPanel = new ToolbarPanel(mainWindow);
 		dummyLabel   = new JLabel("Ventana con listas de reproducción");
