@@ -16,6 +16,10 @@ public class ToolbarPanel extends JPanel {
 
 	private MainWindow mainWindow;
 	private boolean open;
+	private JButton btnToggle;
+	private ToolbarEntryPanel entryPlaylists;
+	private ToolbarEntryPanel entryPreferences;
+	private ToolbarEntryPanel entrySearch;
 
 	public ToolbarPanel(MainWindow mainWindow) {
 		this(mainWindow, true);
@@ -23,7 +27,7 @@ public class ToolbarPanel extends JPanel {
 
 	public ToolbarPanel(MainWindow mainWindow, boolean open) {
 		this.mainWindow = mainWindow;
-		this.open      = open;
+		this.open       = open;
 
 		setBackground(Constants.FOREGROUND_COLOR);
 		setLayout    (new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -32,7 +36,10 @@ public class ToolbarPanel extends JPanel {
 	}
 
 	public void setOpen(boolean open) {
-		this.open = open;
+		if (this.open == open)
+			return;
+
+	  	this.open = open;
 
 		adjustSize();
 	}
@@ -42,18 +49,31 @@ public class ToolbarPanel extends JPanel {
 	}
 
 	private void adjustSize() {
-		if (open)
+		if (open == true) {
 			setPreferredSize(new Dimension(Constants.TOOLBAR_OPEN_SIZE, Short.MAX_VALUE));
-		else
+			entryPlaylists.setVisible(true);
+			entryPreferences.setVisible(true);
+			entrySearch.setVisible(true);
+		} else {
 			setPreferredSize(new Dimension(Constants.TOOLBAR_CLOSED_SIZE, Short.MIN_VALUE));
+			entryPlaylists.setVisible(false);
+			entryPreferences.setVisible(false);
+			entrySearch.setVisible(false);
+		}
 	}
 
 	private void addComponents() {
-		JButton           btnToggle        = new JButton          ("Toggle view");
-		ToolbarEntryPanel entryPlaylists   = new ToolbarEntryPanel(null, "Playlists");
-		ToolbarEntryPanel entryPreferences = new ToolbarEntryPanel(null, "Preferences");
-		ToolbarEntryPanel entrySearch      = new ToolbarEntryPanel(null, "Search");
+		btnToggle        = new JButton          ("Toggle view");
+		entryPlaylists   = new ToolbarEntryPanel(null, "Playlists");
+		entryPreferences = new ToolbarEntryPanel(null, "Preferences");
+		entrySearch      = new ToolbarEntryPanel(null, "Search");
 
+		btnToggle.addActionListener(e -> {
+				if (isOpen())
+					setOpen(false);
+				else
+					setOpen(true);
+			});
 		entryPlaylists.addMouseListener(new MouseListener() {
 				public void mouseClicked(MouseEvent e) {
 					mainWindow.activatePlaylistsPanel();
