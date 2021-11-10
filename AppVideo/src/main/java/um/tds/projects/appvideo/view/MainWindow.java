@@ -44,12 +44,12 @@ public class MainWindow {
 	private void initialize() {
 		frame = new JFrame();
 
-		loginPanel       = new LoginPanel      ();
+		loginPanel       = new LoginPanel      (this);
 		playlistsPanel   = new PlaylistsPanel  (this);
 		preferencesPanel = new PreferencesPanel(this);;
 		searchPanel      = new SearchPanel     (this);
 
-		frame.setContentPane(loginPanel);
+		frame.setContentPane(searchPanel);
 		frame.setMinimumSize(new Dimension(250, 150));
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

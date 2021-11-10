@@ -1,14 +1,13 @@
 package um.tds.projects.appvideo.view;
 
 import java.awt.Dimension;
-import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class ToolbarEntryPanel extends JPanel {
 
 	private MainWindow mainWindow;

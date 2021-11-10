@@ -11,16 +11,18 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.Box.Filler;
 import java.awt.Color;
-import javax.swing.SwingConstants;
+import javax.swing.JPasswordField;
 
 
 @SuppressWarnings("serial")
 public class LoginPanel extends JPanel
 {    
+	private MainWindow mainWindow;
 	private JTextField textField;
-	private JTextField textField_1;
-
-    LoginPanel() {
+	private JPasswordField pwdPassword;
+	
+    public LoginPanel(MainWindow mainWindow) {
+    	this.mainWindow = mainWindow;
     	setBackground(Color.ORANGE);
     	setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
     	
@@ -61,9 +63,8 @@ public class LoginPanel extends JPanel
 		JLabel lblPassword = new JLabel("Password:");
 		panel_2.add(lblPassword);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		panel_2.add(textField_1);
+		pwdPassword = new JPasswordField();
+		panel_2.add(pwdPassword);
 		
 		panel_0.add(panel_2);
 		
@@ -79,6 +80,9 @@ public class LoginPanel extends JPanel
 		panel_3.add(Box.createRigidArea(new Dimension(20,20)));
 		panel_3.add(btnRegister);
 		panel_0.add(panel_3);
+		
+		
+		
 		
 		Filler filler = new Box.Filler(miDim, preDim, maxDim);
 		filler.setBackground(Color.WHITE);

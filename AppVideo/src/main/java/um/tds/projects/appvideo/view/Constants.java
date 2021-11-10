@@ -14,9 +14,9 @@ public class Constants {
 	public static int TOOLBAR_OPEN_SIZE = 200;
 	public static int TOOLBAR_CLOSED_SIZE = 50;
 
-	public static final Color FOREGROUND_COLOR  = new Color(100, 100, 100);
-	public static final Color BACKGROUND_COLOR  = new Color(200, 200, 200);
-	public static final Color BUTTON_COLOR      = new Color(100, 100, 100);
+	public static final Color FOREGROUND_COLOR  = new Color(100, 250, 100);
+	public static final Color BACKGROUND_COLOR  = new Color(250, 100, 100);
+	public static final Color BUTTON_COLOR      = new Color(100, 250, 100);
 	public static final Color BUTTON_HOVER_COLOR = new Color(150, 150, 150);
 
 }

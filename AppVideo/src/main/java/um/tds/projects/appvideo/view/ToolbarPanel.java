@@ -7,11 +7,10 @@ import java.awt.event.MouseListener;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JLabel;
 
 
+@SuppressWarnings("serial")
 public class ToolbarPanel extends JPanel {
 
 	private MainWindow mainWindow;
@@ -69,7 +68,7 @@ public class ToolbarPanel extends JPanel {
 		entryPlaylists   = new ToolbarEntryPanel(null, "Playlists");
 		entryPreferences = new ToolbarEntryPanel(null, "Preferences");
 		entrySearch      = new ToolbarEntryPanel(null, "Search");
-
+		
 		btnToggle.addActionListener(e -> {
 				if (isOpen())
 					setOpen(false);

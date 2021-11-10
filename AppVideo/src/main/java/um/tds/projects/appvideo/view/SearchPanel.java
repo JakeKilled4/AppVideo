@@ -3,8 +3,8 @@ package um.tds.projects.appvideo.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -14,8 +14,9 @@ public class SearchPanel extends JPanel {
 
 	private MainWindow mainWindow;
 	private JPanel toolbarPanel;
+	private JPanel searchBar;
 	private JLabel dummyLabel;
-
+	
 	public SearchPanel(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 		createScreen();
@@ -27,11 +28,17 @@ public class SearchPanel extends JPanel {
 		fixSize  (this, Constants.WINDOW_X_SIZE, Constants.WINDOW_Y_SIZE);
 		setLayout(new BorderLayout());
 
-		toolbarPanel = new ToolbarPanel(mainWindow);
-		dummyLabel   = new JLabel      ("Panel de búsqueda");
+		toolbarPanel = new ToolbarPanel	(mainWindow);
+		dummyLabel   = new JLabel      	("Panel de búsqueda");
+		searchBar 	 = new SearchBar	(mainWindow);
 
 		add(toolbarPanel, BorderLayout.WEST);
-		add(dummyLabel,   BorderLayout.CENTER);
+		JPanel panel_1 = new JPanel();
+		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.Y_AXIS));
+		panel_1.setBackground(Constants.BACKGROUND_COLOR);
+		panel_1.add(searchBar);
+		panel_1.add(dummyLabel);
+		add(panel_1,BorderLayout.CENTER);
 	}
 
 	private void fixSize(JComponent component, int x, int y) {
