@@ -12,21 +12,26 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class SearchPanel extends JPanel {
 
-	private JFrame mainFrame;
+	private MainWindow mainWindow;
+	private JPanel toolbarPanel;
 	private JLabel dummyLabel;
 
-	public SearchPanel(JFrame mainFrame) {
-		this.mainFrame = mainFrame;
+	public SearchPanel(MainWindow mainWindow) {
+		this.mainWindow = mainWindow;
 		createScreen();
 	}
 
 	private void createScreen() {
+		setBackground(Constants.BACKGROUND_COLOR);
 		setSize  (Constants.X_SIZE, Constants.Y_SIZE);
 		fixSize  (this, Constants.WINDOW_X_SIZE, Constants.WINDOW_Y_SIZE);
 		setLayout(new BorderLayout());
 
-		dummyLabel = new JLabel("Panel de búsqueda");
-		add(dummyLabel, BorderLayout.CENTER);
+		toolbarPanel = new ToolbarPanel(mainWindow);
+		dummyLabel   = new JLabel      ("Panel de búsqueda");
+
+		add(toolbarPanel, BorderLayout.WEST);
+		add(dummyLabel,   BorderLayout.CENTER);
 	}
 
 	private void fixSize(JComponent component, int x, int y) {
@@ -34,4 +39,5 @@ public class SearchPanel extends JPanel {
 		component.setMaximumSize  (new Dimension(x, y));
 		component.setPreferredSize(new Dimension(x, y));
 	}
+
 }
