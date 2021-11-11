@@ -1,13 +1,20 @@
 package um.tds.projects.appvideo.view;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import com.sun.prism.Image;
 
 
 @SuppressWarnings("serial")
@@ -15,7 +22,6 @@ public class ToolbarPanel extends JPanel {
 
 	private MainWindow mainWindow;
 	private boolean open;
-	private JButton btnToggle;
 	private ToolbarEntryPanel entryPlaylists;
 	private ToolbarEntryPanel entryPreferences;
 	private ToolbarEntryPanel entrySearch;
@@ -64,17 +70,38 @@ public class ToolbarPanel extends JPanel {
 	}
 
 	private void addComponents() {
-		btnToggle        = new JButton          ("Toggle view");
 		entryPlaylists   = new ToolbarEntryPanel(null, "Playlists");
 		entryPreferences = new ToolbarEntryPanel(null, "Preferences");
 		entrySearch      = new ToolbarEntryPanel(null, "Search");
+		  
+		JLabel icon = new JLabel(new ImageIcon("./src/images/MenuGrey.png"));
+		JPanel btnPanel = new JPanel();
+		btnPanel.setBackground(Constants.FOREGROUND_COLOR);
+		btnPanel.setLayout  (new BoxLayout(btnPanel, BoxLayout.X_AXIS));
+		btnPanel.add(icon);
+		add(btnPanel);
 		
-		btnToggle.addActionListener(e -> {
+		
+		btnPanel.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+				if (isOpen())
+					setOpen(false);
+				else
+					setOpen(true);
+			}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+		});
+		
+		/*btnToggle.addActionListener(e -> {
 				if (isOpen())
 					setOpen(false);
 				else
 					setOpen(true);
 			});
+			*/
 		entryPlaylists.addMouseListener(new MouseListener() {
 				public void mouseClicked(MouseEvent e) {
 					entryPlaylists.setBackground(Constants.BUTTON_COLOR);
@@ -120,12 +147,9 @@ public class ToolbarPanel extends JPanel {
 				}
 			});
 
-		add(btnToggle);
-		add(Box.createRigidArea(new Dimension(0, 10)));
+		add(Box.createRigidArea(new Dimension(0, 30)));
 		add(entryPlaylists);
-		add(Box.createRigidArea(new Dimension(0, 10)));
 		add(entryPreferences);
-		add(Box.createRigidArea(new Dimension(0, 10)));
 		add(entrySearch);
 	}
 

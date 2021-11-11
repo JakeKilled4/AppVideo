@@ -2,7 +2,10 @@ package um.tds.projects.appvideo.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -14,6 +17,7 @@ public class PreferencesPanel extends JPanel {
 	private MainWindow mainWindow;
 	private JPanel toolbarPanel;
 	private JLabel dummyLabel;
+	private JButton btnLogOut;
 
 	public PreferencesPanel(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
@@ -28,9 +32,15 @@ public class PreferencesPanel extends JPanel {
 
 		toolbarPanel = new ToolbarPanel(mainWindow);
 		dummyLabel = new JLabel("Panel de preferencias");
-
+		btnLogOut = new JButton("Log Out");
+		
+		btnLogOut.addActionListener(e -> {
+			mainWindow.activateLoginPanel();
+		});
+		
 		add(toolbarPanel, BorderLayout.WEST);
 		add(dummyLabel,   BorderLayout.CENTER);
+		add(btnLogOut, BorderLayout.CENTER);
 	}
 
 	private void fixSize(JComponent component, int x, int y) {

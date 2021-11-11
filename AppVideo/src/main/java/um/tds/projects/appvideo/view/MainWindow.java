@@ -57,18 +57,22 @@ public class MainWindow {
 
 	public void activateLoginPanel() {
 		frame.setContentPane(loginPanel);
+		frame.validate();
 	}
 
 	public void activatePlaylistsPanel() {
 		frame.setContentPane(playlistsPanel);
+		frame.validate();
 	}
 
 	public void activatePreferencesPanel() {
 		frame.setContentPane(preferencesPanel);
+		frame.validate();
 	}
 
 	public void activateSearchPanel() {
 		frame.setContentPane(searchPanel);
+		frame.validate();
 	}
 
 }
