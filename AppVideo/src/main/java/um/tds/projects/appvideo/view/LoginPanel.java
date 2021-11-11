@@ -81,12 +81,13 @@ public class LoginPanel extends JPanel
 			mainWindow.activatePlaylistsPanel();
 		});
 		JButton btnRegister = new JButton("Register");
+		btnRegister.addActionListener(e -> {
+			mainWindow.activateRegisterPanel();
+		});
 		panel_3.add(btnLogin);
 		panel_3.add(Box.createRigidArea(new Dimension(20,20)));
 		panel_3.add(btnRegister);
 		panel_0.add(panel_3);
-		
-		
 		
 		
 		Filler filler = new Box.Filler(miDim, preDim, maxDim);

@@ -14,6 +14,7 @@ public class MainWindow {
 	private JPanel playlistsPanel;
 	private JPanel preferencesPanel;
 	private JPanel searchPanel;
+	private JPanel registerPanel;
 
 	/**
 	 * Launch the application.
@@ -46,10 +47,11 @@ public class MainWindow {
 
 		loginPanel       = new LoginPanel      (this);
 		playlistsPanel   = new PlaylistsPanel  (this);
-		preferencesPanel = new PreferencesPanel(this);;
+		preferencesPanel = new PreferencesPanel(this);
 		searchPanel      = new SearchPanel     (this);
+		registerPanel 	 = new RegisterPanel   (this);
 
-		frame.setContentPane(searchPanel);
+		frame.setContentPane(loginPanel);
 		frame.setMinimumSize(new Dimension(250, 150));
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,6 +74,10 @@ public class MainWindow {
 
 	public void activateSearchPanel() {
 		frame.setContentPane(searchPanel);
+		frame.validate();
+	}
+	public void activateRegisterPanel() {
+		frame.setContentPane(registerPanel);
 		frame.validate();
 	}
 

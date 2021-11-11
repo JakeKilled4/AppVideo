@@ -27,7 +27,7 @@ public class ToolbarPanel extends JPanel {
 	private ToolbarEntryPanel entrySearch;
 
 	public ToolbarPanel(MainWindow mainWindow) {
-		this(mainWindow, true);
+		this(mainWindow, false);
 	}
 
 	public ToolbarPanel(MainWindow mainWindow, boolean open) {
@@ -95,13 +95,6 @@ public class ToolbarPanel extends JPanel {
 			public void mouseExited(MouseEvent e) {}
 		});
 		
-		/*btnToggle.addActionListener(e -> {
-				if (isOpen())
-					setOpen(false);
-				else
-					setOpen(true);
-			});
-			*/
 		entryPlaylists.addMouseListener(new MouseListener() {
 				public void mouseClicked(MouseEvent e) {
 					entryPlaylists.setBackground(Constants.BUTTON_COLOR);
