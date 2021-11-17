@@ -11,7 +11,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import com.toedter.calendar.JDateChooser;
+
 import javax.swing.Box.Filler;
+
 
 @SuppressWarnings("serial")
 public class RegisterPanel extends JPanel {
@@ -23,6 +27,7 @@ public class RegisterPanel extends JPanel {
 	private JTextField userField;
 	private JPasswordField pwdPass;
 	private JPasswordField pwdCoPass;
+	private JDateChooser date;
 	
     public RegisterPanel(MainWindow mainWindow) {
     	this.mainWindow = mainWindow;
@@ -46,7 +51,7 @@ public class RegisterPanel extends JPanel {
 		panel_name.setBackground(Constants.BLOGIN_COLOR);
 		panel_name.setLayout(new BoxLayout(panel_name, BoxLayout.X_AXIS));
 		
-		JLabel lblName = new JLabel("*Name");
+		JLabel lblName = new JLabel("*Name:");
 		lblName.setForeground(Constants.FONT_COLOR);
 		panel_name.add(lblName);
 		
@@ -74,12 +79,27 @@ public class RegisterPanel extends JPanel {
 		panel_0.add(Box.createRigidArea(new Dimension(20,20)));
 		
 		
+		/* Day of birth */
+		
+		JPanel panel_date = new JPanel();
+		panel_date.setBackground(Constants.BLOGIN_COLOR);
+		panel_date.setLayout(new BoxLayout(panel_date, BoxLayout.X_AXIS));
+		
+		JLabel lblDate = new JLabel("*Day of birth:");
+		lblDate.setForeground(Constants.FONT_COLOR);
+		panel_date.add(lblDate);
+		
+		date = new JDateChooser();		
+		panel_date.add(date);
+		panel_0.add(panel_date);
+		panel_0.add(Box.createRigidArea(new Dimension(20,20)));
+		
 		/* Email */
 		JPanel panel_email = new JPanel();
 		panel_email.setBackground(Constants.BLOGIN_COLOR);
 		panel_email.setLayout(new BoxLayout(panel_email, BoxLayout.X_AXIS));
 		
-		JLabel lblEmail = new JLabel("Email");
+		JLabel lblEmail = new JLabel("Email:");
 		lblEmail.setForeground(Constants.FONT_COLOR);
 		panel_email.add(lblEmail);
 		
@@ -95,7 +115,7 @@ public class RegisterPanel extends JPanel {
 		panel_user.setBackground(Constants.BLOGIN_COLOR);
 		panel_user.setLayout(new BoxLayout(panel_user, BoxLayout.X_AXIS));
 		
-		JLabel lblUser = new JLabel("*Username");
+		JLabel lblUser = new JLabel("*Username:");
 		lblUser.setForeground(Constants.FONT_COLOR);
 		panel_user.add(lblUser);
 		
@@ -111,7 +131,7 @@ public class RegisterPanel extends JPanel {
 		panel_pass.setBackground(Constants.BLOGIN_COLOR);
 		panel_pass.setLayout(new BoxLayout(panel_pass, BoxLayout.X_AXIS));
 		
-		JLabel lblPass = new JLabel("*Password");
+		JLabel lblPass = new JLabel("*Password:");
 		lblPass.setForeground(Constants.FONT_COLOR);
 		panel_pass.add(lblPass);
 		
@@ -127,7 +147,7 @@ public class RegisterPanel extends JPanel {
 		panel_co_pass.setBackground(Constants.BLOGIN_COLOR);
 		panel_co_pass.setLayout(new BoxLayout(panel_co_pass, BoxLayout.X_AXIS));
 		
-		JLabel lblCoPass = new JLabel("*Confirm password");
+		JLabel lblCoPass = new JLabel("*Confirm password:");
 		lblCoPass.setForeground(Constants.FONT_COLOR);
 		panel_co_pass.add(lblCoPass);
 		
@@ -139,7 +159,7 @@ public class RegisterPanel extends JPanel {
 		panel_0.add(Box.createRigidArea(new Dimension(20,20)));
 		
 		
-		// Boton de Register y Cancel
+		/* Boton de Register y Cancel */
 		JPanel panel_btn_re = new JPanel();
 		panel_btn_re.setBackground(Constants.BLOGIN_COLOR);
 		panel_btn_re.setLayout(new BoxLayout(panel_btn_re, BoxLayout.X_AXIS));
@@ -156,6 +176,12 @@ public class RegisterPanel extends JPanel {
 		panel_btn_re.add(btnCancel);
 		panel_0.add(panel_btn_re);
 		
+		/* Etiqueta de campos obligatorios */
+		
+		JLabel lblMandatoryField = new JLabel("*Mandatory field");
+		lblMandatoryField.setForeground(Constants.FONT_COLOR);
+		panel_0.add(Box.createRigidArea(new Dimension(20,20)));
+		panel_0.add(lblMandatoryField);
 		
 		Filler filler = new Box.Filler(miDim, preDim, maxDim);
 		filler.setBackground(Color.WHITE);
