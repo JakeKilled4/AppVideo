@@ -31,7 +31,7 @@ public class PlaylistsPanel extends JPanel {
 
 		toolbarPanel = new ToolbarPanel(mainWindow);
 		dummyLabel   = new JLabel("Ventana con listas de reproducción");
-		searchBar 	 = new SearchBar	(mainWindow);
+		searchBar 	 = new SearchBar	();
 
 		add(toolbarPanel, BorderLayout.WEST);
 		JPanel panel_1 = new JPanel();

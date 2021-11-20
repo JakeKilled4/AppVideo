@@ -39,7 +39,7 @@ public class LoginPanel extends JPanel
 		
 		panel_0.add(new Box.Filler(miDim, preDim, maxDim));
 		
-		// Panel horiontal de usuario
+		/* Panel horiontal de usuario */
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Constants.BLOGIN_COLOR);
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
@@ -56,7 +56,7 @@ public class LoginPanel extends JPanel
 		
 		panel_0.add(Box.createRigidArea(new Dimension(20,20)));
 		
-		// Panel horizontal de password
+		/* Panel horizontal de password */
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(Constants.BLOGIN_COLOR);
 		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
@@ -72,17 +72,17 @@ public class LoginPanel extends JPanel
 		
 		panel_0.add(Box.createRigidArea(new Dimension(20,20)));
 		
-		// Boton de login y register
+		/* Boton de login y register */
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(Constants.BLOGIN_COLOR);
 		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(e -> {
-			mainWindow.activatePlaylistsPanel();
+			this.mainWindow.activatePlaylistsPanel();
 		});
 		JButton btnRegister = new JButton("Register");
 		btnRegister.addActionListener(e -> {
-			mainWindow.activateRegisterPanel();
+			this.mainWindow.activateRegisterPanel();
 		});
 		panel_3.add(btnLogin);
 		panel_3.add(Box.createRigidArea(new Dimension(20,20)));

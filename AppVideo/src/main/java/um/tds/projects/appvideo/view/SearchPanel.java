@@ -30,7 +30,7 @@ public class SearchPanel extends JPanel {
 
 		toolbarPanel = new ToolbarPanel	(mainWindow);
 		dummyLabel   = new JLabel      	("Panel de búsqueda");
-		searchBar 	 = new SearchBar	(mainWindow);
+		searchBar 	 = new SearchBar	();
 
 		add(toolbarPanel, BorderLayout.WEST);
 		JPanel panel_1 = new JPanel();

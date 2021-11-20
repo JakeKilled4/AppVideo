@@ -11,11 +11,9 @@ import javax.swing.JTextField;
 @SuppressWarnings("serial")
 public class SearchBar extends JPanel{
 	
-	private MainWindow mainWindow;
 	private JTextField textField;
 	
-	public SearchBar(MainWindow mainWindow){
-		this.mainWindow = mainWindow;
+	public SearchBar(){
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		setMaximumSize(new Dimension(Short.MAX_VALUE,25));
 		JButton btnSearch = new JButton("Search");

@@ -1,7 +1,6 @@
 package um.tds.projects.appvideo.view;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.Box;
@@ -165,11 +164,11 @@ public class RegisterPanel extends JPanel {
 		panel_btn_re.setLayout(new BoxLayout(panel_btn_re, BoxLayout.X_AXIS));
 		JButton btnRegister = new JButton("Register");
 		btnRegister.addActionListener(e -> {
-			mainWindow.activatePlaylistsPanel();
+			this.mainWindow.activatePlaylistsPanel();
 		});
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(e -> {
-			mainWindow.activateLoginPanel();
+			this.mainWindow.activateLoginPanel();
 		});
 		panel_btn_re.add(btnRegister);
 		panel_btn_re.add(Box.createRigidArea(new Dimension(20,20)));
