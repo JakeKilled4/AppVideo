@@ -1,6 +1,7 @@
 package um.tds.projects.appvideo.view;
 
 import java.awt.Color;
+import java.awt.Font;
 
 public class Constants {
 
@@ -20,5 +21,6 @@ public class Constants {
 	public static final Color BUTTON_HOVER_COLOR = new Color(35, 46, 60);
 	public static final Color BLOGIN_COLOR 		 = new Color(8,46,58);
 	public static final Color FONT_COLOR 		 = new Color(255,255,255);
+	public static final Font DEFAULT_FONT 		 = new Font("Serif", Font.PLAIN, 12);
 
 }
