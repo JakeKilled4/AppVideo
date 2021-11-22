@@ -1,14 +1,10 @@
 package um.tds.projects.appvideo.view;
 
-import java.awt.Color;
+
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -16,12 +12,10 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import com.sun.glass.events.MouseEvent;
-
 
 import javax.swing.JList;
 
@@ -30,42 +24,61 @@ public class LabelPanel extends JPanel{
 	
 	private DefaultListModel<String> availableModel;
 	private DefaultListModel<String> selectedModel;
+	private JList<String> availableList;
+	private JList<String> selectedList;
 	private ListSelectionListener listener1;
 	private ListSelectionListener listener2;
+	private ArrayList<String> labels;
 	
-	public LabelPanel() {
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+	
+	public LabelPanel(String...filterLabels) {
+		
+		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 		setBackground(Constants.FOREGROUND_COLOR);
+		
+		
 		
 		JLabel availableLabels = new JLabel("Available labels");
 		availableLabels.setForeground(Constants.FONT_COLOR);
+		availableLabels.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(availableLabels);
 		
+		labels = new ArrayList<String>(Arrays.asList(filterLabels));
 		
-		String[] filters = {"Filtro1","Filtro2","Filtro3","Filtro4"};
 		availableModel = new DefaultListModel<String>();
-		availableModel.addAll(Arrays.asList(filters));
+		availableModel.addAll(Arrays.asList(filterLabels));
 
-		JList<String> availableList = new JList<String>(availableModel);
+		availableList = new JList<String>(availableModel);
+		availableList.setLayoutOrientation(JList.VERTICAL);
 		availableList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		availableList.setBackground(Constants.FOREGROUND_COLOR);
 		availableList.setForeground(Constants.FONT_COLOR);
 		availableList.setFont(Constants.DEFAULT_FONT);
-		//availableList.setFixedCellWidth(100);
-		add(availableList);
+		((DefaultListCellRenderer)availableList.getCellRenderer()).setHorizontalAlignment(JLabel.CENTER);
 		
+		JScrollPane availableScroll = new JScrollPane(availableList);
+		availableScroll.setAlignmentX(Component.CENTER_ALIGNMENT);
+		add(availableScroll);
+		
+		add(Box.createRigidArea(new Dimension(0, 10)));
 	
 		JLabel selectedLabels = new JLabel("Selected labels");
 		selectedLabels.setForeground(Constants.FONT_COLOR);
+		selectedLabels.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(selectedLabels);
 		
 		selectedModel = new DefaultListModel<String>();
-		JList<String> selectedList = new JList<String>(selectedModel);
+		selectedList = new JList<String>(selectedModel);
 		selectedList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		selectedList.setBackground(Constants.FOREGROUND_COLOR);
 		selectedList.setForeground(Constants.FONT_COLOR);
 		selectedList.setFont(Constants.DEFAULT_FONT);
-		add(selectedList);
+		selectedList.setAlignmentX(Component.CENTER_ALIGNMENT);
+		((DefaultListCellRenderer)selectedList.getCellRenderer()).setHorizontalAlignment(JLabel.CENTER);
+		
+		JScrollPane selectedScroll = new JScrollPane(selectedList);
+		selectedScroll.setAlignmentX(Component.CENTER_ALIGNMENT);
+		add(selectedScroll);
 		
 		
 		listener1 = new ListSelectionListener() {
@@ -105,7 +118,14 @@ public class LabelPanel extends JPanel{
 		};
 	
 		availableList.addListSelectionListener(listener1);
-		
 		selectedList.addListSelectionListener(listener2);
+	}
+	public void addLabel(String label) {
+		if(!labels.contains(label)) {
+			availableList.removeListSelectionListener(listener1);
+			availableModel.addElement(label);
+			labels.add(label);
+			availableList.addListSelectionListener(listener1);
+		}
 	}
 }

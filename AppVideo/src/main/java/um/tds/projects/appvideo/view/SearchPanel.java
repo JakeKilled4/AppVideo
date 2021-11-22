@@ -3,9 +3,10 @@ package um.tds.projects.appvideo.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
+
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
@@ -16,7 +17,6 @@ public class SearchPanel extends JPanel {
 	private JPanel toolbarPanel;
 	private JPanel searchBar;
 	private LabelPanel labelPanel;
-	private JLabel dummyLabel;
 	
 	
 	public SearchPanel(MainWindow mainWindow) {
@@ -31,9 +31,10 @@ public class SearchPanel extends JPanel {
 		setLayout(new BorderLayout());
 
 		toolbarPanel = new ToolbarPanel	(mainWindow);
-		dummyLabel   = new JLabel      	("Panel de búsqueda");
 		searchBar 	 = new SearchBar	();
-		labelPanel 	 = new LabelPanel 	();
+		labelPanel 	 = new LabelPanel 	("Dibujos animados","Pelicula","Serie",
+										"Intriga","Terror","Clasico","Videoclip",
+										"Adultos","Infantil");
 
 		add(toolbarPanel, BorderLayout.WEST);
 		JPanel panel_1 = new JPanel();
@@ -44,6 +45,11 @@ public class SearchPanel extends JPanel {
 		panel_2.add(labelPanel, BorderLayout.EAST);
 		panel_1.add(searchBar);
 		panel_1.add(panel_2);
+		JButton but = new JButton("Hola");
+		but.addActionListener(e -> {
+			labelPanel.addLabel("Nuevo");
+		});
+		panel_1.add(but);
 		add(panel_1, BorderLayout.CENTER);
 	}
 
