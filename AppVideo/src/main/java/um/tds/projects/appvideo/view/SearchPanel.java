@@ -31,7 +31,7 @@ public class SearchPanel extends JPanel {
 		setLayout(new BorderLayout());
 
 		toolbarPanel = new ToolbarPanel	(mainWindow);
-		searchBar 	 = new SearchBar	();
+		searchBar 	 = new SearchBar	(Constants.BACKGROUND_COLOR);
 		labelPanel 	 = new LabelPanel 	("Dibujos animados","Pelicula","Serie",
 										"Intriga","Terror","Clasico","Videoclip",
 										"Adultos","Infantil");
@@ -41,9 +41,9 @@ public class SearchPanel extends JPanel {
 		JPanel centerPanel = new JPanel();
 		centerPanel.setBackground(Constants.BACKGROUND_COLOR);
 		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-		centerPanel.add(Box.createRigidArea(new Dimension(0, 7)));
+		centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		centerPanel.add(searchBar);
-		centerPanel.add(Box.createRigidArea(new Dimension(0, 7)));
+		centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		JButton but = new JButton("Hola");
 		but.addActionListener(e -> {
 			labelPanel.addLabel("Nuevo");
