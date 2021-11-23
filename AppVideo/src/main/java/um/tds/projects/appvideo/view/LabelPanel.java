@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
@@ -13,7 +14,9 @@ import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -36,12 +39,20 @@ public class LabelPanel extends JPanel{
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 		setBackground(Constants.FOREGROUND_COLOR);
 		
-		
+		add(Box.createRigidArea(new Dimension(0, 10)));
 		
 		JLabel availableLabels = new JLabel("Available labels");
 		availableLabels.setForeground(Constants.FONT_COLOR);
 		availableLabels.setAlignmentX(Component.CENTER_ALIGNMENT);
+		availableLabels.setFont(Constants.TITLE_FONT);
 		add(availableLabels);
+		
+		JSeparator separator1 = new JSeparator(SwingConstants.HORIZONTAL);
+		add(Box.createRigidArea(new Dimension(0, 2)));
+		separator1.setMaximumSize(new Dimension(Integer.MAX_VALUE, 0));
+		add(separator1);
+		add(Box.createRigidArea(new Dimension(0, 5)));
+		
 		
 		labels = new ArrayList<String>(Arrays.asList(filterLabels));
 		
@@ -58,6 +69,7 @@ public class LabelPanel extends JPanel{
 		
 		JScrollPane availableScroll = new JScrollPane(availableList);
 		availableScroll.setAlignmentX(Component.CENTER_ALIGNMENT);
+		availableScroll.setBorder(BorderFactory.createEmptyBorder());
 		add(availableScroll);
 		
 		add(Box.createRigidArea(new Dimension(0, 10)));
@@ -65,7 +77,14 @@ public class LabelPanel extends JPanel{
 		JLabel selectedLabels = new JLabel("Selected labels");
 		selectedLabels.setForeground(Constants.FONT_COLOR);
 		selectedLabels.setAlignmentX(Component.CENTER_ALIGNMENT);
+		selectedLabels.setFont(Constants.TITLE_FONT);
 		add(selectedLabels);
+		
+		JSeparator separator2 = new JSeparator(SwingConstants.HORIZONTAL);
+		add(Box.createRigidArea(new Dimension(0, 2)));
+		separator2.setMaximumSize(new Dimension(Integer.MAX_VALUE, 0));
+		add(separator2);
+		add(Box.createRigidArea(new Dimension(0, 5)));
 		
 		selectedModel = new DefaultListModel<String>();
 		selectedList = new JList<String>(selectedModel);
@@ -78,6 +97,7 @@ public class LabelPanel extends JPanel{
 		
 		JScrollPane selectedScroll = new JScrollPane(selectedList);
 		selectedScroll.setAlignmentX(Component.CENTER_ALIGNMENT);
+		selectedScroll.setBorder(BorderFactory.createEmptyBorder());
 		add(selectedScroll);
 		
 		

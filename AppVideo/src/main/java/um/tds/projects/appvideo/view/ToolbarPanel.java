@@ -72,6 +72,7 @@ public class ToolbarPanel extends JPanel {
 		btnPanel.setBackground(Constants.FOREGROUND_COLOR);
 		btnPanel.setLayout  (new BoxLayout(btnPanel, BoxLayout.X_AXIS));
 		btnPanel.add(icon);
+		add(Box.createRigidArea(new Dimension(0,7)));
 		add(btnPanel);
 		
 		

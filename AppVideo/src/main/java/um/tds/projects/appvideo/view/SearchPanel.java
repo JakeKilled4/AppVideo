@@ -3,7 +3,7 @@ package um.tds.projects.appvideo.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -37,20 +37,19 @@ public class SearchPanel extends JPanel {
 										"Adultos","Infantil");
 
 		add(toolbarPanel, BorderLayout.WEST);
-		JPanel panel_1 = new JPanel();
-		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.Y_AXIS));
-		panel_1.setBackground(Constants.BACKGROUND_COLOR);
-		JPanel panel_2 = new JPanel();
-		panel_2.setLayout(new BorderLayout());
-		panel_2.add(labelPanel, BorderLayout.EAST);
-		panel_1.add(searchBar);
-		panel_1.add(panel_2);
+		add(labelPanel,BorderLayout.EAST);
+		JPanel centerPanel = new JPanel();
+		centerPanel.setBackground(Constants.BACKGROUND_COLOR);
+		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+		centerPanel.add(Box.createRigidArea(new Dimension(0, 7)));
+		centerPanel.add(searchBar);
+		centerPanel.add(Box.createRigidArea(new Dimension(0, 7)));
 		JButton but = new JButton("Hola");
 		but.addActionListener(e -> {
 			labelPanel.addLabel("Nuevo");
 		});
-		panel_1.add(but);
-		add(panel_1, BorderLayout.CENTER);
+		centerPanel.add(but);
+		add(centerPanel, BorderLayout.CENTER);
 	}
 
 	private void fixSize(JComponent component, int x, int y) {
