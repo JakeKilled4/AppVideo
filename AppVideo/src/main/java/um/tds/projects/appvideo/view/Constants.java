@@ -12,8 +12,12 @@ public class Constants {
 
 	public static final int TOOLBAR_ENTRY_HEIGHT = 50;
 
-	public static int TOOLBAR_OPEN_SIZE = 200;
-	public static int TOOLBAR_CLOSED_SIZE = 50;
+	public static final int TOOLBAR_OPEN_SIZE = 200;
+	public static final int TOOLBAR_CLOSED_SIZE = 50;
+	
+	public static final int PAGE_WIDTH = 800;
+	
+	public static final int VIDEOLIST_ENTRY_HEIGHT = 50;
 
 	public static final Color FOREGROUND_COLOR   = new Color(23, 33, 43);
 	public static final Color BACKGROUND_COLOR   = new Color(7,11,17);
