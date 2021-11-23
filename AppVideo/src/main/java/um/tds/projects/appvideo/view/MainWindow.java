@@ -14,6 +14,7 @@ public class MainWindow extends JFrame {
 	private JPanel preferencesPanel;
 	private JPanel searchPanel;
 	private JPanel registerPanel;
+	private JPanel manageListPanel;
 
 	public void showWindow() {
 		setLocationRelativeTo(null);
@@ -26,6 +27,7 @@ public class MainWindow extends JFrame {
 		preferencesPanel = new PreferencesPanel(this);
 		searchPanel      = new SearchPanel     (this);
 		registerPanel 	 = new RegisterPanel   (this);
+		manageListPanel  = new ManageListPanel (this);
 
 		setContentPane(loginPanel);
 		setMinimumSize(new Dimension(250, 150));
@@ -54,6 +56,10 @@ public class MainWindow extends JFrame {
 	}
 	public void activateRegisterPanel() {
 		setContentPane(registerPanel);
+		validate();
+	}
+	public void activateManageListPanel() {
+		setContentPane(manageListPanel);
 		validate();
 	}
 

@@ -35,7 +35,7 @@ public class SearchPanel extends JPanel {
 		setLayout(new BorderLayout());
 
 		toolbarPanel = new ToolbarPanel(mainWindow);
-		searchBar 	 = new SearchBar   ();
+		searchBar 	 = new SearchBar	(Constants.BACKGROUND_COLOR);
 		videoList    = new VideoList   (mainWindow,
 										Arrays.asList(
 												new Video("", "Smart cat solves Millenium problem", 1324),
@@ -46,13 +46,15 @@ public class SearchPanel extends JPanel {
 												new Video("", "Arma virumque cano...", 3025),
 												new Video("", "En un lugar de la mancha...", 325),
 												new Video("", "Entrevista a Dijkstra", 32005)));
-		labelPanel 	 = new LabelPanel  ("Dibujos animados","Pelicula","Serie",
+		toolbarPanel = new ToolbarPanel	(mainWindow);
+		labelPanel 	 = new LabelPanel 	("Dibujos animados","Pelicula","Serie",
 										"Intriga","Terror","Clasico","Videoclip",
 										"Adultos","Infantil");
 
 		JPanel centerPanel = new JPanel();
 		centerPanel.setBackground(Constants.BACKGROUND_COLOR);
 		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+
 		centerPanel.add(searchBar);
 		centerPanel.add(Box.createRigidArea(new Dimension(0, 50)));
 		centerPanel.add(videoList);

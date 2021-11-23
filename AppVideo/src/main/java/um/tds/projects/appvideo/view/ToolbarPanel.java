@@ -18,9 +18,10 @@ public class ToolbarPanel extends JPanel {
 	private ToolbarEntryPanel entryPlaylists;
 	private ToolbarEntryPanel entryPreferences;
 	private ToolbarEntryPanel entrySearch;
+	private ToolbarEntryPanel entryManageLists;
 
 	public ToolbarPanel(MainWindow mainWindow) {
-		this(mainWindow, false);
+		this(mainWindow, true);
 	}
 
 	public ToolbarPanel(MainWindow mainWindow, boolean open) {
@@ -34,11 +35,8 @@ public class ToolbarPanel extends JPanel {
 	}
 
 	public void setOpen(boolean open) {
-		if (this.open == open)
-			return;
-
+		if (this.open == open) return;
 	  	this.open = open;
-
 		adjustSize();
 	}
 
@@ -53,16 +51,19 @@ public class ToolbarPanel extends JPanel {
 			entryPlaylists.setVisible(true);
 			entryPreferences.setVisible(true);
 			entrySearch.setVisible(true);
+			entryManageLists.setVisible(true);
 		} else {
 			setBackground(Constants.BACKGROUND_COLOR);
 			setPreferredSize(new Dimension(Constants.TOOLBAR_CLOSED_SIZE, Short.MIN_VALUE));
 			entryPlaylists.setVisible(false);
 			entryPreferences.setVisible(false);
 			entrySearch.setVisible(false);
+			entryManageLists.setVisible(false);
 		}
 	}
 
 	private void addComponents() {
+		entryManageLists = new ToolbarEntryPanel(null, "Manage lists");
 		entryPlaylists   = new ToolbarEntryPanel(null, "Playlists");
 		entryPreferences = new ToolbarEntryPanel(null, "Preferences");
 		entrySearch      = new ToolbarEntryPanel(null, "Search");
@@ -104,6 +105,7 @@ public class ToolbarPanel extends JPanel {
 					entryPlaylists.setBackground(Constants.BUTTON_COLOR);
 				}
 			});
+		
 		entryPreferences.addMouseListener(new MouseListener() {
 				public void mouseClicked(MouseEvent e) {
 					entryPreferences.setBackground(Constants.BUTTON_COLOR);
@@ -119,6 +121,7 @@ public class ToolbarPanel extends JPanel {
 					entryPreferences.setBackground(Constants.BUTTON_COLOR);
 				}
 			});
+		
 		entrySearch.addMouseListener(new MouseListener() {
 				public void mouseClicked(MouseEvent e) {
 					entrySearch.setBackground(Constants.BUTTON_COLOR);
@@ -133,11 +136,27 @@ public class ToolbarPanel extends JPanel {
 					entrySearch.setBackground(Constants.BUTTON_COLOR);
 				}
 			});
+		
+		entryManageLists.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+				entryManageLists.setBackground(Constants.BUTTON_COLOR);
+				mainWindow.activateManageListPanel();
+			}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				entryManageLists.setBackground(Constants.BUTTON_HOVER_COLOR);
+			}
+			public void mouseExited(MouseEvent e) {
+				entryManageLists.setBackground(Constants.BUTTON_COLOR);
+			}
+		});
 
 		add(Box.createRigidArea(new Dimension(0, 30)));
 		add(entryPlaylists);
 		add(entryPreferences);
 		add(entrySearch);
+		add(entryManageLists);
 	}
 
 }

@@ -1,6 +1,7 @@
 package um.tds.projects.appvideo.view;
 
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -47,10 +48,13 @@ public class LabelPanel extends JPanel{
 		availableLabels.setFont(Constants.TITLE_FONT);
 		add(availableLabels);
 		
-		JSeparator separator1 = new JSeparator(SwingConstants.HORIZONTAL);
 		add(Box.createRigidArea(new Dimension(0, 2)));
-		separator1.setMaximumSize(new Dimension(Integer.MAX_VALUE, 0));
+		
+		JSeparator separator1 = new JSeparator(SwingConstants.HORIZONTAL);
+		separator1.setMaximumSize(new Dimension(Short.MAX_VALUE, 0));
+		separator1.setBackground(new Color(99, 130, 191));
 		add(separator1);
+		
 		add(Box.createRigidArea(new Dimension(0, 5)));
 		
 		
@@ -80,10 +84,13 @@ public class LabelPanel extends JPanel{
 		selectedLabels.setFont(Constants.TITLE_FONT);
 		add(selectedLabels);
 		
-		JSeparator separator2 = new JSeparator(SwingConstants.HORIZONTAL);
 		add(Box.createRigidArea(new Dimension(0, 2)));
-		separator2.setMaximumSize(new Dimension(Integer.MAX_VALUE, 0));
+		
+		JSeparator separator2 = new JSeparator(SwingConstants.HORIZONTAL);
+		separator2.setMaximumSize(new Dimension(Short.MAX_VALUE, 0));
+		separator2.setBackground(new Color(99, 130, 191));
 		add(separator2);
+		
 		add(Box.createRigidArea(new Dimension(0, 5)));
 		
 		selectedModel = new DefaultListModel<String>();
