@@ -30,7 +30,7 @@ public class MainWindow extends JFrame {
 		manageListPanel  = new ManageListPanel (this);
 
 		setContentPane(loginPanel);
-		setMinimumSize(new Dimension(250, 150));
+		setMinimumSize(new Dimension(1000, 600));
 		setBounds(100, 100, 450, 300);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}

@@ -22,9 +22,9 @@ public class ToolbarEntryPanel extends JPanel {
 		this.text       = text;
 
 		setBackground   (Constants.BUTTON_COLOR);
-		setMinimumSize  (new Dimension(Constants.TOOLBAR_OPEN_SIZE + 10, Constants.TOOLBAR_ENTRY_HEIGHT));
-		setPreferredSize(new Dimension(Constants.TOOLBAR_OPEN_SIZE + 10, Constants.TOOLBAR_ENTRY_HEIGHT));
-		setMaximumSize  (new Dimension(Constants.TOOLBAR_OPEN_SIZE + 10, Constants.TOOLBAR_ENTRY_HEIGHT));
+		setMinimumSize  (new Dimension(Constants.TOOLBAR_OPEN_SIZE, Constants.TOOLBAR_ENTRY_HEIGHT));
+		setPreferredSize(new Dimension(Constants.TOOLBAR_OPEN_SIZE, Constants.TOOLBAR_ENTRY_HEIGHT));
+		setMaximumSize  (new Dimension(Constants.TOOLBAR_OPEN_SIZE, Constants.TOOLBAR_ENTRY_HEIGHT));
 		setLayout       (new BoxLayout(this, BoxLayout.X_AXIS));
 		addComponents   ();
 	}
