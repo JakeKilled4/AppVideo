@@ -39,6 +39,9 @@ public class LabelPanel extends JPanel{
 		
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 		setBackground(Constants.FOREGROUND_COLOR);
+		setMinimumSize  (new Dimension(Constants.TOOLBAR_OPEN_SIZE, Short.MAX_VALUE));
+		setPreferredSize(new Dimension(Constants.TOOLBAR_OPEN_SIZE, Short.MAX_VALUE));
+		setMaximumSize  (new Dimension(Constants.TOOLBAR_OPEN_SIZE, Short.MAX_VALUE));
 		
 		add(Box.createRigidArea(new Dimension(0, 10)));
 		

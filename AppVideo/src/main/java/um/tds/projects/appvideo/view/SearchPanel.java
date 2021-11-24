@@ -54,7 +54,8 @@ public class SearchPanel extends JPanel {
 		JPanel centerPanel = new JPanel();
 		centerPanel.setBackground(Constants.BACKGROUND_COLOR);
 		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-
+		
+		centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		centerPanel.add(searchBar);
 		centerPanel.add(Box.createRigidArea(new Dimension(0, 50)));
 		centerPanel.add(videoList);
