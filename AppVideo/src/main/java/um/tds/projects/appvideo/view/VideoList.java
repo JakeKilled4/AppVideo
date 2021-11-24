@@ -27,21 +27,6 @@ public class VideoList extends JPanel {
 		this.videos     = videos;
 		this.entries    = videos.stream().map( v -> new VideoListEntry(mainWindow, v) ).collect(Collectors.toList());
 		
-		for (VideoListEntry entry: entries) {
-			entry.addMouseListener(new MouseListener() {
-				public void mouseClicked(MouseEvent e) {}
-				public void mousePressed(MouseEvent e) {}
-				public void mouseReleased(MouseEvent e) {}
-				public void mouseEntered(MouseEvent e) {
-					entry.updateBackground(Constants.BUTTON_HOVER_COLOR);
-				}
-
-				public void mouseExited(MouseEvent e) {
-					entry.updateBackground(Constants.BUTTON_COLOR);
-				}
-			});
-		}
-		
 		setBackground(Constants.BACKGROUND_COLOR);
 		setLayout    (new BoxLayout(this, BoxLayout.Y_AXIS));
 		addComponents();

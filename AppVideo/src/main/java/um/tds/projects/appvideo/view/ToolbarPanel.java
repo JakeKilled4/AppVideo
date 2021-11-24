@@ -48,16 +48,16 @@ public class ToolbarPanel extends JPanel {
 		if (open == true) {
 			setBackground(Constants.FOREGROUND_COLOR);
 			setPreferredSize(new Dimension(Constants.TOOLBAR_OPEN_SIZE, Short.MAX_VALUE));
-			entryPlaylists.setVisible(true);
+			entryPlaylists.  setVisible(true);
 			entryPreferences.setVisible(true);
-			entrySearch.setVisible(true);
+			entrySearch.     setVisible(true);
 			entryManageLists.setVisible(true);
 		} else {
 			setBackground(Constants.BACKGROUND_COLOR);
 			setPreferredSize(new Dimension(Constants.TOOLBAR_CLOSED_SIZE, Short.MIN_VALUE));
-			entryPlaylists.setVisible(false);
+			entryPlaylists.  setVisible(false);
 			entryPreferences.setVisible(false);
-			entrySearch.setVisible(false);
+			entrySearch.     setVisible(false);
 			entryManageLists.setVisible(false);
 		}
 	}
@@ -90,67 +90,10 @@ public class ToolbarPanel extends JPanel {
 			public void mouseExited(MouseEvent e) {}
 		});
 		
-		entryPlaylists.addMouseListener(new MouseListener() {
-				public void mouseClicked(MouseEvent e) {
-					entryPlaylists.setBackground(Constants.BUTTON_COLOR);
-					mainWindow.activatePlaylistsPanel();
-				}
-				public void mousePressed(MouseEvent e) {}
-				public void mouseReleased(MouseEvent e) {}
-				public void mouseEntered(MouseEvent e) {
-					entryPlaylists.setBackground(Constants.BUTTON_HOVER_COLOR);
-				}
-
-				public void mouseExited(MouseEvent e) {
-					entryPlaylists.setBackground(Constants.BUTTON_COLOR);
-				}
-			});
-		
-		entryPreferences.addMouseListener(new MouseListener() {
-				public void mouseClicked(MouseEvent e) {
-					entryPreferences.setBackground(Constants.BUTTON_COLOR);
-					mainWindow.activatePreferencesPanel();
-				}
-				public void mousePressed(MouseEvent e) {}
-				public void mouseReleased(MouseEvent e) {}
-				public void mouseEntered(MouseEvent e) {
-					entryPreferences.setBackground(Constants.BUTTON_HOVER_COLOR);
-				}
-
-				public void mouseExited(MouseEvent e) {
-					entryPreferences.setBackground(Constants.BUTTON_COLOR);
-				}
-			});
-		
-		entrySearch.addMouseListener(new MouseListener() {
-				public void mouseClicked(MouseEvent e) {
-					entrySearch.setBackground(Constants.BUTTON_COLOR);
-					mainWindow.activateSearchPanel();
-				}
-				public void mousePressed(MouseEvent e) {}
-				public void mouseReleased(MouseEvent e) {}
-				public void mouseEntered(MouseEvent e) {
-					entrySearch.setBackground(Constants.BUTTON_HOVER_COLOR);
-				}
-				public void mouseExited(MouseEvent e) {
-					entrySearch.setBackground(Constants.BUTTON_COLOR);
-				}
-			});
-		
-		entryManageLists.addMouseListener(new MouseListener() {
-			public void mouseClicked(MouseEvent e) {
-				entryManageLists.setBackground(Constants.BUTTON_COLOR);
-				mainWindow.activateManageListPanel();
-			}
-			public void mousePressed(MouseEvent e) {}
-			public void mouseReleased(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {
-				entryManageLists.setBackground(Constants.BUTTON_HOVER_COLOR);
-			}
-			public void mouseExited(MouseEvent e) {
-				entryManageLists.setBackground(Constants.BUTTON_COLOR);
-			}
-		});
+		entryPlaylists.  addClickAction(() -> mainWindow.activatePlaylistsPanel());
+		entryPreferences.addClickAction(() -> mainWindow.activatePreferencesPanel());
+		entrySearch.     addClickAction(() -> mainWindow.activateSearchPanel());
+		entryManageLists.addClickAction(() -> mainWindow.activateManageListPanel());
 
 		add(Box.createRigidArea(new Dimension(0, 30)));
 		add(entryPlaylists);

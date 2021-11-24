@@ -4,6 +4,8 @@ import um.tds.projects.appvideo.backend.Video;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -14,6 +16,20 @@ import javax.swing.JLabel;
 @SuppressWarnings("serial")
 public class VideoListEntry extends JPanel {
 	
+	private final class HoverMouseListener implements MouseListener {
+		public void mouseClicked(MouseEvent e) {}
+		public void mousePressed(MouseEvent e) {}
+		public void mouseReleased(MouseEvent e) {}
+
+		public void mouseEntered(MouseEvent e) {
+			updateBackground(Constants.BUTTON_HOVER_COLOR);
+		}
+
+		public void mouseExited(MouseEvent e) {
+			updateBackground(Constants.BUTTON_COLOR);
+		}
+	}
+
 	private MainWindow mainWindow;
 	private Video video;
 	private JPanel thumbnail;
@@ -27,16 +43,14 @@ public class VideoListEntry extends JPanel {
 		this.mainWindow = mainWindow;
 		this.video = video;
 		
+		
 		setBackground(Constants.BUTTON_COLOR);
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		setMaximumSize(new Dimension(Constants.PAGE_WIDTH, Constants.VIDEOLIST_ENTRY_HEIGHT));
 		setMinimumSize(new Dimension(Constants.PAGE_WIDTH, Constants.VIDEOLIST_ENTRY_HEIGHT));
 		setPreferredSize(new Dimension(Constants.PAGE_WIDTH, Constants.VIDEOLIST_ENTRY_HEIGHT));
-		
-		title = new JLabel(video.getTitle());
-		title.setForeground(Constants.FONT_COLOR);
-		numViews = new JLabel(Integer.toString(video.getNumViews()) + " views");
-		numViews.setForeground(Constants.FONT_COLOR);
+		addMouseListener(new HoverMouseListener());
+
 		addComponents();
 
 	}
@@ -50,6 +64,11 @@ public class VideoListEntry extends JPanel {
 	}
 	
 	private void addComponents() {
+		title = new JLabel(video.getTitle());
+		title.setForeground(Constants.FONT_COLOR);
+		numViews = new JLabel(Integer.toString(video.getNumViews()) + " views");
+		numViews.setForeground(Constants.FONT_COLOR);
+		
 		vPanel = new JPanel();
 		vPanel.setBackground(getBackground());
 		vPanel.setLayout(new BoxLayout(vPanel, BoxLayout.Y_AXIS));
