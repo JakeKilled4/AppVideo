@@ -10,6 +10,7 @@ import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -57,7 +58,7 @@ public class VideoList extends JPanel {
 		
 		JScrollPane scrollPane = new JScrollPane(innerPage);
 		scrollPane.setBackground(Constants.BACKGROUND_COLOR);
-		
+		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 		add(scrollPane);
 	}
 	

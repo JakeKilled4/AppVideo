@@ -27,7 +27,7 @@ public class SearchBar extends JPanel{
 		
 		//JButton btnSearch = new JButton("Search");
 		//add(btnSearch);
-		
+	
 		//add(Box.createRigidArea(new Dimension(5, 0)));
 		
 		txtSearch = new JTextField();
