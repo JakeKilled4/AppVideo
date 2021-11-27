@@ -22,7 +22,6 @@ public class ToolbarPanel extends JPanel {
 	private ToolbarEntryPanel entryPlaylists;
 	private ToolbarEntryPanel entryPreferences;
 	private ToolbarEntryPanel entrySearch;
-	private ToolbarEntryPanel entryManageLists;
 	private List<JSeparator>  separators;
 
 	public ToolbarPanel(MainWindow mainWindow) {
@@ -56,7 +55,6 @@ public class ToolbarPanel extends JPanel {
 			entryPlaylists.  setVisible(true);
 			entryPreferences.setVisible(true);
 			entrySearch.     setVisible(true);
-			entryManageLists.setVisible(true);
 			separators.stream().forEach( s -> s.setVisible(true) );
 		} else {
 			setBackground(Constants.BACKGROUND_COLOR);
@@ -64,13 +62,11 @@ public class ToolbarPanel extends JPanel {
 			entryPlaylists.  setVisible(false);
 			entryPreferences.setVisible(false);
 			entrySearch.     setVisible(false);
-			entryManageLists.setVisible(false);
 			separators.stream().forEach( s -> s.setVisible(false) );
 		}
 	}
 
 	private void addComponents() {
-		entryManageLists = new ToolbarEntryPanel(null, "Manage lists");
 		entryPlaylists   = new ToolbarEntryPanel(null, "Playlists");
 		entryPreferences = new ToolbarEntryPanel(null, "Preferences");
 		entrySearch      = new ToolbarEntryPanel(null, "Search");
@@ -101,7 +97,6 @@ public class ToolbarPanel extends JPanel {
 		entryPlaylists.  addClickAction(() -> mainWindow.activatePlaylistsPanel());
 		entryPreferences.addClickAction(() -> mainWindow.activatePreferencesPanel());
 		entrySearch.     addClickAction(() -> mainWindow.activateSearchPanel());
-		entryManageLists.addClickAction(() -> mainWindow.activateManageListPanel());
 
 		add(Box.createRigidArea(new Dimension(0, 30)));
 		add(entryPlaylists);
@@ -109,8 +104,6 @@ public class ToolbarPanel extends JPanel {
 		add(entryPreferences);
 		addSeparator();
 		add(entrySearch);
-		addSeparator();
-		add(entryManageLists);
 	}
 	
 	private void addSeparator() {
