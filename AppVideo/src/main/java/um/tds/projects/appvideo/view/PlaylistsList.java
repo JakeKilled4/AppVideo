@@ -2,12 +2,14 @@ package um.tds.projects.appvideo.view;
 
 import um.tds.projects.appvideo.backend.Playlist;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 
 
 public class PlaylistsList extends JPanel {
@@ -28,12 +30,20 @@ public class PlaylistsList extends JPanel {
 
 	private void addComponents() {
 		for (PlaylistListEntry entry: entries) {
-			add(Box.createRigidArea(new Dimension(Constants.PAGE_WIDTH, 10)));
+			addSeparator();
 			add(entry);
 		}
 	}
+	
+	private void addSeparator() {
+		JSeparator sep = new JSeparator();
+		sep.setMaximumSize(new Dimension(Constants.PAGE_WIDTH, Constants.SEPARATOR_HEIGHT));
+		sep.setBackground(Constants.SEPARATOR_COLOR);
+		sep.setForeground(Constants.SEPARATOR_COLOR);
+		add(sep);
+	}
 
 	public int getLength() {
-		return entries.size() * (Constants.VIDEOLIST_ENTRY_HEIGHT + 10) - 10;
+		return entries.size() * (Constants.VIDEOLIST_ENTRY_HEIGHT + Constants.SEPARATOR_HEIGHT) - Constants.SEPARATOR_HEIGHT;
 	}
 }

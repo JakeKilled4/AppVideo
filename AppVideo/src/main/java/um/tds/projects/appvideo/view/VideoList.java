@@ -14,6 +14,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 
 
 @SuppressWarnings("serial")
@@ -34,7 +35,7 @@ public class VideoList extends JPanel {
 	}
 	
 	private int getLength() {
-		return entries.size() * (Constants.VIDEOLIST_ENTRY_HEIGHT + 10) - 10;
+		return entries.size() * (Constants.VIDEOLIST_ENTRY_HEIGHT + Constants.SEPARATOR_HEIGHT) - Constants.SEPARATOR_HEIGHT;
 	}
 	
 	private void addComponents() {
@@ -47,15 +48,25 @@ public class VideoList extends JPanel {
 		innerPage.setPreferredSize(new Dimension(Constants.PAGE_WIDTH, getLength()));
 		innerPage.setAlignmentX(CENTER_ALIGNMENT);
 		
+		boolean first = true;
 		for (VideoListEntry entry: entries) {
+			if (first) first = false;
+			else       addSeparator(innerPage);
 			innerPage.add(entry);
-			innerPage.add(Box.createRigidArea(new Dimension(Constants.PAGE_WIDTH, 10)));
 		}
 		
 		JScrollPane scrollPane = new JScrollPane(innerPage);
 		scrollPane.setBackground(Constants.BACKGROUND_COLOR);
 		
 		add(scrollPane);
+	}
+	
+	static private void addSeparator(JPanel panel) {
+		JSeparator sep = new JSeparator();
+		sep.setMaximumSize(new Dimension(Constants.PAGE_WIDTH, Constants.SEPARATOR_HEIGHT));
+		sep.setBackground(Constants.SEPARATOR_COLOR);
+		sep.setForeground(Constants.SEPARATOR_COLOR);
+		panel.add(sep);
 	}
 	
 }

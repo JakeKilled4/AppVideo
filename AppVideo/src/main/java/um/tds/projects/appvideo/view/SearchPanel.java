@@ -35,7 +35,7 @@ public class SearchPanel extends JPanel {
 		setLayout(new BorderLayout());
 
 		toolbarPanel = new ToolbarPanel(mainWindow);
-		searchBar 	 = new SearchBar	(Constants.BACKGROUND_COLOR);
+		searchBar 	 = new SearchBar   (Constants.BACKGROUND_COLOR);
 		videoList    = new VideoList   (mainWindow,
 										Arrays.asList(
 												new Video("", "Smart cat solves Millenium problem", 1324),

@@ -1,6 +1,8 @@
 package um.tds.projects.appvideo.view;
 
 import java.awt.Dimension;
+
+import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -78,6 +80,7 @@ public class ToolbarEntryPanel extends JPanel {
 	public void addComponents() {
 		add(Box.createRigidArea(new Dimension(10, 0)));
 		JLabel label = new JLabel(text);
+		label.setFont      (Constants.STRONG_FONT);
 		label.setForeground(Constants.FONT_COLOR);
 		add(label);
 	}

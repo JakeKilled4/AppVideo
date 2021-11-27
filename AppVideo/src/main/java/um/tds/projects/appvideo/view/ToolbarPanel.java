@@ -1,14 +1,18 @@
 package um.tds.projects.appvideo.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 
 @SuppressWarnings("serial")
 public class ToolbarPanel extends JPanel {
@@ -19,6 +23,7 @@ public class ToolbarPanel extends JPanel {
 	private ToolbarEntryPanel entryPreferences;
 	private ToolbarEntryPanel entrySearch;
 	private ToolbarEntryPanel entryManageLists;
+	private List<JSeparator>  separators;
 
 	public ToolbarPanel(MainWindow mainWindow) {
 		this(mainWindow, true);
@@ -52,6 +57,7 @@ public class ToolbarPanel extends JPanel {
 			entryPreferences.setVisible(true);
 			entrySearch.     setVisible(true);
 			entryManageLists.setVisible(true);
+			separators.stream().forEach( s -> s.setVisible(true) );
 		} else {
 			setBackground(Constants.BACKGROUND_COLOR);
 			setPreferredSize(new Dimension(Constants.TOOLBAR_CLOSED_SIZE, Short.MIN_VALUE));
@@ -59,6 +65,7 @@ public class ToolbarPanel extends JPanel {
 			entryPreferences.setVisible(false);
 			entrySearch.     setVisible(false);
 			entryManageLists.setVisible(false);
+			separators.stream().forEach( s -> s.setVisible(false) );
 		}
 	}
 
@@ -67,6 +74,7 @@ public class ToolbarPanel extends JPanel {
 		entryPlaylists   = new ToolbarEntryPanel(null, "Playlists");
 		entryPreferences = new ToolbarEntryPanel(null, "Preferences");
 		entrySearch      = new ToolbarEntryPanel(null, "Search");
+		separators       = new ArrayList<JSeparator>();
 		  
 		JLabel icon = new JLabel(new ImageIcon("./src/images/MenuGrey.png"));
 		JPanel btnPanel = new JPanel();
@@ -97,9 +105,21 @@ public class ToolbarPanel extends JPanel {
 
 		add(Box.createRigidArea(new Dimension(0, 30)));
 		add(entryPlaylists);
+		addSeparator();
 		add(entryPreferences);
+		addSeparator();
 		add(entrySearch);
+		addSeparator();
 		add(entryManageLists);
+	}
+	
+	private void addSeparator() {
+		JSeparator sep = new JSeparator();
+		sep.setMaximumSize(new Dimension(Constants.TOOLBAR_OPEN_SIZE, Constants.SEPARATOR_HEIGHT));
+		sep.setBackground(Constants.SEPARATOR_COLOR);
+		sep.setForeground(Constants.SEPARATOR_COLOR);
+		separators.add(sep);
+		add(sep);
 	}
 
 }
