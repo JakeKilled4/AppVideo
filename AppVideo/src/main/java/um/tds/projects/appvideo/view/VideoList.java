@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 
 @SuppressWarnings("serial")
@@ -32,14 +33,18 @@ public class VideoList extends JPanel {
 		addComponents();
 	}
 	
+	private int getLength() {
+		return entries.size() * (Constants.VIDEOLIST_ENTRY_HEIGHT + 10) - 10;
+	}
+	
 	private void addComponents() {
 
 		JPanel innerPage = new JPanel();
 		innerPage.setBackground(Constants.BACKGROUND_COLOR);
 		innerPage.setLayout(new BoxLayout(innerPage, BoxLayout.Y_AXIS));
-		innerPage.setMaximumSize(new Dimension(Constants.PAGE_WIDTH, Short.MAX_VALUE));
-		innerPage.setMinimumSize(new Dimension(Constants.PAGE_WIDTH, Short.MAX_VALUE));
-		innerPage.setPreferredSize(new Dimension(Constants.PAGE_WIDTH, Short.MAX_VALUE));
+		innerPage.setMaximumSize(new Dimension(Constants.PAGE_WIDTH, getLength()));
+		innerPage.setMinimumSize(new Dimension(Constants.PAGE_WIDTH, getLength()));
+		innerPage.setPreferredSize(new Dimension(Constants.PAGE_WIDTH, getLength()));
 		innerPage.setAlignmentX(CENTER_ALIGNMENT);
 		
 		for (VideoListEntry entry: entries) {
@@ -47,7 +52,10 @@ public class VideoList extends JPanel {
 			innerPage.add(Box.createRigidArea(new Dimension(Constants.PAGE_WIDTH, 10)));
 		}
 		
-		add(innerPage);
+		JScrollPane scrollPane = new JScrollPane(innerPage);
+		scrollPane.setBackground(Constants.BACKGROUND_COLOR);
+		
+		add(scrollPane);
 	}
 	
 }
