@@ -62,7 +62,6 @@ public class SearchPanel extends JPanel {
 												new Video("", "Arma virumque cano...", 3025),
 												new Video("", "En un lugar de la mancha...", 325),
 												new Video("", "Entrevista a Dijkstra", 32005)));
-		toolbarPanel = new ToolbarPanel	(mainWindow);
 		labelPanel 	 = new LabelPanel 	("Dibujos animados","Pelicula","Serie",
 										"Intriga","Terror","Clasico","Videoclip",
 										"Adultos","Infantil");

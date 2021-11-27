@@ -17,7 +17,11 @@ import javax.swing.JLabel;
 public class VideoListEntry extends JPanel {
 	
 	private final class HoverMouseListener implements MouseListener {
-		public void mouseClicked(MouseEvent e) {}
+		public void mouseClicked(MouseEvent e) {
+			updateBackground(Constants.BUTTON_COLOR);
+			mainWindow.activateVideoViewingPanel(video);
+		}
+
 		public void mousePressed(MouseEvent e) {}
 		public void mouseReleased(MouseEvent e) {}
 
@@ -41,7 +45,7 @@ public class VideoListEntry extends JPanel {
 	
 	public VideoListEntry(MainWindow mainWindow, Video video) {
 		this.mainWindow = mainWindow;
-		this.video = video;
+		this.video      = video;
 		
 		
 		setBackground(Constants.BUTTON_COLOR);

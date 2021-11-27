@@ -16,6 +16,8 @@ public class Constants {
 	public static final int PAGE_WIDTH = 800;
 	public static final int VIDEOLIST_ENTRY_HEIGHT = 50;
 	public static final int SEPARATOR_HEIGHT = 6;
+	public static final int VIDEO_WIDTH = 400;
+	public static final int VIDEO_HEIGHT = 300;
 
 	public static final Color FOREGROUND_COLOR   = new Color( 23,  33,  43);
 	public static final Color BACKGROUND_COLOR   = new Color( 23,  33,  43);//(7,11,17);
@@ -29,6 +31,6 @@ public class Constants {
 	public static final Font  DEFAULT_FONT 		 = new Font("Default", Font.PLAIN,  12);
 	public static final Font  BOLD_FONT 		 = new Font("Default", Font.BOLD,   12);
 	public static final Font  ITALIC_FONT        = new Font("Default", Font.ITALIC, 12);
-	public static final Font  TITLE_FONT 		 = new Font("Default", Font.BOLD,   12);
+	public static final Font  TITLE_FONT 		 = new Font("Default", Font.PLAIN,  36);
 
 }

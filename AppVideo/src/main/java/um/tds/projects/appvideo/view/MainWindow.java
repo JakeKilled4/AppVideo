@@ -1,5 +1,6 @@
 package um.tds.projects.appvideo.view;
 
+import um.tds.projects.appvideo.backend.Video;
 
 import java.awt.Dimension;
 
@@ -9,12 +10,12 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame {
 	
-	private JPanel loginPanel;
-	private JPanel playlistsPanel;
-	private JPanel preferencesPanel;
-	private JPanel searchPanel;
-	private JPanel registerPanel;
-	private JPanel manageListPanel;
+	private LoginPanel        loginPanel;
+	private PlaylistsPanel    playlistsPanel;
+	private PreferencesPanel  preferencesPanel;
+	private SearchPanel       searchPanel;
+	private RegisterPanel     registerPanel;
+	private VideoViewingPanel videoViewingPanel;
 
 	public void showWindow() {
 		setLocationRelativeTo(null);
@@ -22,11 +23,12 @@ public class MainWindow extends JFrame {
 	}
 
 	public MainWindow() {
-		loginPanel       = new LoginPanel      (this);
-		playlistsPanel   = new PlaylistsPanel  (this);
-		preferencesPanel = new PreferencesPanel(this);
-		searchPanel      = new SearchPanel     (this);
-		registerPanel 	 = new RegisterPanel   (this);
+		loginPanel        = new LoginPanel      (this);
+		playlistsPanel    = new PlaylistsPanel  (this);
+		preferencesPanel  = new PreferencesPanel(this);
+		searchPanel       = new SearchPanel     (this);
+		registerPanel 	  = new RegisterPanel   (this);
+		videoViewingPanel = null; // Es redefinido al visualizar cada video.
 
 		setContentPane(loginPanel);
 		setMinimumSize(new Dimension(1000, 600));
@@ -56,6 +58,12 @@ public class MainWindow extends JFrame {
 	
 	public void activateRegisterPanel() {
 		setContentPane(registerPanel);
+		validate();
+	}
+	
+	public void activateVideoViewingPanel(Video video) {
+		videoViewingPanel = new VideoViewingPanel(this, video);
+		setContentPane(videoViewingPanel);
 		validate();
 	}
 
