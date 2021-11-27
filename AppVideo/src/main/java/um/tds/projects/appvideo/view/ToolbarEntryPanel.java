@@ -80,7 +80,7 @@ public class ToolbarEntryPanel extends JPanel {
 	public void addComponents() {
 		add(Box.createRigidArea(new Dimension(10, 0)));
 		JLabel label = new JLabel(text);
-		label.setFont      (Constants.STRONG_FONT);
+		label.setFont      (Constants.BOLD_FONT);
 		label.setForeground(Constants.FONT_COLOR);
 		add(label);
 	}

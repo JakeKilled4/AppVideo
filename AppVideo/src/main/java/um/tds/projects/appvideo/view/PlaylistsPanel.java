@@ -111,7 +111,7 @@ public class PlaylistsPanel extends JPanel {
 					public void mouseReleased(MouseEvent e) {}
 					public void mouseEntered(MouseEvent e) {
 						button.setBackground(Constants.BUTTON_HOVER_COLOR);
-						label.setFont(Constants.STRONG_FONT);
+						label.setFont(Constants.BOLD_FONT);
 					}
 					public void mouseExited(MouseEvent e) {
 						button.setBackground(Constants.BUTTON_COLOR);

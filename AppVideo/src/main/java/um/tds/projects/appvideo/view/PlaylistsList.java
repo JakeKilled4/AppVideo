@@ -39,8 +39,8 @@ public class PlaylistsList extends JPanel {
 	private void addSeparator() {
 		JSeparator sep = new JSeparator();
 		sep.setMaximumSize(new Dimension(Constants.PAGE_WIDTH, Constants.SEPARATOR_HEIGHT));
-		sep.setBackground(Constants.SEPARATOR_COLOR);
-		sep.setForeground(Constants.SEPARATOR_COLOR);
+		sep.setBackground(Constants.BACKGROUND_COLOR);
+		sep.setForeground(Constants.BACKGROUND_COLOR);
 		add(sep);
 	}
 

@@ -25,8 +25,10 @@ public class Constants {
 	public static final Color FONT_COLOR 		 = new Color(255, 255, 255);
 	public static final Color SEARCH_COLOR		 = new Color( 40,  60,  80);
 	public static final Color SEPARATOR_COLOR    = new Color(100, 100, 100);
-	public static final Font  DEFAULT_FONT 		 = new Font("Default", Font.PLAIN, 12);
-	public static final Font  STRONG_FONT 		 = new Font("Default", Font.BOLD,  12);
-	public static final Font  TITLE_FONT 		 = new Font("Default", Font.BOLD,  12);
+	public static final Color LIGHT_FONT_COLOR   = new Color(200, 200, 200);
+	public static final Font  DEFAULT_FONT 		 = new Font("Default", Font.PLAIN,  12);
+	public static final Font  BOLD_FONT 		 = new Font("Default", Font.BOLD,   12);
+	public static final Font  ITALIC_FONT        = new Font("Default", Font.ITALIC, 12);
+	public static final Font  TITLE_FONT 		 = new Font("Default", Font.BOLD,   12);
 
 }

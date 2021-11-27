@@ -65,8 +65,10 @@ public class PlaylistListEntry extends JPanel {
 	private void addComponents() {
 		name = new JLabel(playlist.getName());
 		name.setForeground(Constants.FONT_COLOR);
+		name.setFont(Constants.DEFAULT_FONT);
 		numVideos = new JLabel(Integer.toString(playlist.getNumVideos()) + " videos");
-		numVideos.setForeground(Constants.FONT_COLOR);
+		numVideos.setForeground(Constants.LIGHT_FONT_COLOR);
+		numVideos.setFont(Constants.ITALIC_FONT);
 		
 		vPanel = new JPanel();
 		vPanel.setBackground(getBackground());

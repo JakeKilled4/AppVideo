@@ -68,6 +68,7 @@ public class VideoListEntry extends JPanel {
 		title.setForeground(Constants.FONT_COLOR);
 		numViews = new JLabel(Integer.toString(video.getNumViews()) + " views");
 		numViews.setForeground(Constants.FONT_COLOR);
+		numViews.setFont(Constants.ITALIC_FONT);
 		
 		vPanel = new JPanel();
 		vPanel.setBackground(getBackground());

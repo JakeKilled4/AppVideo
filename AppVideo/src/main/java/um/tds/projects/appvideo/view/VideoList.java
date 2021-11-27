@@ -3,15 +3,11 @@ package um.tds.projects.appvideo.view;
 
 import um.tds.projects.appvideo.backend.Video;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -65,8 +61,8 @@ public class VideoList extends JPanel {
 	static private void addSeparator(JPanel panel) {
 		JSeparator sep = new JSeparator();
 		sep.setMaximumSize(new Dimension(Constants.PAGE_WIDTH, Constants.SEPARATOR_HEIGHT));
-		sep.setBackground(Constants.SEPARATOR_COLOR);
-		sep.setForeground(Constants.SEPARATOR_COLOR);
+		sep.setBackground(Constants.BACKGROUND_COLOR);
+		sep.setForeground(Constants.BACKGROUND_COLOR);
 		panel.add(sep);
 	}
 	
