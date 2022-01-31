@@ -23,7 +23,7 @@ public class PlaylistsPanel extends JPanel {
 	private JPanel searchBar;
 	private JPanel newListBtn;
 	private JPanel rmvListBtn;
-	private NewPlaylistEntry newPlaylistEntry;
+	//private NewPlaylistEntry newPlaylistEntry;
 	private PlaylistsList playlistsList;
 	
 	
@@ -40,7 +40,7 @@ public class PlaylistsPanel extends JPanel {
 
 		toolbarPanel      = new ToolbarPanel(mainWindow);
 		searchBar 	      = new SearchBar	(Constants.BACKGROUND_COLOR);
-		newPlaylistEntry  = new NewPlaylistEntry(mainWindow);
+		//newPlaylistEntry  = new NewPlaylistEntry(mainWindow);
 		playlistsList     = new PlaylistsList(mainWindow,
 											  Arrays.asList(
 													  new Playlist("TDS vibes"),

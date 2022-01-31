@@ -3,8 +3,6 @@ package um.tds.projects.appvideo.backend;
 public class Users {
 	private String name;
 	private String email;
-	private boolean isPremium;
-	
 	public Users() {
 		
 	}

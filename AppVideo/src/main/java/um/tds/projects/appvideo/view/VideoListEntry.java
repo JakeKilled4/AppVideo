@@ -36,7 +36,6 @@ public class VideoListEntry extends JPanel {
 
 	private MainWindow mainWindow;
 	private Video video;
-	private JPanel thumbnail;
 	private JLabel title;
 	private JLabel numViews;
 	private JPanel vPanel;

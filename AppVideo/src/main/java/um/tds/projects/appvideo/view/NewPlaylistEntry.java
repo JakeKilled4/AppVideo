@@ -3,12 +3,10 @@ package um.tds.projects.appvideo.view;
 import javax.swing.JPanel;
 
 
+@SuppressWarnings("serial")
 public class NewPlaylistEntry extends JPanel {
 	
-	private MainWindow mainWindow;
-	
 	public NewPlaylistEntry(MainWindow mainWindow) {
-		this.mainWindow = mainWindow;
 	}
 
 }

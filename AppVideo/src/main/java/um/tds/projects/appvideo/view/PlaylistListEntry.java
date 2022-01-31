@@ -30,7 +30,6 @@ public class PlaylistListEntry extends JPanel {
 		}
 	}
 
-	private MainWindow mainWindow;
 	private Playlist playlist;
 	private JLabel name;
 	private JLabel numVideos;
@@ -39,7 +38,6 @@ public class PlaylistListEntry extends JPanel {
 	private JPanel labelPanel;
 	
 	public PlaylistListEntry(MainWindow mainWindow, Playlist playlist) {
-		this.mainWindow = mainWindow;
 		this.playlist   = playlist;
 		
 		

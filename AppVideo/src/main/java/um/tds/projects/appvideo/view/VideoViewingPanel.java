@@ -5,11 +5,9 @@ import um.tds.projects.appvideo.backend.Video;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.util.Arrays;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,9 +22,6 @@ public class VideoViewingPanel extends JPanel {
 	private JPanel toolbarPanel;
 	private JPanel searchBar;
 	private JPanel contentPanel;
-	private LabelPanel labelPanel;
-	
-	
 	public VideoViewingPanel(MainWindow mainWindow, Video video) {
 		this.mainWindow = mainWindow;
 		this.video = video;

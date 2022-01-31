@@ -17,13 +17,9 @@ import javax.swing.JSeparator;
 @SuppressWarnings("serial")
 public class VideoList extends JPanel {
 	
-	private MainWindow mainWindow;
-	private List<Video> videos;
 	private List<VideoListEntry> entries;
 	
 	public VideoList(MainWindow mainWindow, List<Video> videos) {
-		this.mainWindow = mainWindow;
-		this.videos     = videos;
 		this.entries    = videos.stream().map( v -> new VideoListEntry(mainWindow, v) ).collect(Collectors.toList());
 		
 		setBackground(Constants.BACKGROUND_COLOR);
