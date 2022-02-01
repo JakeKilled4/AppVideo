@@ -23,6 +23,8 @@
 hs_err_pid*
 /.metadata/
 /AppVideo/.metadata/
+*.org
+.projectile
 
 # helper scripts
 *.zsh

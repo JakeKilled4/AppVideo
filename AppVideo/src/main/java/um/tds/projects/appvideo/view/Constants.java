@@ -31,6 +31,6 @@ public class Constants {
 	public static final Font  DEFAULT_FONT 		 = new Font("Default", Font.PLAIN,  12);
 	public static final Font  BOLD_FONT 		 = new Font("Default", Font.BOLD,   12);
 	public static final Font  ITALIC_FONT        = new Font("Default", Font.ITALIC, 12);
-	public static final Font  TITLE_FONT 		 = new Font("Default", Font.PLAIN,  36);
+	public static final Font  TITLE_FONT 		 = new Font("Default", Font.PLAIN,  20);
 
 }
