@@ -1,12 +1,11 @@
 package um.tds.projects.appvideo.view;
 
-import um.tds.projects.appvideo.backend.Playlist;
+import um.tds.projects.appvideo.controller.Controller;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Arrays;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -14,21 +13,20 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+
 @SuppressWarnings("serial")
 public class PlaylistsPanel extends CommonPanel {
 
+	private Controller controller;
+
 	public PlaylistsPanel(MainWindow mainWindow) {
 		super(mainWindow);
+		this.controller = Controller.getUniqueInstance();
 		createScreen();
 	}
 
 	protected JPanel createInnerPanel() {
-
-		PlaylistsList playlistsList = new PlaylistsList(mainWindow, Arrays.asList(new Playlist("TDS vibes"),
-				new Playlist("What to hear when studying Geometry"), new Playlist("Videos on Algebraic Topology"),
-				new Playlist("TDS vibes"), new Playlist("What to hear when studying Geometry"),
-				new Playlist("Videos on Algebraic Topology"), new Playlist("TDS vibes"),
-				new Playlist("What to hear when studying Geometry"), new Playlist("Videos on Algebraic Topology")));
+		PlaylistsList playlistsList = new PlaylistsList(mainWindow, controller.getPlaylists());
 
 		// InnerPanel guarda entradas y botones.
 		JPanel innerPanel = new JPanel();
