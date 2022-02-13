@@ -1,8 +1,8 @@
 package um.tds.projects.appvideo.controller;
 
 import um.tds.projects.appvideo.backend.Playlist;
-import um.tds.projects.appvideo.backend.IVideoFilter;
 import um.tds.projects.appvideo.backend.Video;
+import um.tds.projects.appvideo.backend.filters.IVideoFilter;
 
 import java.util.Arrays;
 import java.util.List;

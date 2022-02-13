@@ -1,5 +1,7 @@
 package um.tds.projects.appvideo.backend;
 
+import um.tds.projects.appvideo.backend.filters.IVideoFilter;
+
 import java.util.ArrayList;
 import java.util.List;
 
