@@ -1,4 +1,9 @@
 package um.tds.projects.appvideo.persistence;
 
+import java.util.List;
 
-public interface IUserAdapter { }
+import um.tds.projects.appvideo.backend.User;
+
+public interface IUserAdapter {
+	public List<User> loadAllUsers();
+}

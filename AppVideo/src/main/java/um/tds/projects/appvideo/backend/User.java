@@ -5,7 +5,7 @@ import um.tds.projects.appvideo.backend.filters.IVideoFilter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class User extends Identifiable {
 
 	private String name;
 	private String email;
@@ -17,8 +17,8 @@ public class User {
 		this.name = name;
 		this.email = email;
 		this.isPremium = isPremium;
-		this.playlists = new ArrayList();
-		this.filters = new ArrayList();
+		this.playlists = new ArrayList<Playlist>();
+		this.filters = new ArrayList<IVideoFilter>();
 	}
 
 	public String getName() {

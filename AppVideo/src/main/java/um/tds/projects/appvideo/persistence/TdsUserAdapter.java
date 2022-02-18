@@ -1,5 +1,9 @@
 package um.tds.projects.appvideo.persistence;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import um.tds.projects.appvideo.backend.User;
 
 public class TdsUserAdapter implements IUserAdapter {
 
@@ -12,6 +16,10 @@ public class TdsUserAdapter implements IUserAdapter {
 			instance = new TdsUserAdapter();
 		}
 		return instance;
+	}
+
+	public List<User> loadAllUsers() {
+		return new LinkedList<User>();
 	}
 
 }
