@@ -3,7 +3,7 @@ package um.tds.projects.appvideo.persistence;
 
 public class TdsVideoAdapter implements IVideoAdapter {
 
-	private TdsVideoAdapter instance;
+	private static TdsVideoAdapter instance;
 
 	private TdsVideoAdapter() { }
 

@@ -3,7 +3,7 @@ package um.tds.projects.appvideo.persistence;
 
 public class TdsPlaylistAdapter implements IPlaylistAdapter {
 
-	private TdsPlaylistAdapter instance;
+	private static TdsPlaylistAdapter instance;
 
 	private TdsPlaylistAdapter() { }
 

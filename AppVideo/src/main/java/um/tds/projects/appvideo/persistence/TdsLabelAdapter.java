@@ -3,7 +3,7 @@ package um.tds.projects.appvideo.persistence;
 
 public class TdsLabelAdapter implements ILabelAdapter {
 
-	TdsLabelAdapter instance;
+	private static TdsLabelAdapter instance;
 
 	private TdsLabelAdapter() { }
 

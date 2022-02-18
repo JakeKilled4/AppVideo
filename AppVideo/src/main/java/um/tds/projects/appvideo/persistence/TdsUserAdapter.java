@@ -3,7 +3,7 @@ package um.tds.projects.appvideo.persistence;
 
 public class TdsUserAdapter implements IUserAdapter {
 
-	private TdsUserAdapter instance;
+	private static TdsUserAdapter instance;
 
 	private TdsUserAdapter() { }
 
