@@ -1,5 +1,9 @@
 package um.tds.projects.appvideo.persistence;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import um.tds.projects.appvideo.backend.Video;
 
 public class TdsVideoAdapter implements IVideoAdapter {
 
@@ -12,6 +16,10 @@ public class TdsVideoAdapter implements IVideoAdapter {
 			instance = new TdsVideoAdapter();
 		}
 		return instance;
+	}
+
+	public List<Video> loadAllVideos() {
+		return new LinkedList<Video>();
 	}
 
 }

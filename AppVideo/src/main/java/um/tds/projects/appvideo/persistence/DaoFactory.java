@@ -4,10 +4,15 @@ package um.tds.projects.appvideo.persistence;
 public abstract class DaoFactory {
 
 	private static DaoFactory instance;
+	private static String TDS_FACTORY = "um.tds.projects.appvideo.persistence.TdsDaoFactory";
 
 	protected DaoFactory() { }
 
-	public static getUniqueInstance(String type) throws DaoException {
+	public static DaoFactory getUniqueInstance() throws DaoException {
+		return getUniqueInstance(TDS_FACTORY);
+	}
+
+	public static DaoFactory getUniqueInstance(String type) throws DaoException {
 		if (instance == null) {
 			try {
 				instance = (DaoFactory) Class.forName(type).newInstance();

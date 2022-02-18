@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Video {
+public class Video extends Identifiable {
 
 	private String url;
 	private String title;
@@ -15,7 +15,7 @@ public class Video {
 		this.url = url;
 		this.title = title;
 		this.numViews = numViews;
-		this.labels = new ArrayList();
+		this.labels = new ArrayList<Label>();
 	}
 
 	public Video(String url, String title, int numViews, List<Label> labels) {

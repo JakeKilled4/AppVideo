@@ -1,4 +1,9 @@
 package um.tds.projects.appvideo.persistence;
 
+import java.util.List;
 
-public interface IVideoAdapter { }
+import um.tds.projects.appvideo.backend.Video;
+
+public interface IVideoAdapter {
+	public List<Video> loadAllVideos();
+}
