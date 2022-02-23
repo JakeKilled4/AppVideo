@@ -36,7 +36,7 @@ public class Controller {
 	 * Returns true iff the login was successful (i.e. if username was in the user db and the password is correct)
 	 */
 	public boolean login(String username, String password) {
-		return true;
+		return false;
 	}
 
 	public void logout() { }

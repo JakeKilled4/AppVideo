@@ -42,7 +42,7 @@ public class UserRepository {
 	}
 
 	public void addUser(User u) {
-		cache.put(u.getId(), u);
+		//cache.put(u.getUsername(), u);
 	}
 
 	public void removeUser(User u) {
@@ -53,8 +53,9 @@ public class UserRepository {
 		return cache.get(id);
 	}
 
-	public boolean containsUser(int id) {
-		return cache.containsKey(id);
+	public boolean containsUser(String username) {
+		//return cache.containsKey(id);
+		return true;
 	}
 
 	public void findUser() {
