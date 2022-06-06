@@ -52,6 +52,10 @@ public class Controller {
 
 	public void removePlaylist(Playlist p) { }
 
+	public void addVideoToPlaylist(Playlist p, Video video) { }
+
+	public void removeVideoFromPlaylist(Playlist p, Video video) { }
+
 	public List<Playlist> getPlaylists() {
 		return Arrays.asList(new Playlist("TDS vibes"),
 							 new Playlist("What to hear when studying Geometry"),
