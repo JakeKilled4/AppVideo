@@ -2,6 +2,7 @@ package um.tds.projects.appvideo.persistence;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import beans.Entidad;
@@ -56,17 +57,30 @@ public class TdsLabelAdapter implements ILabelAdapter {
 	
 	@Override
 	public void modifyLabel(Label l) {
-		
+		Entidad eLabel;
+		eLabel = servPersistencia.recuperarEntidad(l.getCode());
+		servPersistencia.eliminarPropiedadEntidad(eLabel, "name");
+		servPersistencia.anadirPropiedadEntidad(eLabel, "name", l.getName());
 	}
 	
 	@Override
-	public Label loadLabel(int id) {
-		return null;
+	public Label loadLabel(int code) {
+		Entidad eLabel;
+		String name;
+
+		eLabel = servPersistencia.recuperarEntidad(code);
+		name = servPersistencia.recuperarPropiedadEntidad(eLabel, "name");
+		Label label = new Label(name);
+		label.setCode(code);
+		return label;
 	}
 	
 	@Override
 	public List<Label> loadAllLabels(){
-		return null;
+		List<Label> labels = new LinkedList<Label>();
+		List<Entidad> eLabels = servPersistencia.recuperarEntidades("label");
+		for (Entidad eLabel : eLabels) labels.add(loadLabel(eLabel.getId()));
+		return labels;
 	}
 
 }

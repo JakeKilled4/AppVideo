@@ -1,14 +1,7 @@
 package um.tds.projects.appvideo.view;
 
 
-import um.tds.projects.appvideo.backend.Video;
-import um.tds.projects.appvideo.view.Constants;
-
-import java.awt.Color;
 import java.awt.Dimension;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;

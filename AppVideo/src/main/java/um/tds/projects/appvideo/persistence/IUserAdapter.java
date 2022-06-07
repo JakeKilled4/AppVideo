@@ -8,6 +8,6 @@ public interface IUserAdapter {
 	public void registerUser(User u);
 	public void removeUser(User u);
 	public void modifyUser(User u);
-	public User loadUser(int id);
+	public User loadUser(int code);
 	public List<User> loadAllUsers();
 }

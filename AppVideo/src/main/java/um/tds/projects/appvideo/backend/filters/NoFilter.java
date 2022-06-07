@@ -4,10 +4,14 @@ import um.tds.projects.appvideo.backend.Video;
 
 public class NoFilter implements IVideoFilter  {
 	private int code;
+	private final String type = this.getClass().getSimpleName();
 	
-	public NoFilter() {
-		this.code = 0;
+	public NoFilter() { this.code = 0; }
+	
+	public String getType() {
+		return this.type;
 	}
+	
 	public void setCode(int code) {
 		this.code = code;
 	}
@@ -17,4 +21,5 @@ public class NoFilter implements IVideoFilter  {
 	public boolean isVideoOk(Video v) {
 		return true;
 	}
+	
 }

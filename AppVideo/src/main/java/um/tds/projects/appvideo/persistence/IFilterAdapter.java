@@ -8,6 +8,6 @@ public interface IFilterAdapter {
 	public void registerFilter(IVideoFilter f);
 	public void removeFilter(IVideoFilter f);
 	public void modifyFilter(IVideoFilter f);
-	public IVideoFilter loadFilter(int id);
+	public IVideoFilter loadFilter(int code);
 	public List<IVideoFilter> loadAllFilters();
 }

@@ -8,6 +8,6 @@ public interface ILabelAdapter {
 	public void registerLabel(Label l);
 	public void removeLabel(Label l);
 	public void modifyLabel(Label l);
-	public Label loadLabel(int id);
+	public Label loadLabel(int code);
 	public List<Label> loadAllLabels();
 }

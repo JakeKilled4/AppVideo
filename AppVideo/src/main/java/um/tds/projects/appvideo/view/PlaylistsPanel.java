@@ -2,7 +2,6 @@ package um.tds.projects.appvideo.view;
 
 import um.tds.projects.appvideo.controller.Controller;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

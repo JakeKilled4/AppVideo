@@ -2,7 +2,9 @@ package um.tds.projects.appvideo.persistence;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import beans.Entidad;
 import beans.Propiedad;
@@ -71,17 +73,42 @@ public class TdsPlaylistAdapter implements IPlaylistAdapter {
 	
 	@Override
 	public void modifyPlaylist(Playlist p) {
-		
+		Entidad ePlaylist;
+		ePlaylist = servPersistencia.recuperarEntidad(p.getCode());
+		servPersistencia.eliminarPropiedadEntidad(ePlaylist, "name");
+		servPersistencia.anadirPropiedadEntidad(ePlaylist, "name", p.getName());
+		String videos = getCodesVideos(p.getVideos());
+		servPersistencia.eliminarPropiedadEntidad(ePlaylist, "videos");
+		servPersistencia.anadirPropiedadEntidad(ePlaylist, "videos", videos);
 	}
 	
 	@Override
-	public Playlist loadPlaylist(int id) {
-		return null;
+	public Playlist loadPlaylist(int code) {
+		Entidad ePlaylist;
+		String name;
+		List<Video> videos = new LinkedList<Video>();
+
+		ePlaylist = servPersistencia.recuperarEntidad(code);
+		name = servPersistencia.recuperarPropiedadEntidad(ePlaylist, "name");
+
+		Playlist playlist = new Playlist(name);
+		playlist.setCode(code);
+
+		// Load all videos
+		videos = getVideosFromCodes(servPersistencia.recuperarPropiedadEntidad(ePlaylist, "videos"));
+
+		for (Video video : videos)
+			playlist.addVideo(video);
+		
+		return playlist;
 	}
 	
 	@Override
 	public List<Playlist> loadAllPlaylists(){
-		return null;
+		List<Playlist> playlists = new LinkedList<Playlist>();
+		List<Entidad> ePlaylists = servPersistencia.recuperarEntidades("playlist");
+		for (Entidad ePlaylist : ePlaylists) playlists.add(loadPlaylist(ePlaylist.getId()));
+		return playlists;
 	}
 	
 	/* Auxiliar functions */
@@ -89,5 +116,16 @@ public class TdsPlaylistAdapter implements IPlaylistAdapter {
 		String out = "";
 		for (Video video : videos) out += String.valueOf(video.getCode()) + " ";
 		return out.trim();
+	}
+	
+	private List<Video> getVideosFromCodes(String videos) {
+
+		List<Video> videoList = new LinkedList<Video>();
+		StringTokenizer strTok = new StringTokenizer(videos, " ");
+		TdsVideoAdapter videoAdapter = TdsVideoAdapter.getUniqueInstance();
+		while (strTok.hasMoreTokens()) {
+			videoList.add(videoAdapter.loadVideo(Integer.valueOf((String) strTok.nextElement())));
+		}
+		return videoList;
 	}
 }

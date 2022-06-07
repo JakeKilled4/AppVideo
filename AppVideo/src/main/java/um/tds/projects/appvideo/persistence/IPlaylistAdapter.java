@@ -8,7 +8,7 @@ public interface IPlaylistAdapter {
 	public void registerPlaylist(Playlist p);
 	public void removeLPlaylist(Playlist p);
 	public void modifyPlaylist(Playlist p);
-	public Playlist loadPlaylist(int id);
+	public Playlist loadPlaylist(int code);
 	public List<Playlist> loadAllPlaylists();
 	
 }
