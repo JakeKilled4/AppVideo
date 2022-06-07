@@ -23,6 +23,7 @@ public abstract class DaoFactory {
 		return instance;
 	}
 
+	public abstract IFilterAdapter getFilterAdapter();
 	public abstract ILabelAdapter getLabelAdapter();
 	public abstract IPlaylistAdapter getPlaylistAdapter();
 	public abstract IUserAdapter getUserAdapter();

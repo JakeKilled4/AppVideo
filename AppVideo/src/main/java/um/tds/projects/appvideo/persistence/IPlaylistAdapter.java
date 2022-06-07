@@ -1,4 +1,14 @@
 package um.tds.projects.appvideo.persistence;
 
+import java.util.List;
 
-public interface IPlaylistAdapter { }
+import um.tds.projects.appvideo.backend.Playlist;
+
+public interface IPlaylistAdapter { 
+	public void registerPlaylist(Playlist p);
+	public void removeLPlaylist(Playlist p);
+	public void modifyPlaylist(Playlist p);
+	public Playlist loadPlaylist(int id);
+	public List<Playlist> loadAllPlaylists();
+	
+}

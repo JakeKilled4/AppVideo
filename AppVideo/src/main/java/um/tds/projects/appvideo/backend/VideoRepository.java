@@ -13,6 +13,7 @@ import java.util.Map;
 
 public class VideoRepository {
 
+
 	private Map<Integer, Video> cache;
 	private static VideoRepository instance;
 
@@ -33,7 +34,7 @@ public class VideoRepository {
 	private void loadRepository() throws DaoException {
 		List<Video> videos = videoAdapter.loadAllVideos();
 		for (Video v: videos) {
-			cache.put(v.getId(), v);
+			cache.put(v.getCode(), v);
 		}
 	}
 
@@ -45,11 +46,11 @@ public class VideoRepository {
 	}
 
 	public void addVideo(Video v) {
-		cache.put(v.getId(), v);
+		cache.put(v.getCode(), v);
 	}
 
 	public void removeVideo(Video v) {
-		cache.remove(v.getId());
+		cache.remove(v.getCode());
 	}
 
 	public Video getVideo(int id) {

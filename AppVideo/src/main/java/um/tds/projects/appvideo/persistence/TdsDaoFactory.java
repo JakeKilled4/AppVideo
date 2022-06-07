@@ -6,8 +6,8 @@ public class TdsDaoFactory extends DaoFactory {
 	public TdsDaoFactory() { }
 
 	@Override
-	public ILabelAdapter getLabelAdapter() {
-		return TdsLabelAdapter.getUniqueInstance();
+	public IFilterAdapter getFilterAdapter() {
+		return TdsFilterAdapter.getUniqueInstance();
 	}
 
 	@Override
@@ -23,6 +23,11 @@ public class TdsDaoFactory extends DaoFactory {
 	@Override
 	public IVideoAdapter getVideoAdapter() {
 		return TdsVideoAdapter.getUniqueInstance();
+	}
+	
+	@Override
+	public ILabelAdapter getLabelAdapter() {
+		return TdsLabelAdapter.getUniqueInstance();
 	}
 
 }
