@@ -38,7 +38,7 @@ public class PlaylistListEntry extends JPanel {
 	private JPanel labelPanel;
 	
 	public PlaylistListEntry(MainWindow mainWindow, Playlist playlist) {
-		this.playlist   = playlist;
+		this.playlist = playlist;
 		
 		
 		setBackground(Constants.BUTTON_COLOR);

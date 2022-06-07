@@ -118,5 +118,8 @@ public class User extends Identifiable {
 	public void removeFilter(IVideoFilter fl) {
 		filters.remove(fl);
 	}
+	public boolean checkPassword(String _password) {
+		return password.equals(_password);
+	}
 
 }

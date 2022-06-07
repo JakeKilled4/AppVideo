@@ -2,7 +2,6 @@ package um.tds.projects.appvideo.view;
 
 import um.tds.projects.appvideo.backend.Video;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -18,7 +17,6 @@ import javax.swing.JSeparator;
 public class VideoViewingPanel extends CommonPanel {
 
 	private Video  video;
-	private JPanel toolbarPanel;
 
 	public VideoViewingPanel(MainWindow mainWindow, Video video) {
 		super(mainWindow);

@@ -1,10 +1,8 @@
 package um.tds.projects.appvideo.view;
 
-import um.tds.projects.appvideo.backend.Video;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.util.Arrays;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -20,7 +18,6 @@ public abstract class CommonPanel extends JPanel {
 	private JPanel searchBar;
 	private JPanel innerPanel;
 	private JPanel rightPanel;
-	private LabelPanel labelPanel;
 
 
 	public CommonPanel(MainWindow mainWindow) {
@@ -39,6 +36,7 @@ public abstract class CommonPanel extends JPanel {
 		rightPanel = createRightPanel();
 
 		JPanel centerPanel = new JPanel();
+		
 		centerPanel.setBackground(Constants.BACKGROUND_COLOR);
 		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 

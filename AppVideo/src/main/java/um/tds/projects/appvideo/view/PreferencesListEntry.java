@@ -2,16 +2,11 @@ package um.tds.projects.appvideo.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import um.tds.projects.appvideo.view.Constants;
-
-import javax.swing.JLabel;
 import javax.swing.JComponent;
 
 

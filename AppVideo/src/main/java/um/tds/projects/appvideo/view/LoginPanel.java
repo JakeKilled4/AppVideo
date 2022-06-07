@@ -25,6 +25,7 @@ public class LoginPanel extends JPanel
 
 	private JTextField textField;
 	private JPasswordField pwdPassword;
+	private JLabel loginIncorrect;
 
     public LoginPanel(MainWindow mainWindow) {
     	this.mainWindow = mainWindow;
@@ -45,12 +46,12 @@ public class LoginPanel extends JPanel
 
 		panel_0.add(new Box.Filler(miDim, preDim, maxDim));
 
-		/* Panel horiontal de usuario */
+		// Horizontal panel of the username field
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Constants.BLOGIN_COLOR);
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
 
-		JLabel lblUserame = new JLabel("Userame:");
+		JLabel lblUserame = new JLabel("Username:");
 		lblUserame.setForeground(Constants.FONT_COLOR);
 		panel_1.add(lblUserame);
 
@@ -62,7 +63,7 @@ public class LoginPanel extends JPanel
 
 		panel_0.add(Box.createRigidArea(new Dimension(20,20)));
 
-		/* Panel horizontal de password */
+		// Horizontal panel of the password field
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(Constants.BLOGIN_COLOR);
 		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
@@ -78,38 +79,53 @@ public class LoginPanel extends JPanel
 
 		panel_0.add(Box.createRigidArea(new Dimension(20,20)));
 
-		/* Boton de login y register */
+	 	// Login and register botons
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(Constants.BLOGIN_COLOR);
 		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
 		JButton btnLogin = new JButton("Login");
+		
+		// Try to log the user
 		btnLogin.addActionListener(e -> {
 			String username = textField.getText();
-			String password = pwdPassword.getText();
+			String password = String.valueOf(pwdPassword.getPassword());
 			boolean loginOk = controller.login(username, password);
-			if (loginOk) {
-				mainWindow.activatePlaylistsPanel();
-			} else {
-				textField.setText("");
-				pwdPassword.setText("");
-			}
+			textField.setText("");
+			pwdPassword.setText("");
+			if (loginOk) mainWindow.activatePlaylistsPanel();
+			else loginIncorrect.setVisible(true);
+			
 		});
+		
+		
 		JButton btnRegister = new JButton("Register");
 		btnRegister.addActionListener(e -> {
+			loginIncorrect.setVisible(false);
 			this.mainWindow.activateRegisterPanel();
 		});
 		panel_3.add(btnLogin);
 		panel_3.add(Box.createRigidArea(new Dimension(20,20)));
 		panel_3.add(btnRegister);
 		panel_0.add(panel_3);
-
-
+		
+		// Incorrect username or password message
+		panel_0.add(Box.createRigidArea(new Dimension(20,20)));
+		loginIncorrect = new JLabel("Incorrect username or password");
+		loginIncorrect.setForeground(Color.RED);
+		loginIncorrect.setVisible(false);
+		
+		JPanel panel_4 = new JPanel();
+		panel_4.setLayout(new BoxLayout(panel_4, BoxLayout.X_AXIS));
+		panel_4.add(loginIncorrect);
+		panel_4.setBackground(Constants.BLOGIN_COLOR);
+		panel_0.add(panel_4);
+		
 		Filler filler = new Box.Filler(miDim, preDim, maxDim);
 		filler.setBackground(Color.WHITE);
 		panel_0.add(filler);
 
 		add(panel_0);
 		add(new Box.Filler(miDim, preDim, maxDim));
-
+		
     }
 }

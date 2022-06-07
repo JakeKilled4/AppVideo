@@ -25,10 +25,16 @@
 		  <version>4.11</version>
 		  <scope>test</scope>
 	  </dependency>
-	  <dependency>
+<!--	  <dependency>
 		  <groupId>com.toedter.calendar</groupId>
 		  <artifactId>jcalendar-1.4</artifactId>
 		  <version>1.4</version>
+	  </dependency>
+	  -->
+	  <dependency>
+    	<groupId>com.toedter</groupId>
+    	<artifactId>jcalendar</artifactId>
+    	<version>1.4</version>
 	  </dependency>
   </dependencies>
 

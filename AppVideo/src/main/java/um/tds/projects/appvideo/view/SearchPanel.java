@@ -1,16 +1,9 @@
 package um.tds.projects.appvideo.view;
 
-import um.tds.projects.appvideo.backend.Video;
 import um.tds.projects.appvideo.controller.Controller;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.util.Arrays;
-import java.util.List;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JComponent;
+import java.util.List;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")

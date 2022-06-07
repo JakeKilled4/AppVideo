@@ -32,6 +32,7 @@ public class RegisterPanel extends JPanel {
 	private JPasswordField pwdPass;
 	private JPasswordField pwdCoPass;
 	private JDateChooser date;
+	private JLabel error;
 
     public RegisterPanel(MainWindow mainWindow) {
     	this.mainWindow = mainWindow;
@@ -51,7 +52,7 @@ public class RegisterPanel extends JPanel {
 		panel_0.setLayout(new BoxLayout(panel_0, BoxLayout.Y_AXIS));
 		panel_0.add(new Box.Filler(miDim, preDim, maxDim));
 
-		/* Name */
+		// Name 
 		JPanel panel_name = new JPanel();
 		panel_name.setBackground(Constants.BLOGIN_COLOR);
 		panel_name.setLayout(new BoxLayout(panel_name, BoxLayout.X_AXIS));
@@ -67,7 +68,7 @@ public class RegisterPanel extends JPanel {
 		panel_0.add(panel_name);
 		panel_0.add(Box.createRigidArea(new Dimension(20,20)));
 
-		/* Surname */
+		// Surname
 		JPanel panel_surname = new JPanel();
 		panel_surname.setBackground(Constants.BLOGIN_COLOR);
 		panel_surname.setLayout(new BoxLayout(panel_surname, BoxLayout.X_AXIS));
@@ -83,7 +84,7 @@ public class RegisterPanel extends JPanel {
 		panel_0.add(panel_surname);
 		panel_0.add(Box.createRigidArea(new Dimension(20,20)));
 
-		/* Day of birth */
+		// Day of birth 
 		JPanel panel_date = new JPanel();
 		panel_date.setBackground(Constants.BLOGIN_COLOR);
 		panel_date.setLayout(new BoxLayout(panel_date, BoxLayout.X_AXIS));
@@ -97,7 +98,7 @@ public class RegisterPanel extends JPanel {
 		panel_0.add(panel_date);
 		panel_0.add(Box.createRigidArea(new Dimension(20,20)));
 
-		/* Email */
+		// Email 
 		JPanel panel_email = new JPanel();
 		panel_email.setBackground(Constants.BLOGIN_COLOR);
 		panel_email.setLayout(new BoxLayout(panel_email, BoxLayout.X_AXIS));
@@ -113,7 +114,7 @@ public class RegisterPanel extends JPanel {
 		panel_0.add(panel_email);
 		panel_0.add(Box.createRigidArea(new Dimension(20,20)));
 
-		/* Username */
+		// Username 
 		JPanel panel_user = new JPanel();
 		panel_user.setBackground(Constants.BLOGIN_COLOR);
 		panel_user.setLayout(new BoxLayout(panel_user, BoxLayout.X_AXIS));
@@ -129,7 +130,7 @@ public class RegisterPanel extends JPanel {
 		panel_0.add(panel_user);
 		panel_0.add(Box.createRigidArea(new Dimension(20,20)));
 
-		/* Password */
+		// Password 
 		JPanel panel_pass = new JPanel();
 		panel_pass.setBackground(Constants.BLOGIN_COLOR);
 		panel_pass.setLayout(new BoxLayout(panel_pass, BoxLayout.X_AXIS));
@@ -161,7 +162,7 @@ public class RegisterPanel extends JPanel {
 		panel_0.add(panel_co_pass);
 		panel_0.add(Box.createRigidArea(new Dimension(20,20)));
 
-		/* Boton de Register y Cancel */
+		// Register and cancel buttons
 		JPanel panel_btn_re = new JPanel();
 		panel_btn_re.setBackground(Constants.BLOGIN_COLOR);
 		panel_btn_re.setLayout(new BoxLayout(panel_btn_re, BoxLayout.X_AXIS));
@@ -172,43 +173,67 @@ public class RegisterPanel extends JPanel {
 			Date dateOfBirth = date.getDate();
 			String email = emailField.getText();
 			String username = userField.getText();
-			String password = pwdPass.getText();
-
-			if (! password.equals(pwdCoPass.getText())) {
+			String password = String.valueOf(pwdPass.getPassword());
+			String copassword = String.valueOf(pwdCoPass.getPassword());
+			
+			if(name.isBlank() || username.isBlank() || dateOfBirth == null ||  password.isBlank()) {
+				error.setText("Complete correctly all the mandatory fields");
+				error.setVisible(true);
+				return;
+			}
+			
+			if (!password.equals(copassword)) {
 				pwdPass.setText("");
 				pwdCoPass.setText("");
+				error.setText("Passwords doesn't match");
+				error.setVisible(true);
 				return;
 			}
 
 			boolean registerOk = controller.register(
 				name, surname, dateOfBirth, email,
 				username, password);
-			if (registerOk) {
-				mainWindow.activatePlaylistsPanel();
-			} else {
-				nameField.setText("");
-				surnameField.setText("");
-				dateOfBirth.setDate(0);
-				emailField.setText("");
-				userField.setText("");
-				pwdPass.setText("");
-				pwdCoPass.setText("");
+			
+				resetFields();
+			
+			if (registerOk) mainWindow.activatePlaylistsPanel();
+			else {
+				error.setText("This username is already taken");
+				error.setVisible(true);
 			}
 		});
+		
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(e -> {
+			resetFields();
+			error.setVisible(false);
 			this.mainWindow.activateLoginPanel();
 		});
+		
 		panel_btn_re.add(btnRegister);
 		panel_btn_re.add(Box.createRigidArea(new Dimension(20,20)));
 		panel_btn_re.add(btnCancel);
 		panel_0.add(panel_btn_re);
 
-		/* Etiqueta de campos obligatorios */
+		// Label mandatory fields
 		JLabel lblMandatoryField = new JLabel("*Mandatory field");
 		lblMandatoryField.setForeground(Constants.FONT_COLOR);
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(Constants.BLOGIN_COLOR);
+		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
+		panel_1.add(lblMandatoryField);
 		panel_0.add(Box.createRigidArea(new Dimension(20,20)));
-		panel_0.add(lblMandatoryField);
+		panel_0.add(panel_1);
+		
+		// Label error
+		error = new JLabel("");
+		error.setForeground(Color.RED);
+		error.setVisible(false);
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(Constants.BLOGIN_COLOR);
+		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
+		panel_2.add(error);
+		panel_0.add(panel_2);
 
 		Filler filler = new Box.Filler(miDim, preDim, maxDim);
 		filler.setBackground(Color.WHITE);
@@ -216,6 +241,16 @@ public class RegisterPanel extends JPanel {
 
 		add(panel_0);
 		add(new Box.Filler(miDim, preDim, maxDim));
+    }
+    
+    private void resetFields() {
+		nameField.setText("");
+		surnameField.setText("");
+		date.setCalendar(null);
+		emailField.setText("");
+		userField.setText("");
+		pwdPass.setText("");
+		pwdCoPass.setText("");
     }
 
 }

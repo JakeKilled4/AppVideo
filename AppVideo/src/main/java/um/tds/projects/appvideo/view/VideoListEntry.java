@@ -2,7 +2,6 @@ package um.tds.projects.appvideo.view;
 
 import um.tds.projects.appvideo.backend.Video;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -37,7 +36,6 @@ public class VideoListEntry extends ListEntry {
 	private Video video;
 	private JLabel title;
 	private JLabel numViews;
-	private JPanel vPanel;
 	private JPanel hPanel;
 	private JPanel labelPanel;
 

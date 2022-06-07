@@ -20,7 +20,7 @@ public class Constants {
 	public static final int VIDEO_HEIGHT = 300;
 
 	public static final Color FOREGROUND_COLOR   = new Color( 23,  33,  43);
-	public static final Color BACKGROUND_COLOR   = new Color( 23,  33,  43);//(7,11,17);
+	public static final Color BACKGROUND_COLOR   = new Color( 18,  28,  38);//(7,11,17);
 	public static final Color BUTTON_COLOR       = new Color( 23,  33,  43);
 	public static final Color BUTTON_HOVER_COLOR = new Color( 35,  46,  60);
 	public static final Color BLOGIN_COLOR 		 = new Color(  8,  46,  58);
@@ -32,5 +32,6 @@ public class Constants {
 	public static final Font  BOLD_FONT 		 = new Font("Default", Font.BOLD,   12);
 	public static final Font  ITALIC_FONT        = new Font("Default", Font.ITALIC, 12);
 	public static final Font  TITLE_FONT 		 = new Font("Default", Font.PLAIN,  20);
+	
 
 }

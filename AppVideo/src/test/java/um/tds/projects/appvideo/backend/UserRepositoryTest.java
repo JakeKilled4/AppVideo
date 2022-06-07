@@ -14,7 +14,7 @@ public class UserRepositoryTest {
 	public void loadRepository() {
 		repo = UserRepository.getUniqueInstance();
 	}
-
+/*
 	@Test
 	public void canStoreAndRetrieveUser() {
 		User u1 = new User(null, null, false);
@@ -31,5 +31,5 @@ public class UserRepositoryTest {
 		assertTrue(repo.containsUser(u.getId()));
 		repo.removeUser(u);
 		assertFalse(repo.containsUser(u.getId()));
-	}
+	}*/
 }

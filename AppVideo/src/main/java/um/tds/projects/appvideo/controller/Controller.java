@@ -2,8 +2,10 @@ package um.tds.projects.appvideo.controller;
 
 import um.tds.projects.appvideo.backend.Playlist;
 import um.tds.projects.appvideo.backend.User;
+import um.tds.projects.appvideo.backend.UserRepository;
 import um.tds.projects.appvideo.backend.Video;
 import um.tds.projects.appvideo.backend.filters.IVideoFilter;
+import um.tds.projects.appvideo.persistence.IUserAdapter;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -13,10 +15,15 @@ import java.util.List;
 public class Controller {
 
 	private static Controller instance;
+	private IUserAdapter userAdapter;
+	
+	
+	private UserRepository userRepository;
 
-	private User currentUser;
-
-	private Controller() { }
+	private Controller() {
+		InitializeAdapters();
+		InitializeRepositories();
+	}
 
 	public static Controller getUniqueInstance() {
 		if (instance == null) {
@@ -29,22 +36,29 @@ public class Controller {
 	 * Returns true if the user is already registered.
 	 */
 	public boolean userIsRegistered(String username) {
+		
 		return true;
 	}
 
 	/**
-	 * Returns true iff the login was successful (i.e. if username was in the user db and the password is correct)
+	 * Returns true iff the login was successful (If username was in the user db and the password is correct)
 	 */
 	public boolean login(String username, String password) {
+		User u = userRepository.getUser(username);
+		if(u != null && u.checkPassword(password)) return true;
 		return false;
 	}
 
 	public void logout() { }
 
 	/**
-	 * Returns true iff the register process was successful (i.e. If the username was not already taken)
+	 * Returns true iff the register process was successful (If the username was not already taken)
 	 */
 	public boolean register(String name, String surname, Date dateOfBirth, String email, String username, String password) {
+		if(userRepository.containsUser(username)) return false; // Other user with same username
+		User u = new User(name, surname, dateOfBirth, email, username, password);
+		//userAdapter.registerUser(u);
+		userRepository.addUser(u);
 		return true;
 	}
 
@@ -52,7 +66,7 @@ public class Controller {
 
 	public void removePlaylist(Playlist p) { }
 
-	public void addVideoToPlaylist(Playlist p, Video video) { }
+	//public void addVideoToPlaylist(Playlist p, Video video) { }
 
 	public void removeVideoFromPlaylist(Playlist p, Video video) { }
 
@@ -86,4 +100,10 @@ public class Controller {
 							 new Video("", "En un lugar de la mancha...", 325));
 	}
 
+	public void InitializeAdapters(){
+		
+	}
+	public void InitializeRepositories(){
+		userRepository = UserRepository.getUniqueInstance();
+	}
 }
