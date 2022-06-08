@@ -12,6 +12,7 @@ public abstract class DaoFactory {
 		return getUniqueInstance(TDS_FACTORY);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static DaoFactory getUniqueInstance(String type) throws DaoException {
 		if (instance == null) {
 			try {

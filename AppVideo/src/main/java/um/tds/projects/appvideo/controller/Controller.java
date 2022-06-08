@@ -23,7 +23,6 @@ import java.util.List;
 public class Controller {
 
 	private static Controller instance;
-	private ILabelAdapter    labelAdapter;
 	private IPlaylistAdapter playlistAdapter;
 	private IUserAdapter     userAdapter;
 	private IVideoAdapter    videoAdapter;
@@ -73,15 +72,29 @@ public class Controller {
 		return true;
 	}
 
-	public void createPlaylist(String name) { }
+	public Playlist createPlaylist(String name) {
+		Playlist playlist = new Playlist(name);
+		playlistAdapter.registerPlaylist(playlist);
+		return playlist;
+	}
 
-	public void removePlaylist(Playlist p) { }
+	public void removePlaylist(Playlist playlist) {
+		playlistAdapter.removeLPlaylist(playlist);
+	}
 
-	//public void addVideoToPlaylist(Playlist p, Video video) { }
+	public void addVideoToPlaylist(Playlist playlist, Video video) {
+		playlist.addVideo(video);
+		playlistAdapter.modifyPlaylist(playlist);
+	}
 
-	public void removeVideoFromPlaylist(Playlist p, Video video) { }
+	public void removeVideoFromPlaylist(Playlist playlist, Video video) {
+		playlist.removeVideo(video);
+		playlistAdapter.modifyPlaylist(playlist);
+	}
 
 	public List<Playlist> getPlaylists() {
+		return playlistAdapter.loadAllPlaylists();
+		/*
 		return Arrays.asList(new Playlist("TDS vibes"),
 							 new Playlist("What to hear when studying Geometry"),
 							 new Playlist("Videos on Algebraic Topology"),
@@ -91,6 +104,7 @@ public class Controller {
 							 new Playlist("TDS vibes"),
 							 new Playlist("What to hear when studying Geometry"),
 							 new Playlist("Videos on Algebraic Topology"));
+							 */
 	}
 
 	public List<Video> searchVideos(String str, List<IVideoFilter> filter) {
@@ -112,10 +126,9 @@ public class Controller {
 	}
 
 	public void initializeAdapters(){
-		labelAdapter    = TdsLabelAdapter.getUniqueInstance();
 		playlistAdapter = TdsPlaylistAdapter.getUniqueInstance();
-		userAdapter     = TdsUserAdapter.getUniqueInstance();
-		videoAdapter    = TdsVideoAdapter.getUniqueInstance();
+		userAdapter     = TdsUserAdapter    .getUniqueInstance();
+		videoAdapter    = TdsVideoAdapter   .getUniqueInstance();
 	}
 
 	public void initializeRepositories(){

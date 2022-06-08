@@ -61,6 +61,7 @@ public class TdsFilterAdapter implements IFilterAdapter {
 		// No properties modifiable
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public IVideoFilter loadFilter(int code) {
 		Entidad eFilter;

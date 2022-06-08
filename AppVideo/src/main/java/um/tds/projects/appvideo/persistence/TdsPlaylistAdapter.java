@@ -62,8 +62,6 @@ public class TdsPlaylistAdapter implements IPlaylistAdapter {
 	
 	@Override
 	public void removeLPlaylist(Playlist p) {
-		Entidad ePlaylist;
-		
 		// Remove videos in the playlist
 		for(Video video : p.getVideos())
 			videoAdapter.removeVideo(video);

@@ -1,6 +1,7 @@
 package um.tds.projects.appvideo.persistence;
 
 
+@SuppressWarnings("serial")
 public class DaoException extends Exception {
 
 	private String msg;
