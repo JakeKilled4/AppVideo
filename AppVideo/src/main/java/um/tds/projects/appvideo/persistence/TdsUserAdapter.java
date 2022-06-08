@@ -19,9 +19,12 @@ import um.tds.projects.appvideo.backend.filters.IVideoFilter;
 
 public class TdsUserAdapter implements IUserAdapter {
 
-	private static TdsUserAdapter instance;
+	private static TdsUserAdapter       instance;
 	private static ServicioPersistencia servPersistencia;
-	private SimpleDateFormat dateFormat; // Format of the date in the DB
+	
+	private SimpleDateFormat   dateFormat; // Format of the date in the DB
+	private TdsPlaylistAdapter playlistAdapter;
+	private TdsFilterAdapter   filterAdapter;
 
 	public static TdsUserAdapter getUniqueInstance() {
 		if (instance == null)
@@ -31,7 +34,9 @@ public class TdsUserAdapter implements IUserAdapter {
 
 	private TdsUserAdapter() {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
-		dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		playlistAdapter  = TdsPlaylistAdapter.getUniqueInstance();
+		filterAdapter    = TdsFilterAdapter.getUniqueInstance();
+		dateFormat       = new SimpleDateFormat("dd/MM/yyyy");
 	}
 
 	@Override
@@ -45,26 +50,31 @@ public class TdsUserAdapter implements IUserAdapter {
 			return;
 
 		// Register playlist
-		TdsPlaylistAdapter playlistAdapter = TdsPlaylistAdapter.getUniqueInstance();
 		for (Playlist playlist : u.getPlaylists())
 			playlistAdapter.registerPlaylist(playlist);
 
 		// Register videoFilter
-		TdsFilterAdapter filterAdpater = TdsFilterAdapter.getUniqueInstance();
 		for (IVideoFilter filter : u.getFilters())
-			filterAdpater.registerFilter(filter);
+			filterAdapter.registerFilter(filter);
 
 		// Create user entity
 		eUser = new Entidad();
-
-		eUser.setNombre("user");
-		eUser.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad("name", u.getName()),
-				new Propiedad("surname", u.getSurname()),
-				new Propiedad("dateOfBirth", dateFormat.format(u.getDateOfBirth())),
-				new Propiedad("email", u.getEmail()), new Propiedad("username", u.getUsername()),
-				new Propiedad("password", u.getPassword()), new Propiedad("isPremium", String.valueOf(u.isPremium())),
-				new Propiedad("playlists", getCodesPlaylist(u.getPlaylists())),
-				new Propiedad("filters", getCodesFilters(u.getFilters())))));
+		eUser.setNombre("User");
+		eUser.setPropiedades(
+			new ArrayList<Propiedad>(
+				Arrays.asList(
+					new Propiedad("name",                          u.getName()),
+					new Propiedad("surname",                       u.getSurname()),
+					new Propiedad("dateOfBirth", dateFormat.format(u.getDateOfBirth())),
+					new Propiedad("email",                         u.getEmail()),
+					new Propiedad("username",                      u.getUsername()),
+					new Propiedad("password",                      u.getPassword()),
+					new Propiedad("isPremium",   String.valueOf(   u.isPremium())),
+					new Propiedad("playlists",   getCodesPlaylist( u.getPlaylists())),
+					new Propiedad("filters",     getCodesFilters(  u.getFilters()))
+				)
+			)
+		);
 
 		// Register user entity
 		eUser = servPersistencia.registrarEntidad(eUser);
@@ -75,20 +85,15 @@ public class TdsUserAdapter implements IUserAdapter {
 
 	@Override
 	public void removeUser(User u) {
-		Entidad eUser;
-		TdsPlaylistAdapter playlistAdapter = TdsPlaylistAdapter.getUniqueInstance();
-
-		// Remove playlist in the user
+		// Remove the user's playlists
 		for (Playlist playlist : u.getPlaylists())
 			playlistAdapter.removeLPlaylist(playlist);
-
-		TdsFilterAdapter filterAdapter = TdsFilterAdapter.getUniqueInstance();
-
-		// Remove filters in the user
+		
+		// Remove the user's filters
 		for (IVideoFilter filter : u.getFilters())
 			filterAdapter.removeFilter(filter);
 
-		eUser = servPersistencia.recuperarEntidad(u.getCode());
+		Entidad eUser = servPersistencia.recuperarEntidad(u.getCode());
 		servPersistencia.borrarEntidad(eUser);
 	}
 
@@ -96,81 +101,70 @@ public class TdsUserAdapter implements IUserAdapter {
 	public void modifyUser(User u) {
 		Entidad eUser;
 		eUser = servPersistencia.recuperarEntidad(u.getCode());
-		servPersistencia.eliminarPropiedadEntidad(eUser, "name");
-		servPersistencia.anadirPropiedadEntidad(eUser, "name", u.getName());
-		servPersistencia.eliminarPropiedadEntidad(eUser, "surname");
-		servPersistencia.anadirPropiedadEntidad(eUser, "surname", u.getSurname());
-		servPersistencia.eliminarPropiedadEntidad(eUser, "dateOfBirth");
-		servPersistencia.anadirPropiedadEntidad(eUser, "dateOfBirth", dateFormat.format(u.getDateOfBirth()));
-		servPersistencia.eliminarPropiedadEntidad(eUser, "email");
-		servPersistencia.anadirPropiedadEntidad(eUser, "email", u.getEmail());
-		servPersistencia.eliminarPropiedadEntidad(eUser, "username");
-		servPersistencia.anadirPropiedadEntidad(eUser, "username", u.getUsername());
-		servPersistencia.eliminarPropiedadEntidad(eUser, "password");
-		servPersistencia.anadirPropiedadEntidad(eUser, "password", u.getPassword());
-		servPersistencia.eliminarPropiedadEntidad(eUser, "isPremium");
-		servPersistencia.anadirPropiedadEntidad(eUser, "isPremium", String.valueOf(u.isPremium()));
-
-		String playlists = getCodesPlaylist(u.getPlaylists());
-		servPersistencia.eliminarPropiedadEntidad(eUser, "playlists");
-		servPersistencia.anadirPropiedadEntidad(eUser, "playlists", playlists);
-
-		String filters = getCodesFilters(u.getFilters());
-		servPersistencia.eliminarPropiedadEntidad(eUser, "filters");
-		servPersistencia.anadirPropiedadEntidad(eUser, "filters", filters);
+		modifyField(eUser, "name",                          u.getName());
+		modifyField(eUser, "surname",                       u.getSurname());
+		modifyField(eUser, "dateOfBirth", dateFormat.format(u.getDateOfBirth()));
+		modifyField(eUser, "email",                         u.getEmail());
+		modifyField(eUser, "username",                      u.getUsername());
+		modifyField(eUser, "password",                      u.getPassword());
+		modifyField(eUser, "isPremium",   String.valueOf(   u.isPremium()));
+		modifyField(eUser, "playlists",   getCodesPlaylist( u.getPlaylists()));
+		modifyField(eUser, "filters",     getCodesFilters(  u.getFilters()));
+	}
+	
+	private void modifyField(Entidad entity, String fieldName, String newValue) {
+		servPersistencia.eliminarPropiedadEntidad(entity, fieldName);
+		servPersistencia.anadirPropiedadEntidad  (entity, fieldName, newValue);
 	}
 
 	@Override
 	public User loadUser(int code) {
+		Entidad eUser = servPersistencia.recuperarEntidad(code);
 
-		Entidad eUser;
-		String name, surname, email, username, password;
-		boolean isPremium;
 		Date dateOfBirth = null;
-
-		List<Playlist> playlists = new LinkedList<Playlist>();
-		List<IVideoFilter> filters = new LinkedList<IVideoFilter>();
-
-		eUser = servPersistencia.recuperarEntidad(code);
-		name = servPersistencia.recuperarPropiedadEntidad(eUser, "name");
-		surname = servPersistencia.recuperarPropiedadEntidad(eUser, "surname");
-		email = servPersistencia.recuperarPropiedadEntidad(eUser, "email");
-		username = servPersistencia.recuperarPropiedadEntidad(eUser, "username");
-		password = servPersistencia.recuperarPropiedadEntidad(eUser, "password");
-		isPremium = Boolean.parseBoolean(servPersistencia.recuperarPropiedadEntidad(eUser, "isPremium"));
 		try {
-			dateOfBirth = (Date) dateFormat.parse(servPersistencia.recuperarPropiedadEntidad(eUser, "dateOfBirth"));
+			dateOfBirth = (Date) dateFormat.parse(getFieldValue(eUser, "dateOfBirth"));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 
-		User user = new User(name, surname, dateOfBirth, email, username, password);
-		user.setPremium(isPremium);
+		User user = new User(
+			getFieldValue(eUser, "name"),
+			getFieldValue(eUser, "surname"),
+			dateOfBirth,
+			getFieldValue(eUser, "email"),
+			getFieldValue(eUser, "username"),
+			getFieldValue(eUser, "password")
+		);
+		user.setPremium(
+			Boolean.parseBoolean(getFieldValue(eUser, "isPremium"))
+		);
 		user.setCode(code);
 
 		// Load playlists
-		playlists = getPlaylistsFromCodes(servPersistencia.recuperarPropiedadEntidad(eUser, "playlists"));
-
+		List<Playlist> playlists = getPlaylistsFromCodes(getFieldValue(eUser, "playlists"));
 		for (Playlist playlist : playlists)
 			user.addPlaylist(playlist);
 
 		// Load filters
-		filters = getFiltersFromCodes(servPersistencia.recuperarPropiedadEntidad(eUser, "filters"));
-
+		List<IVideoFilter>filters = getFiltersFromCodes(getFieldValue(eUser, "filters"));
 		for (IVideoFilter filter : filters)
 			user.addFilter(filter);
 
 		return user;
 	}
+	
+	private String getFieldValue(Entidad entity, String field) {
+		return servPersistencia.recuperarPropiedadEntidad(entity, field);
+	}
 
 	@Override
 	public List<User> loadAllUsers() {
-		List<User> users = new LinkedList<User>();
+		List<User>    users    = new LinkedList<User>();
 		List<Entidad> entities = servPersistencia.recuperarEntidades("User");
 
-		if (entities != null)
-			for (Entidad entity : entities)
-				users.add(loadUser(entity.getId()));
+		for (Entidad entity : entities)
+			users.add(loadUser(entity.getId()));
 
 		return users;
 	}
@@ -191,23 +185,32 @@ public class TdsUserAdapter implements IUserAdapter {
 	}
 
 	private List<Playlist> getPlaylistsFromCodes(String playlists) {
-
-		List<Playlist> playlistList = new LinkedList<Playlist>();
-		StringTokenizer strTok = new StringTokenizer(playlists, " ");
+		List<Playlist>     playlistList    = new LinkedList<Playlist>();
+		StringTokenizer    strTok          = new StringTokenizer(playlists, " ");
 		TdsPlaylistAdapter playlistAdapter = TdsPlaylistAdapter.getUniqueInstance();
 		while (strTok.hasMoreTokens()) {
-			playlistList.add(playlistAdapter.loadPlaylist(Integer.valueOf((String) strTok.nextElement())));
+			playlistList.add(
+				playlistAdapter.loadPlaylist(
+					Integer.valueOf(
+						(String) strTok.nextElement()
+					)
+				)
+			);
 		}
 		return playlistList;
 	}
 
 	private List<IVideoFilter> getFiltersFromCodes(String filters) {
-
 		List<IVideoFilter> filterList = new LinkedList<IVideoFilter>();
-		StringTokenizer strTok = new StringTokenizer(filters, " ");
-		TdsFilterAdapter filterAdapter = TdsFilterAdapter.getUniqueInstance();
+		StringTokenizer    strTok     = new StringTokenizer(filters, " ");
 		while (strTok.hasMoreTokens()) {
-			filterList.add(filterAdapter.loadFilter(Integer.valueOf((String) strTok.nextElement())));
+			filterList.add(
+				filterAdapter.loadFilter(
+					Integer.valueOf(
+						(String) strTok.nextElement()
+					)
+				)
+			);
 		}
 		return filterList;
 	}
