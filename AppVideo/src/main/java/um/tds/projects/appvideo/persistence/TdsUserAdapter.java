@@ -1,6 +1,6 @@
 package um.tds.projects.appvideo.persistence;
 
-import java.sql.Date;
+import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
