@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class VideoRepository {
@@ -59,6 +60,10 @@ public class VideoRepository {
 
 	public boolean containsVideo(int id) {
 		return cache.containsKey(id);
+	}
+	
+	public List<Video> getAllVideos() {
+		return cache.values().stream().collect(Collectors.toList());
 	}
 
 	public List<Video> findVideo(String str, List<IVideoFilter> filters) {

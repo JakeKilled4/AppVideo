@@ -110,6 +110,10 @@ public class Controller {
 	public List<Playlist> getPlaylists() {
 		return playlistAdapter.loadAllPlaylists();
 	}
+	
+	public List<Video> getAllVideos() {
+		return videoRepository.getAllVideos();
+	}
 
 	public List<Video> searchVideos(String str, List<IVideoFilter> filter) {
 		return videoRepository.findVideo(str, filter);

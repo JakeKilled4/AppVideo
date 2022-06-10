@@ -1,5 +1,6 @@
 package um.tds.projects.appvideo.view;
 
+import um.tds.projects.appvideo.backend.filters.IVideoFilter;
 import um.tds.projects.appvideo.controller.Controller;
 
 
@@ -22,7 +23,7 @@ public class SearchPanel extends CommonPanel {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected JPanel createInnerPanel() {
-		Object entries = controller.searchVideos(null, null)
+		Object entries = controller.getAllVideos()
 			.stream()
 			.map( v -> new VideoListEntry(mainWindow, v))
 			.collect(Collectors.toList());

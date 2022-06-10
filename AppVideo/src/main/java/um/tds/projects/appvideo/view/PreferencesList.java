@@ -8,7 +8,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 
 
 @SuppressWarnings("serial")
@@ -49,12 +48,6 @@ public class PreferencesList extends JPanel {
 		scrollPane.setBackground(Constants.BACKGROUND_COLOR);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 		add(scrollPane);
-	}
-
-	static private void addSeparator(JPanel panel) {
-		JSeparator sep = new JSeparator();
-		sep.setMaximumSize(new Dimension(Constants.PAGE_WIDTH, Constants.SEPARATOR_HEIGHT));
-		panel.add(sep);
 	}
 
 }
