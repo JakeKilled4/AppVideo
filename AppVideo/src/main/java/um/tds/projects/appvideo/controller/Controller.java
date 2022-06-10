@@ -6,33 +6,38 @@ import um.tds.projects.appvideo.backend.UserRepository;
 import um.tds.projects.appvideo.backend.Video;
 import um.tds.projects.appvideo.backend.VideoRepository;
 import um.tds.projects.appvideo.backend.filters.IVideoFilter;
-import um.tds.projects.appvideo.persistence.ILabelAdapter;
+import um.tds.projects.appvideo.persistence.DaoFactory;
 import um.tds.projects.appvideo.persistence.IPlaylistAdapter;
 import um.tds.projects.appvideo.persistence.IUserAdapter;
 import um.tds.projects.appvideo.persistence.IVideoAdapter;
-import um.tds.projects.appvideo.persistence.TdsLabelAdapter;
-import um.tds.projects.appvideo.persistence.TdsPlaylistAdapter;
-import um.tds.projects.appvideo.persistence.TdsUserAdapter;
-import um.tds.projects.appvideo.persistence.TdsVideoAdapter;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 public class Controller {
 
+	// Controller's unique instance
 	private static Controller instance;
+	
+	private static Logger logger = Logger.getLogger("um.tds.projects.appvideo.controller.controller");
+
+	// Adapters and repositories
 	private IPlaylistAdapter playlistAdapter;
 	private IUserAdapter     userAdapter;
 	private IVideoAdapter    videoAdapter;
+	private UserRepository   userRepository;
+	private VideoRepository  videoRepository;
 	
-	private UserRepository  userRepository;
-	private VideoRepository videoRepository;
+	// Current user
+	private User currentUser;
 
 	private Controller() {
 		initializeAdapters();
 		initializeRepositories();
+		this.currentUser = null;
 	}
 
 	public static Controller getUniqueInstance() {
@@ -45,7 +50,7 @@ public class Controller {
 	 * Returns true if the user is already registered.
 	 */
 	public boolean userIsRegistered(String username) {
-		return true;
+		return userRepository.containsUser(username);
 	}
 
 	/**
@@ -53,22 +58,32 @@ public class Controller {
 	 */
 	public boolean login(String username, String password) {
 		User u = userRepository.getUser(username);
-		if (u != null && u.checkPassword(password))
+		if (u != null && u.checkPassword(password)) {
+			logger.info("User correctly logged in");
+			currentUser = u;
 			return true;
-		return false;
+		} else {
+			logger.info("User login unsuccessful");
+			return false;
+		}
 	}
 
-	public void logout() { }
+	public void logout() {
+		logger.info("User logged out");
+		currentUser = null;
+	}
 
 	/**
 	 * Returns true iff the register process was successful (If the username was not already taken)
 	 */
 	public boolean register(String name, String surname, Date dateOfBirth, String email, String username, String password) {
 		if (userRepository.containsUser(username))
-			return false; // Other user with same username
-		User u = new User(name, surname, dateOfBirth, email, username, password);
-		userAdapter.registerUser(u);
-		userRepository.addUser(u);
+			return false;
+		
+		// If the username is not already taken, create the new user.
+		currentUser = new User(name, surname, dateOfBirth, email, username, password);
+		userAdapter.registerUser(currentUser);
+		userRepository.addUser(currentUser);
 		return true;
 	}
 
@@ -94,45 +109,84 @@ public class Controller {
 
 	public List<Playlist> getPlaylists() {
 		return playlistAdapter.loadAllPlaylists();
-		/*
-		return Arrays.asList(new Playlist("TDS vibes"),
-							 new Playlist("What to hear when studying Geometry"),
-							 new Playlist("Videos on Algebraic Topology"),
-							 new Playlist("TDS vibes"),
-							 new Playlist("What to hear when studying Geometry"),
-							 new Playlist("Videos on Algebraic Topology"),
-							 new Playlist("TDS vibes"),
-							 new Playlist("What to hear when studying Geometry"),
-							 new Playlist("Videos on Algebraic Topology"));
-							 */
 	}
 
 	public List<Video> searchVideos(String str, List<IVideoFilter> filter) {
-		return Arrays.asList(new Video("", "Smart cat solves Millenium problem", 1324),
-							 new Video("", "UM > UMU", 325),
-							 new Video("", "Lo bueno, si breve, dos veces bueno", 325),
-							 new Video("", "Oh, brave new world...", 3205),
-							 new Video("", "En un lugar de la mancha...", 325),
-							 new Video("", "Smart cat solves Millenium problem", 1324),
-							 new Video("", "UM > UMU", 325),
-							 new Video("", "Lo bueno, si breve, dos veces bueno", 325),
-							 new Video("", "Oh, brave new world...", 3205),
-							 new Video("", "En un lugar de la mancha...", 325),
-							 new Video("", "Smart cat solves Millenium problem", 1324),
-							 new Video("", "UM > UMU", 325),
-							 new Video("", "Lo bueno, si breve, dos veces bueno", 325),
-							 new Video("", "Oh, brave new world...", 3205),
-							 new Video("", "En un lugar de la mancha...", 325));
+		return videoRepository.findVideo(str, filter);
 	}
 
-	public void initializeAdapters(){
-		playlistAdapter = TdsPlaylistAdapter.getUniqueInstance();
-		userAdapter     = TdsUserAdapter    .getUniqueInstance();
-		videoAdapter    = TdsVideoAdapter   .getUniqueInstance();
+	private void initializeAdapters(){
+		logger.info("Initialising adapters");
+		
+		DaoFactory factory = null;
+		try {
+			factory = DaoFactory.getUniqueInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		userAdapter     = factory.getUserAdapter();
+		playlistAdapter = factory.getPlaylistAdapter();
+		videoAdapter    = factory.getVideoAdapter();
+		populateUserAdapter();
+		populatePlaylistAdapter();
+		populateVideoAdapter();
+
+		logger.info("Finished initialising the adapters");
 	}
 
-	public void initializeRepositories(){
+	private void initializeRepositories(){
+		logger.info("Initialising repositories");
 		userRepository  = UserRepository.getUniqueInstance();
 		videoRepository = VideoRepository.getUniqueInstance(); 
+	}
+	
+	private void populatePlaylistAdapter() {
+		logger.info("Populating playlists");
+		List<Playlist> playlists = Arrays.asList(
+			new Playlist("TDS vibes"),
+			new Playlist("What to hear when studying Geometry"),
+			new Playlist("Videos on Algebraic Topology"),
+			new Playlist("TDS vibes"),
+			new Playlist("What to hear when studying Geometry"),
+			new Playlist("Videos on Algebraic Topology"),
+			new Playlist("TDS vibes"),
+			new Playlist("What to hear when studying Geometry"),
+			new Playlist("Videos on Algebraic Topology")
+		);
+		for (Playlist p: playlists)
+			playlistAdapter.registerPlaylist(p);
+	}
+	
+	private void populateUserAdapter() {
+		logger.info("Populating users");
+		userAdapter.registerUser(
+			new User(
+				"admin", "", new Date(), "", "admin", "admin"
+			)
+		);
+		logger.info("Ended populating users");
+	}
+	
+	private void populateVideoAdapter() {
+		logger.info("Populating videos");
+		List<Video> videos = Arrays.asList(
+			new Video("", "Smart cat solves Millenium problem", 1324),
+			new Video("", "UM > UMU", 325),
+			new Video("", "Lo bueno, si breve, dos veces bueno", 325),
+			new Video("", "Oh, brave new world...", 3205),
+			new Video("", "En un lugar de la mancha...", 325),
+			new Video("", "Smart cat solves Millenium problem", 1324),
+			new Video("", "UM > UMU", 325),
+			new Video("", "Lo bueno, si breve, dos veces bueno", 325),
+			new Video("", "Oh, brave new world...", 3205),
+			new Video("", "En un lugar de la mancha...", 325),
+			new Video("", "Smart cat solves Millenium problem", 1324),
+			new Video("", "UM > UMU", 325),
+			new Video("", "Lo bueno, si breve, dos veces bueno", 325),
+			new Video("", "Oh, brave new world...", 3205),
+			new Video("", "En un lugar de la mancha...", 325)
+		);
+		for (Video v: videos)
+			videoAdapter.registerVideo(v);
 	}
 }
