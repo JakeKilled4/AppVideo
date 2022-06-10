@@ -7,6 +7,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 
+@SuppressWarnings("serial")
 public abstract class ListEntry extends JPanel {
 
 	protected MainWindow mainWindow;

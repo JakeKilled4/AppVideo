@@ -4,6 +4,8 @@ import um.tds.projects.appvideo.controller.Controller;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
@@ -17,12 +19,13 @@ public class SearchPanel extends CommonPanel {
 		createScreen();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected JPanel createInnerPanel() {
 		Object entries = controller.searchVideos(null, null)
 			.stream()
 			.map( v -> new VideoListEntry(mainWindow, v))
-			.toList();
+			.collect(Collectors.toList());
 		return new CommonListPanel(mainWindow, (List<ListEntry>) entries);
 	}
 
