@@ -5,6 +5,7 @@ import um.tds.projects.appvideo.backend.filters.IVideoFilter;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class User extends Identifiable {
 
@@ -110,6 +111,18 @@ public class User extends Identifiable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public boolean createPlaylist(String name) {
+		for (Playlist p: playlists)
+			if (p.getName() == name)
+				return false;
+
+		playlists.add(
+			new Playlist(name)
+		);
+
+		return true;
 	}
 
 	public void addPlaylist(Playlist pl) {

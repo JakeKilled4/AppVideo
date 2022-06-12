@@ -1,12 +1,14 @@
 package um.tds.projects.appvideo.persistence;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
@@ -62,6 +64,7 @@ public class TdsUserAdapter implements IUserAdapter {
 
 		// Create user entity
 		eUser = new Entidad();
+
 		eUser.setNombre("user");
 		eUser.setPropiedades(
 			new ArrayList<Propiedad>(
@@ -92,7 +95,7 @@ public class TdsUserAdapter implements IUserAdapter {
 	public void removeUser(User u) {
 		// Remove the user's playlists
 		for (Playlist playlist : u.getPlaylists())
-			playlistAdapter.removeLPlaylist(playlist);
+			playlistAdapter.removePlaylist(playlist);
 		
 		// Remove the user's filters
 		for (IVideoFilter filter : u.getFilters())
@@ -104,22 +107,80 @@ public class TdsUserAdapter implements IUserAdapter {
 
 	@Override
 	public void modifyUser(User u) {
+		logger.info("Modifying an user");
 		Entidad eUser;
+		
+		User oldUser = loadUser(u.getCode());
+		modifyPlaylists(oldUser, u);
+		modifyFilters  (oldUser, u);
+
 		eUser = servPersistencia.recuperarEntidad(u.getCode());
-		modifyField(eUser, "name",                          u.getName());
-		modifyField(eUser, "surname",                       u.getSurname());
-		modifyField(eUser, "dateOfBirth", dateFormat.format(u.getDateOfBirth()));
-		modifyField(eUser, "email",                         u.getEmail());
-		modifyField(eUser, "username",                      u.getUsername());
-		modifyField(eUser, "password",                      u.getPassword());
-		modifyField(eUser, "isPremium",   String.valueOf(   u.isPremium()));
-		modifyField(eUser, "playlists",   getCodesPlaylist( u.getPlaylists()));
-		modifyField(eUser, "filters",     getCodesFilters(  u.getFilters()));
+		for (Propiedad prop: eUser.getPropiedades()) {
+			modifyField(prop, "name",                          u.getName());
+			modifyField(prop, "surname",                       u.getSurname());
+			modifyField(prop, "dateOfBirth", dateFormat.format(u.getDateOfBirth()));
+			modifyField(prop, "email",                         u.getEmail());
+			modifyField(prop, "username",                      u.getUsername());
+			modifyField(prop, "password",                      u.getPassword());
+			modifyField(prop, "isPremium",   String.valueOf(   u.isPremium()));
+			modifyField(prop, "playlists",   getCodesPlaylist( u.getPlaylists()));
+			modifyField(prop, "filters",     getCodesFilters(  u.getFilters()));
+			servPersistencia.modificarPropiedad(prop);
+		}
 	}
 	
-	private void modifyField(Entidad entity, String fieldName, String newValue) {
-		servPersistencia.eliminarPropiedadEntidad(entity, fieldName);
-		servPersistencia.anadirPropiedadEntidad  (entity, fieldName, newValue);
+	/* Removes the deleted playlists and registers the new ones.
+	 */
+	private void modifyPlaylists(User oldUser, User newUser) {
+		// We will store the playlists in two hash sets for rapidly
+		// computing whether some playlist belongs to both users.
+		Set<Playlist> oldPl = new HashSet<Playlist>();
+		Set<Playlist> newPl = new HashSet<Playlist>();
+
+		// Populate the sets with each users's playlists.
+		for (Playlist pl: oldUser.getPlaylists())
+			oldPl.add(pl);
+		for (Playlist pl: newUser.getPlaylists())
+			newPl.add(pl);
+		
+		// Register the added playlists, remove the deleted ones.
+		for (Playlist pl: newUser.getPlaylists()) {
+			if (!oldPl.contains(pl)) {
+				logger.info(String.format("Added playlist '%s' to user '%s'", pl.getName(), newUser.getName()));
+				playlistAdapter.registerPlaylist(pl);
+			}
+		}
+		for (Playlist pl: oldUser.getPlaylists())
+			if (!newPl.contains(pl))
+				playlistAdapter.removePlaylist(pl);
+	}
+	
+	/* Removes the deleted filters and registers the new ones.
+	 */
+	private void modifyFilters(User oldUser, User newUser) {
+		// We will store the filters in two hash sets for rapidly
+		// computing whether some filter belongs to both users.
+		Set<IVideoFilter> oldFilters = new HashSet<IVideoFilter>();
+		Set<IVideoFilter> newFilters = new HashSet<IVideoFilter>();
+		
+		// Populate the sets with each user's filters.
+		for (IVideoFilter f: oldUser.getFilters())
+			oldFilters.add(f);
+		for (IVideoFilter f: newUser.getFilters())
+			newFilters.add(f);
+		
+		// Register the added filters, remove the deleted ones.
+		for (IVideoFilter f: newUser.getFilters())
+			if (!oldFilters.contains(f))
+				filterAdapter.registerFilter(f);
+		for (IVideoFilter f: oldUser.getFilters())
+			if (!newFilters.contains(f))
+				filterAdapter.removeFilter(f);
+	}
+	
+	private void modifyField(Propiedad prop, String fieldName, String newValue) {
+		if (prop.getNombre().equals(fieldName))
+			prop.setValor(newValue);
 	}
 
 	@Override
@@ -168,8 +229,12 @@ public class TdsUserAdapter implements IUserAdapter {
 		List<User>    users    = new LinkedList<User>();
 		List<Entidad> entities = servPersistencia.recuperarEntidades("user");
 
-		for (Entidad entity : entities)
-			users.add(loadUser(entity.getId()));
+		for (Entidad entity : entities) {
+			User u = loadUser(entity.getId());
+			for (Playlist pl: u.getPlaylists())
+				logger.info(pl.getName());
+			users.add(u);
+		}
 
 		return users;
 	}

@@ -2,8 +2,10 @@ package um.tds.projects.appvideo.persistence;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import beans.Entidad;
@@ -43,7 +45,6 @@ public class TdsVideoAdapter implements IVideoAdapter {
 			return;
 
 		// Register labels
-		TdsLabelAdapter labelAdapter = TdsLabelAdapter.getUniqueInstance();
 		for (Label label : v.getLabels())
 			labelAdapter.registerLabel(label);
 
@@ -85,10 +86,39 @@ public class TdsVideoAdapter implements IVideoAdapter {
 	public void modifyVideo(Video v) {
 		Entidad eVideo;
 		eVideo = servPersistencia.recuperarEntidad(v.getCode());
-		modifyField(eVideo, "url",                     v.getUrl());
-		modifyField(eVideo, "title",                   v.getTitle());
-		modifyField(eVideo, "numViews", String.valueOf(v.getNumViews()));
-		modifyField(eVideo, "labels",   getCodesLabels(v.getLabels()));
+		
+		modifyLabels(loadVideo(v.getCode()), v);
+
+		for (Propiedad prop: eVideo.getPropiedades()) {
+			modifyField(prop, "url",                     v.getUrl());
+			modifyField(prop, "title",                   v.getTitle());
+			modifyField(prop, "numViews", String.valueOf(v.getNumViews()));
+			modifyField(prop, "labels",   getCodesLabels(v.getLabels()));
+			servPersistencia.modificarPropiedad(prop);
+		}
+	}
+	
+	/* Removes the deleted labels and registers the new ones
+	 */
+	private void modifyLabels(Video oldVideo, Video newVideo) {
+		// We will store the labels in two hash sets for rapidly
+		// computing whether some label belongs to both videos.
+		Set<Label> oldLabels = new HashSet<Label>();
+		Set<Label> newLabels = new HashSet<Label>();
+
+		// Populate the sets with each video's labels.
+		for (Label label: oldVideo.getLabels())
+			oldLabels.add(label);
+		for (Label label: newVideo.getLabels())
+			newLabels.add(label);
+		
+		// Register the added labels, remove the deleted ones.
+		for (Label label: newVideo.getLabels())
+			if (!oldLabels.contains(label))
+				labelAdapter.registerLabel(label);
+		for (Label label: oldVideo.getLabels())
+			if (!newLabels.contains(label))
+				labelAdapter.removeLabel(label);
 	}
 
 	@Override
@@ -144,9 +174,9 @@ public class TdsVideoAdapter implements IVideoAdapter {
 		return labelList;
 	}
 
-	private void modifyField(Entidad entity, String fieldName, String newValue) {
-		servPersistencia.eliminarPropiedadEntidad(entity, fieldName);
-		servPersistencia.anadirPropiedadEntidad  (entity, fieldName, newValue);
+	private void modifyField(Propiedad prop, String fieldName, String newValue) {
+		if (prop.getNombre().equals(fieldName))
+			prop.setValor(newValue);
 	}
 	
 

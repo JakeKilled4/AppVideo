@@ -3,22 +3,31 @@ package um.tds.projects.appvideo.view;
 import um.tds.projects.appvideo.backend.Playlist;
 import um.tds.projects.appvideo.controller.Controller;
 
+import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 
 @SuppressWarnings("serial")
 public class PlaylistsPanel extends CommonPanel {
 
+	private static String BUTTONS_LABEL         = "buttons";
+	private static String ADD_PLAYLIST_LABEL    = "add";
+	private static String REMOVE_PLAYLIST_LABEL = "rm";
+	
 	private Controller controller;
 	private List<Playlist> playlists;
 
@@ -45,6 +54,16 @@ public class PlaylistsPanel extends CommonPanel {
 		fixSize(innerPanel, Constants.PAGE_WIDTH,
 				playlistsList.getLength() + 2 * (Constants.VIDEOLIST_ENTRY_HEIGHT + 10));
 
+
+		
+
+		innerPanel.add(makeControlPanel());
+		innerPanel.add(playlistsList);
+
+		return innerPanel;
+	}
+	
+	private JComponent makeButtonsPanel(JPanel controlPanel, CardLayout layout) {
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setBackground(Constants.BUTTON_COLOR);
 		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
@@ -52,14 +71,71 @@ public class PlaylistsPanel extends CommonPanel {
 		JPanel newListBtn = defineButton("Add");
 		newListBtn.setAlignmentX(RIGHT_ALIGNMENT);
 		JPanel rmvListBtn = defineButton("Remove");
+		
+		addClicker(
+			newListBtn,
+			() -> {
+				layout.show(controlPanel, ADD_PLAYLIST_LABEL);
+			}
+		);
+		addClicker(
+			rmvListBtn,
+			() -> {
+				layout.show(controlPanel, REMOVE_PLAYLIST_LABEL);
+			}
+		);
 
 		buttonsPanel.add(newListBtn);
 		buttonsPanel.add(rmvListBtn);
+		
+		return buttonsPanel;
+	}
+	
+	private JComponent makeAddPlaylistPanel(JPanel controlPanel, CardLayout layout) {
+		JTextField res = new JTextField("Playlist name");
+		
+		res.addActionListener(
+			(ActionEvent e) -> {
+				layout.show(controlPanel, BUTTONS_LABEL);
 
-		innerPanel.add(buttonsPanel);
-		innerPanel.add(playlistsList);
+				boolean created = controller.createPlaylist(res.getText());
+				if (created) {
+					build();
+				} else {
+					// Popup: error
+				}
 
-		return innerPanel;
+				res.setText("Playlist name");
+			}
+		);
+
+		return res;
+	}
+	
+	private JComponent makeRemovePlaylistPanel(JPanel controlPanel, CardLayout layout) {
+		return new JLabel("remove");
+	}
+	
+	private JPanel makeControlPanel() {
+		JPanel     controlPanel = new JPanel();
+		CardLayout layout       = new CardLayout();
+		
+		controlPanel.setLayout(layout);
+
+		controlPanel.add(
+			makeButtonsPanel(controlPanel, layout),
+			BUTTONS_LABEL
+		);
+		controlPanel.add(
+			makeAddPlaylistPanel(controlPanel, layout),
+			ADD_PLAYLIST_LABEL
+		);
+		controlPanel.add(
+			makeRemovePlaylistPanel(controlPanel, layout),
+			REMOVE_PLAYLIST_LABEL
+		);
+
+		return controlPanel;
 	}
 
 	private JPanel defineButton(String text) {
@@ -98,6 +174,23 @@ public class PlaylistsPanel extends CommonPanel {
 		});
 
 		return button;
+	}
+	
+	private void addClicker(JPanel button, Runnable func) {
+		button.addMouseListener(
+			new MouseListener() {
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					func.run();
+				}
+
+				@Override public void mousePressed(MouseEvent e)  { }
+				@Override public void mouseReleased(MouseEvent e) { }
+				@Override public void mouseEntered(MouseEvent e)  { }
+				@Override public void mouseExited(MouseEvent e)   { }
+			}
+		);
 	}
 
 	private void fixSize(JComponent component, int x, int y) {

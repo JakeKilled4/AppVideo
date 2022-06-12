@@ -39,6 +39,10 @@ public class Video extends Identifiable {
 	public String getTitle() {
 		return title;
 	}
+	
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
 	public int getNumViews() {
 		return numViews;

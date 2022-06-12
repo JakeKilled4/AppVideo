@@ -86,14 +86,18 @@ public class Controller {
 		return true;
 	}
 
-	public Playlist createPlaylist(String name) {
-		Playlist playlist = new Playlist(name);
-		playlistAdapter.registerPlaylist(playlist);
-		return playlist;
+	public boolean createPlaylist(String name) {
+		boolean created = currentUser.createPlaylist(name);
+		
+		if (created) {
+			userAdapter.modifyUser(currentUser);
+		}
+		
+		return created;
 	}
 
 	public void removePlaylist(Playlist playlist) {
-		playlistAdapter.removeLPlaylist(playlist);
+		playlistAdapter.removePlaylist(playlist);
 	}
 
 	public void addVideoToPlaylist(Playlist playlist, Video video) {
