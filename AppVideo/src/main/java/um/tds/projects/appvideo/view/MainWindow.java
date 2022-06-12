@@ -41,10 +41,11 @@ public class MainWindow extends JFrame {
 	}
 
 	public void activatePlaylistsPanel() {
+		playlistsPanel.build();
 		setContentPane(playlistsPanel);
 		validate();
 	}
-
+	
 	public void activatePreferencesPanel() {
 		setContentPane(preferencesPanel);
 		validate();

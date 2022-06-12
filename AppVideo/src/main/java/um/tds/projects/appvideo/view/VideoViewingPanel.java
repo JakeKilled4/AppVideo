@@ -21,7 +21,6 @@ public class VideoViewingPanel extends CommonPanel {
 	public VideoViewingPanel(MainWindow mainWindow, Video video) {
 		super(mainWindow);
 		this.video = video;
-
 		createScreen();
 	}
 

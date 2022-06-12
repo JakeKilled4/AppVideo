@@ -3,6 +3,7 @@ package um.tds.projects.appvideo.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.logging.Logger;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -12,6 +13,8 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public abstract class CommonPanel extends JPanel {
+
+	protected static Logger logger = Logger.getLogger("um.tds.projects.appvideo.view.CommonPanel");
 
 	protected MainWindow mainWindow;
 	private JPanel toolbarPanel;

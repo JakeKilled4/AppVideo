@@ -11,7 +11,6 @@ import um.tds.projects.appvideo.persistence.IPlaylistAdapter;
 import um.tds.projects.appvideo.persistence.IUserAdapter;
 import um.tds.projects.appvideo.persistence.IVideoAdapter;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -108,7 +107,7 @@ public class Controller {
 	}
 
 	public List<Playlist> getPlaylists() {
-		return playlistAdapter.loadAllPlaylists();
+		return currentUser.getPlaylists();
 	}
 	
 	public List<Video> getAllVideos() {
@@ -126,15 +125,13 @@ public class Controller {
 		try {
 			factory = DaoFactory.getUniqueInstance();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.severe("Could not instantiate the DAO factory");;
+			System.exit(-1);
 		}
 		userAdapter     = factory.getUserAdapter();
 		playlistAdapter = factory.getPlaylistAdapter();
 		videoAdapter    = factory.getVideoAdapter();
-		populateUserAdapter();
-		populatePlaylistAdapter();
-		populateVideoAdapter();
-
+		
 		logger.info("Finished initialising the adapters");
 	}
 
@@ -142,55 +139,5 @@ public class Controller {
 		logger.info("Initialising repositories");
 		userRepository  = UserRepository.getUniqueInstance();
 		videoRepository = VideoRepository.getUniqueInstance(); 
-	}
-	
-	private void populatePlaylistAdapter() {
-		logger.info("Populating playlists");
-		List<Playlist> playlists = Arrays.asList(
-			new Playlist("TDS vibes"),
-			new Playlist("What to hear when studying Geometry"),
-			new Playlist("Videos on Algebraic Topology"),
-			new Playlist("TDS vibes"),
-			new Playlist("What to hear when studying Geometry"),
-			new Playlist("Videos on Algebraic Topology"),
-			new Playlist("TDS vibes"),
-			new Playlist("What to hear when studying Geometry"),
-			new Playlist("Videos on Algebraic Topology")
-		);
-		for (Playlist p: playlists)
-			playlistAdapter.registerPlaylist(p);
-	}
-	
-	private void populateUserAdapter() {
-		logger.info("Populating users");
-		userAdapter.registerUser(
-			new User(
-				"admin", "", new Date(), "", "admin", "admin"
-			)
-		);
-		logger.info("Ended populating users");
-	}
-	
-	private void populateVideoAdapter() {
-		logger.info("Populating videos");
-		List<Video> videos = Arrays.asList(
-			new Video("", "Smart cat solves Millenium problem", 1324),
-			new Video("", "UM > UMU", 325),
-			new Video("", "Lo bueno, si breve, dos veces bueno", 325),
-			new Video("", "Oh, brave new world...", 3205),
-			new Video("", "En un lugar de la mancha...", 325),
-			new Video("", "Smart cat solves Millenium problem", 1324),
-			new Video("", "UM > UMU", 325),
-			new Video("", "Lo bueno, si breve, dos veces bueno", 325),
-			new Video("", "Oh, brave new world...", 3205),
-			new Video("", "En un lugar de la mancha...", 325),
-			new Video("", "Smart cat solves Millenium problem", 1324),
-			new Video("", "UM > UMU", 325),
-			new Video("", "Lo bueno, si breve, dos veces bueno", 325),
-			new Video("", "Oh, brave new world...", 3205),
-			new Video("", "En un lugar de la mancha...", 325)
-		);
-		for (Video v: videos)
-			videoAdapter.registerVideo(v);
 	}
 }

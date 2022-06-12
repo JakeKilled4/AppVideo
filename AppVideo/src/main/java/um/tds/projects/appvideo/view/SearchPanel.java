@@ -1,6 +1,5 @@
 package um.tds.projects.appvideo.view;
 
-import um.tds.projects.appvideo.backend.filters.IVideoFilter;
 import um.tds.projects.appvideo.controller.Controller;
 
 

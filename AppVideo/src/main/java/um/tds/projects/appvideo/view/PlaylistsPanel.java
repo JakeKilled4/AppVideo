@@ -1,10 +1,13 @@
 package um.tds.projects.appvideo.view;
 
+import um.tds.projects.appvideo.backend.Playlist;
 import um.tds.projects.appvideo.controller.Controller;
 
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -17,15 +20,22 @@ import javax.swing.JPanel;
 public class PlaylistsPanel extends CommonPanel {
 
 	private Controller controller;
+	private List<Playlist> playlists;
 
 	public PlaylistsPanel(MainWindow mainWindow) {
 		super(mainWindow);
 		this.controller = Controller.getUniqueInstance();
+		this.playlists  = new LinkedList<Playlist>();
+		createScreen();
+	}
+	
+	public void build() {
+		playlists = controller.getPlaylists();
 		createScreen();
 	}
 
 	protected JPanel createInnerPanel() {
-		PlaylistsList playlistsList = new PlaylistsList(mainWindow, controller.getPlaylists());
+		PlaylistsList playlistsList = new PlaylistsList(mainWindow, playlists);
 
 		// InnerPanel guarda entradas y botones.
 		JPanel innerPanel = new JPanel();
