@@ -34,11 +34,11 @@ public abstract class ListEntry extends JPanel {
 		vPanel = new JPanel();
 		vPanel.setBackground(getBackground());
 		vPanel.setLayout(new BoxLayout(vPanel, BoxLayout.Y_AXIS));
-
-		vPanel.add(Box.createRigidArea(new Dimension(Constants.PAGE_WIDTH - 10, 5)));
+		
+		vPanel.add(Box.createRigidArea(new Dimension(Constants.PAGE_WIDTH - 5 , 5)));
 		vPanel.add(createInnerPanel());
-		vPanel.add(Box.createRigidArea(new Dimension(Constants.PAGE_WIDTH - 10, 5)));
-
+		vPanel.add(Box.createRigidArea(new Dimension(Constants.PAGE_WIDTH - 5, 5)));
+		
 		add(Box.createRigidArea(new Dimension(5, Constants.VIDEOLIST_ENTRY_HEIGHT)));
 		add(vPanel);
 		add(Box.createRigidArea(new Dimension(5, Constants.VIDEOLIST_ENTRY_HEIGHT)));

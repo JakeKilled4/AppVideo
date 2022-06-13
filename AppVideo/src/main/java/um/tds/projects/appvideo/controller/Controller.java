@@ -1,5 +1,6 @@
 package um.tds.projects.appvideo.controller;
 
+import um.tds.projects.appvideo.backend.Label;
 import um.tds.projects.appvideo.backend.Playlist;
 import um.tds.projects.appvideo.backend.User;
 import um.tds.projects.appvideo.backend.UserRepository;
@@ -12,6 +13,7 @@ import um.tds.projects.appvideo.persistence.IUserAdapter;
 import um.tds.projects.appvideo.persistence.IVideoAdapter;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -36,6 +38,7 @@ public class Controller {
 	private Controller() {
 		initializeAdapters();
 		initializeRepositories();
+		//cargarVideosPrueba();
 		this.currentUser = null;
 	}
 
@@ -121,6 +124,19 @@ public class Controller {
 	public List<Video> searchVideos(String str, List<IVideoFilter> filter) {
 		return videoRepository.findVideo(str, filter);
 	}
+	
+	public void addViewToVideo(Video v) {
+		v.addView();
+		videoAdapter.modifyVideo(v);
+	}
+	
+	public boolean addLabelToVideo(Video v,Label label) {
+		if(v.addLabel(label)) {
+			videoAdapter.modifyVideo(v);
+			return true;
+		}
+		return false;
+	}
 
 	private void initializeAdapters(){
 		logger.info("Initialising adapters");
@@ -143,5 +159,29 @@ public class Controller {
 		logger.info("Initialising repositories");
 		userRepository  = UserRepository.getUniqueInstance();
 		videoRepository = VideoRepository.getUniqueInstance(); 
+	}
+	
+	private void cargarVideosPrueba() {
+		for(Video v : videoAdapter.loadAllVideos()) {
+			videoAdapter.removeVideo(v);
+		}
+		
+		List<Video> videoList = new LinkedList<Video>();
+		List<Label> l = new LinkedList<Label>();
+		for(int i = 0;i<0;i++) 
+			l.add(new Label("Label"+i));
+		videoList.add(new Video(
+				"https://www.youtube.com/watch?v=3095_w_666w",
+				"Top 40 Cello Covers of Popular Songs 2021 - Best Instrumental Cello Covers Songs All Time",
+				100,l));
+		videoList.add(new Video(
+				"https://www.youtube.com/watch?v=p_di4Zn4wz4",
+				"Vista general de ecuaciones diferenciales I Capítulo 1",
+				3,l));
+		for(Video v: videoList) {
+		if(!videoRepository.containsVideo(v.getUrl()))
+			videoRepository.addVideo(v);
+			videoAdapter.registerVideo(v);
+		}		
 	}
 }

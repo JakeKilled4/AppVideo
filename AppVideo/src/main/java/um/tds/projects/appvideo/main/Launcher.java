@@ -6,9 +6,11 @@ import java.util.List;
 import beans.Entidad;
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
+import tds.video.VideoWeb;
 import um.tds.projects.appvideo.view.MainWindow;
 
 public class Launcher {
+	private static VideoWeb videoWeb;
 	public static void main(String[] args) {
 		/*
 		ServicioPersistencia sp = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
@@ -25,7 +27,8 @@ public class Launcher {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainWindow window = new MainWindow();
+					videoWeb = new VideoWeb(); 
+					MainWindow window = new MainWindow(videoWeb);
 					window.showWindow();
 				} catch (Exception e) {
 					e.printStackTrace();

@@ -6,6 +6,8 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
+import tds.video.VideoWeb;
+
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame {
 	
@@ -15,44 +17,36 @@ public class MainWindow extends JFrame {
 	private SearchPanel       searchPanel;
 	private RegisterPanel     registerPanel;
 	private VideoViewingPanel videoViewingPanel;
+	private VideoWeb videoWeb;
 
 	public void showWindow() {
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 
-	public MainWindow() {
-		loginPanel        = new LoginPanel      (this);
-		playlistsPanel    = new PlaylistsPanel  (this);
-		preferencesPanel  = new PreferencesPanel(this);
-		searchPanel       = new SearchPanel     (this);
-		registerPanel 	  = new RegisterPanel   (this);
+	public MainWindow(VideoWeb videoWeb) {
+		this.videoWeb = videoWeb;
+		this.loginPanel        = new LoginPanel      (this);
+		this.playlistsPanel    = new PlaylistsPanel  (this);
+		this.preferencesPanel  = new PreferencesPanel(this);
+		this.searchPanel       = new SearchPanel     (this);
+		this.registerPanel 	  = new RegisterPanel   (this);
+	
 		videoViewingPanel = null; // Es redefinido al visualizar cada video.
 
 		setContentPane(loginPanel);
+		
 		setMinimumSize(new Dimension(1000, 600));
 		setBounds(100, 100, 450, 300);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
+	
+	public VideoWeb getVideoWeb() {
+		return videoWeb;
+	}
 
 	public void activateLoginPanel() {
 		setContentPane(loginPanel);
-		validate();
-	}
-
-	public void activatePlaylistsPanel() {
-		playlistsPanel.build();
-		setContentPane(playlistsPanel);
-		validate();
-	}
-	
-	public void activatePreferencesPanel() {
-		setContentPane(preferencesPanel);
-		validate();
-	}
-
-	public void activateSearchPanel() {
-		setContentPane(searchPanel);
 		validate();
 	}
 	
@@ -60,8 +54,28 @@ public class MainWindow extends JFrame {
 		setContentPane(registerPanel);
 		validate();
 	}
+
+	public void activatePlaylistsPanel() {
+		playlistsPanel.build();
+		setContentPane(playlistsPanel);
+		videoWeb.cancel();
+		validate();
+	}
+
+	public void activateSearchPanel() {
+		setContentPane(searchPanel);
+		videoWeb.cancel();
+		validate();
+	}
 	
+	public void activatePreferencesPanel() {
+		setContentPane(preferencesPanel);
+		videoWeb.cancel();
+		validate();
+	}
+
 	public void activateVideoViewingPanel(Video video) {
+		videoWeb.cancel();
 		videoViewingPanel = new VideoViewingPanel(this, video);
 		setContentPane(videoViewingPanel);
 		validate();

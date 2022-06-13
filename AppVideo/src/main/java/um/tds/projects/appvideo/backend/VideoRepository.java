@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class VideoRepository {
 
 
-	private Map<Integer, Video> cache;
+	private Map<String, Video> cache;
 	private static VideoRepository instance;
 
 	private DaoFactory dao;
@@ -25,7 +25,7 @@ public class VideoRepository {
 		try {
 			dao = DaoFactory.getUniqueInstance();
 			videoAdapter = dao.getVideoAdapter();
-			cache = new HashMap<Integer, Video>();
+			cache = new HashMap<String, Video>();
 			loadRepository();
 		} catch (DaoException e) {
 			e.printStackTrace();
@@ -35,7 +35,7 @@ public class VideoRepository {
 	private void loadRepository() throws DaoException {
 		List<Video> videos = videoAdapter.loadAllVideos();
 		for (Video v: videos) {
-			cache.put(v.getCode(), v);
+			cache.put(v.getUrl(), v);
 		}
 	}
 
@@ -47,19 +47,23 @@ public class VideoRepository {
 	}
 
 	public void addVideo(Video v) {
-		cache.put(v.getCode(), v);
+		if (!cache.containsKey(v.getUrl()))
+			cache.put(v.getUrl(), v);
 	}
 
 	public void removeVideo(Video v) {
-		cache.remove(v.getCode());
+		if (cache.containsKey(v.getUrl()))
+			cache.remove(v.getUrl());
 	}
 
-	public Video getVideo(int id) {
-		return cache.get(id);
+	public Video getVideo(String url) {
+		if (cache.containsKey(url))
+			return cache.get(url);
+		return null;
 	}
 
-	public boolean containsVideo(int id) {
-		return cache.containsKey(id);
+	public boolean containsVideo(String url) {
+		return cache.containsKey(url);
 	}
 	
 	public List<Video> getAllVideos() {
@@ -79,5 +83,6 @@ public class VideoRepository {
 		}
 		return res;
 	}
+
 
 }

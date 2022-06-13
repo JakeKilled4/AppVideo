@@ -54,9 +54,6 @@ public class PlaylistsPanel extends CommonPanel {
 		fixSize(innerPanel, Constants.PAGE_WIDTH,
 				playlistsList.getLength() + 2 * (Constants.VIDEOLIST_ENTRY_HEIGHT + 10));
 
-
-		
-
 		innerPanel.add(makeControlPanel());
 		innerPanel.add(playlistsList);
 

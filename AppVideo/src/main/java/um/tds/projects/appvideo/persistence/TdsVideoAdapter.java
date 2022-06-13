@@ -103,7 +103,7 @@ public class TdsVideoAdapter implements IVideoAdapter {
 	@Override
 	public Video loadVideo(int code) {
 		Entidad eVideo   = servPersistencia.recuperarEntidad(code);
-
+		
 		Video video = new Video(
 			getFieldValue(eVideo, "url"),
 			getFieldValue(eVideo, "title"),

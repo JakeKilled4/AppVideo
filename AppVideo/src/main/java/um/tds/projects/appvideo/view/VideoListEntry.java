@@ -9,12 +9,31 @@ import java.awt.event.MouseListener;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+
+import tds.video.VideoWeb;
+
 import javax.swing.JLabel;
 
 
 @SuppressWarnings("serial")
 public class VideoListEntry extends ListEntry {
 
+	private Video video;
+	private JLabel title;
+	private JLabel numViews;
+	private JPanel hPanel;
+	private JPanel labelPanel;
+	private JLabel icon;
+	private VideoWeb videoWeb;
+
+	public VideoListEntry(MainWindow mainWindow, Video video) {
+		super(mainWindow);
+		this.video      = video;
+		this.videoWeb = mainWindow.getVideoWeb();
+		addMouseListener(new HoverMouseListener());
+		addComponents();
+	}
+	
 	private final class HoverMouseListener implements MouseListener {
 		public void mouseClicked(MouseEvent e) {
 			updateBackground(Constants.BUTTON_COLOR);
@@ -33,21 +52,11 @@ public class VideoListEntry extends ListEntry {
 		}
 	}
 
-	private Video video;
-	private JLabel title;
-	private JLabel numViews;
-	private JPanel hPanel;
-	private JPanel labelPanel;
-
-	public VideoListEntry(MainWindow mainWindow, Video video) {
-		super(mainWindow);
-		this.video      = video;
-		addMouseListener(new HoverMouseListener());
-		addComponents();
-	}
-
 	@Override
 	protected JPanel createInnerPanel() {
+		
+		icon = new JLabel();
+		icon.setIcon(videoWeb.getThumb(video.getUrl()));
 		title = new JLabel(video.getTitle());
 		title.setForeground(Constants.FONT_COLOR);
 		numViews = new JLabel(Integer.toString(video.getNumViews()) + " views");
@@ -61,20 +70,23 @@ public class VideoListEntry extends ListEntry {
 		labelPanel = new JPanel();
 		labelPanel.setBackground(getBackground());
 		labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.Y_AXIS));
-		labelPanel.setMinimumSize(new Dimension(Constants.PAGE_WIDTH - 10 - 105, Constants.VIDEOLIST_ENTRY_HEIGHT - 10));
-		labelPanel.setMaximumSize(new Dimension(Constants.PAGE_WIDTH - 10 - 105, Constants.VIDEOLIST_ENTRY_HEIGHT - 10));
-		labelPanel.setPreferredSize(new Dimension(Constants.PAGE_WIDTH - 10 - 105, Constants.VIDEOLIST_ENTRY_HEIGHT - 10));
+		
 
 		title.setAlignmentX(LEFT_ALIGNMENT);
 		numViews.setAlignmentX(LEFT_ALIGNMENT);
 		labelPanel.add(title);
 		labelPanel.add(numViews);
-
-		hPanel.add(Box.createRigidArea(new Dimension(100, Constants.VIDEOLIST_ENTRY_HEIGHT - 10))); // Eventually, this should hold the video img.
-		hPanel.add(Box.createRigidArea(new Dimension(5, Constants.VIDEOLIST_ENTRY_HEIGHT - 10)));
+		
+		hPanel.setAlignmentX(RIGHT_ALIGNMENT);
+		hPanel.setMinimumSize(new Dimension(Constants.PAGE_WIDTH - 10, Constants.VIDEOLIST_ENTRY_HEIGHT - 10));
+		hPanel.setMaximumSize(new Dimension(Constants.PAGE_WIDTH - 10, Constants.VIDEOLIST_ENTRY_HEIGHT - 10));
+		hPanel.setPreferredSize(new Dimension(Constants.PAGE_WIDTH - 10, Constants.VIDEOLIST_ENTRY_HEIGHT - 10));
+		hPanel.add(icon);
+		hPanel.add(Box.createRigidArea(new Dimension(15, Constants.VIDEOLIST_ENTRY_HEIGHT - 10)));
 		hPanel.add(labelPanel);
-
+		
 		return hPanel;
 	}
+	
 
 }

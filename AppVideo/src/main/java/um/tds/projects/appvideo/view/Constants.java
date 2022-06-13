@@ -14,7 +14,7 @@ public class Constants {
 	public static final int TOOLBAR_OPEN_SIZE = 200;
 	public static final int TOOLBAR_CLOSED_SIZE = 50;
 	public static final int PAGE_WIDTH = 800;
-	public static final int VIDEOLIST_ENTRY_HEIGHT = 50;
+	public static final int VIDEOLIST_ENTRY_HEIGHT = 100;
 	public static final int SEPARATOR_HEIGHT = 6;
 	public static final int VIDEO_WIDTH = 400;
 	public static final int VIDEO_HEIGHT = 300;

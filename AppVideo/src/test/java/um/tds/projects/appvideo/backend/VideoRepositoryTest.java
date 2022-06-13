@@ -19,17 +19,17 @@ public class VideoRepositoryTest {
 	public void canStoreAndRetrieveVideo() {
 		Video v1 = new Video("url", "title", 1234);
 		repo.addVideo(v1);
-		Video v2 = repo.getVideo(v1.getCode());
+		Video v2 = repo.getVideo(v1.getUrl());
 		assertTrue(v1 == v2);
 	}
 
 	@Test
 	public void canRemoveVideo() {
 		Video v = new Video("a", "b", 45);
-		assertFalse(repo.containsVideo(v.getCode()));
+		assertFalse(repo.containsVideo(v.getUrl()));
 		repo.addVideo(v);
-		assertTrue(repo.containsVideo(v.getCode()));
+		assertTrue(repo.containsVideo(v.getUrl()));
 		repo.removeVideo(v);
-		assertFalse(repo.containsVideo(v.getCode()));
+		assertFalse(repo.containsVideo(v.getUrl()));
 	}
 }
