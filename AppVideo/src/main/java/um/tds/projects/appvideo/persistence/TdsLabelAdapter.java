@@ -87,6 +87,7 @@ public class TdsLabelAdapter implements ILabelAdapter {
 		return labels;
 	}
 
+	/* Auxiliar functions */
 	private void modifyField(Entidad entity, String fieldName, String newValue) {
 		servPersistencia.eliminarPropiedadEntidad(entity, fieldName);
 		servPersistencia.anadirPropiedadEntidad  (entity, fieldName, newValue);

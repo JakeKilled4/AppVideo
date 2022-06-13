@@ -3,23 +3,15 @@ package um.tds.projects.appvideo.backend;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Playlist {
+public class Playlist extends Identifiable {
 
-	private int code;
 	private String name;
 	private List<Video> videos;
 
 	public Playlist(String name) {
-		this.code = 0;
+		super();
 		this.name = name;
 		this.videos = new ArrayList<Video>();
-	}
-	public int getCode() {
-		return code;
-	}
-	
-	public void setCode(int code) {
-		this.code = code;
 	}
 
 	public String getName() {

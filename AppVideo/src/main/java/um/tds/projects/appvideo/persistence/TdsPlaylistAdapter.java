@@ -98,29 +98,6 @@ public class TdsPlaylistAdapter implements IPlaylistAdapter {
 		}
 	}
 	
-	/* Removes the deleted videos and registers the new ones
-	 */
-	private void modifyVideos(Playlist oldPl, Playlist newPl) {
-		// We will store the videos in two hash sets for rapidly
-		// computing whether some videos belongs to both playlists.
-		Set<Video> oldVideos = new HashSet<Video>();
-		Set<Video> newVideos = new HashSet<Video>();
-
-		// Populate the sets with each playlist's videos.
-		for (Video v: oldPl.getVideos())
-			oldVideos.add(v);
-		for (Video v: newPl.getVideos())
-			newVideos.add(v);
-		
-		// Register the added videos, remove the deleted ones.
-		for (Video v: newPl.getVideos())
-			if (!oldVideos.contains(v))
-				videoAdapter.registerVideo(v);
-		for (Video v: oldPl.getVideos())
-			if (!newVideos.contains(v))
-				videoAdapter.removeVideo(v);
-	}
-	
 	@Override
 	public Playlist loadPlaylist(int code) {
 		Entidad ePlaylist = servPersistencia.recuperarEntidad(code);
@@ -152,6 +129,28 @@ public class TdsPlaylistAdapter implements IPlaylistAdapter {
 	}
 	
 	/* Auxiliar functions */
+	/* Removes the deleted videos and registers the new ones */
+	private void modifyVideos(Playlist oldPl, Playlist newPl) {
+		// We will store the videos in two hash sets for rapidly
+		// computing whether some videos belongs to both playlists.
+		Set<Video> oldVideos = new HashSet<Video>();
+		Set<Video> newVideos = new HashSet<Video>();
+
+		// Populate the sets with each playlist's videos.
+		for (Video v: oldPl.getVideos())
+			oldVideos.add(v);
+		for (Video v: newPl.getVideos())
+			newVideos.add(v);
+		
+		// Register the added videos, remove the deleted ones.
+		for (Video v: newPl.getVideos())
+			if (!oldVideos.contains(v))
+				videoAdapter.registerVideo(v);
+		for (Video v: oldPl.getVideos())
+			if (!newVideos.contains(v))
+				videoAdapter.removeVideo(v);
+	}
+	
 	private String getCodesVideos(List<Video> videos) {
 		String out = "";
 		for (Video video : videos)

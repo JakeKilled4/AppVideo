@@ -155,33 +155,7 @@ public class TdsUserAdapter implements IUserAdapter {
 				playlistAdapter.removePlaylist(pl);
 	}
 	
-	/* Removes the deleted filters and registers the new ones.
-	 */
-	private void modifyFilters(User oldUser, User newUser) {
-		// We will store the filters in two hash sets for rapidly
-		// computing whether some filter belongs to both users.
-		Set<IVideoFilter> oldFilters = new HashSet<IVideoFilter>();
-		Set<IVideoFilter> newFilters = new HashSet<IVideoFilter>();
-		
-		// Populate the sets with each user's filters.
-		for (IVideoFilter f: oldUser.getFilters())
-			oldFilters.add(f);
-		for (IVideoFilter f: newUser.getFilters())
-			newFilters.add(f);
-		
-		// Register the added filters, remove the deleted ones.
-		for (IVideoFilter f: newUser.getFilters())
-			if (!oldFilters.contains(f))
-				filterAdapter.registerFilter(f);
-		for (IVideoFilter f: oldUser.getFilters())
-			if (!newFilters.contains(f))
-				filterAdapter.removeFilter(f);
-	}
 	
-	private void modifyField(Propiedad prop, String fieldName, String newValue) {
-		if (prop.getNombre().equals(fieldName))
-			prop.setValor(newValue);
-	}
 
 	@Override
 	public User loadUser(int code) {
@@ -220,9 +194,7 @@ public class TdsUserAdapter implements IUserAdapter {
 		return user;
 	}
 	
-	private String getFieldValue(Entidad entity, String field) {
-		return servPersistencia.recuperarPropiedadEntidad(entity, field);
-	}
+
 
 	@Override
 	public List<User> loadAllUsers() {
@@ -240,6 +212,38 @@ public class TdsUserAdapter implements IUserAdapter {
 	}
 
 	/* Auxiliar functions */
+	private String getFieldValue(Entidad entity, String field) {
+		return servPersistencia.recuperarPropiedadEntidad(entity, field);
+	}
+	
+	
+	private void modifyField(Propiedad prop, String fieldName, String newValue) {
+		if (prop.getNombre().equals(fieldName))
+			prop.setValor(newValue);
+	}
+	
+	/* Removes the deleted filters and registers the new ones.*/
+	private void modifyFilters(User oldUser, User newUser) {
+		// We will store the filters in two hash sets for rapidly
+		// computing whether some filter belongs to both users.
+		Set<IVideoFilter> oldFilters = new HashSet<IVideoFilter>();
+		Set<IVideoFilter> newFilters = new HashSet<IVideoFilter>();
+		
+		// Populate the sets with each user's filters.
+		for (IVideoFilter f: oldUser.getFilters())
+			oldFilters.add(f);
+		for (IVideoFilter f: newUser.getFilters())
+			newFilters.add(f);
+		
+		// Register the added filters, remove the deleted ones.
+		for (IVideoFilter f: newUser.getFilters())
+			if (!oldFilters.contains(f))
+				filterAdapter.registerFilter(f);
+		for (IVideoFilter f: oldUser.getFilters())
+			if (!newFilters.contains(f))
+				filterAdapter.removeFilter(f);
+	}
+	
 	private String getCodesPlaylist(List<Playlist> playlist) {
 		String plays = "";
 		for (Playlist list : playlist)

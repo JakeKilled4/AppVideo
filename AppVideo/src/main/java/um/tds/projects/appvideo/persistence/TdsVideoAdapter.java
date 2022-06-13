@@ -98,28 +98,7 @@ public class TdsVideoAdapter implements IVideoAdapter {
 		}
 	}
 	
-	/* Removes the deleted labels and registers the new ones
-	 */
-	private void modifyLabels(Video oldVideo, Video newVideo) {
-		// We will store the labels in two hash sets for rapidly
-		// computing whether some label belongs to both videos.
-		Set<Label> oldLabels = new HashSet<Label>();
-		Set<Label> newLabels = new HashSet<Label>();
-
-		// Populate the sets with each video's labels.
-		for (Label label: oldVideo.getLabels())
-			oldLabels.add(label);
-		for (Label label: newVideo.getLabels())
-			newLabels.add(label);
-		
-		// Register the added labels, remove the deleted ones.
-		for (Label label: newVideo.getLabels())
-			if (!oldLabels.contains(label))
-				labelAdapter.registerLabel(label);
-		for (Label label: oldVideo.getLabels())
-			if (!newLabels.contains(label))
-				labelAdapter.removeLabel(label);
-	}
+	
 
 	@Override
 	public Video loadVideo(int code) {
@@ -151,7 +130,30 @@ public class TdsVideoAdapter implements IVideoAdapter {
 		return videos;
 	}
 
-	/**** Auxiliar functions ****/
+	/* Auxiliar functions */
+	/* Removes the deleted labels and registers the new ones */
+	private void modifyLabels(Video oldVideo, Video newVideo) {
+		// We will store the labels in two hash sets for rapidly
+		// computing whether some label belongs to both videos.
+		Set<Label> oldLabels = new HashSet<Label>();
+		Set<Label> newLabels = new HashSet<Label>();
+
+		// Populate the sets with each video's labels.
+		for (Label label: oldVideo.getLabels())
+			oldLabels.add(label);
+		for (Label label: newVideo.getLabels())
+			newLabels.add(label);
+		
+		// Register the added labels, remove the deleted ones.
+		for (Label label: newVideo.getLabels())
+			if (!oldLabels.contains(label))
+				labelAdapter.registerLabel(label);
+		for (Label label: oldVideo.getLabels())
+			if (!newLabels.contains(label))
+				labelAdapter.removeLabel(label);
+	}
+	
+	
 	private String getCodesLabels(List<Label> labels) {
 		String out = "";
 		for (Label label : labels)

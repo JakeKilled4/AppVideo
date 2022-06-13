@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class User extends Identifiable {
-
-	private int code;
 	private String name;
 	private String surname;
 	private Date dateOfBirth;
@@ -22,7 +20,6 @@ public class User extends Identifiable {
 
 	public User(String name, String surname, Date dateOfBirth, String email, String username, String password) {
 		super();
-		this.code = 0;
 		this.name = name;
 		this.surname = surname;
 		this.dateOfBirth = dateOfBirth;
@@ -33,14 +30,7 @@ public class User extends Identifiable {
 		this.playlists = new LinkedList<Playlist>();
 		this.filters = new LinkedList<IVideoFilter>();
 	}
-	public int getCode() {
-		return code;
-	}
 	
-	public void setCode(int code) {
-		this.code = code;
-	}
-
 	public List<IVideoFilter> getFilters() {
 		return filters;
 	}

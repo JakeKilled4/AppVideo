@@ -4,17 +4,17 @@ import java.util.Random;
 
 public class Identifiable {
 
-	private int id;
+	private int code;
 
 	public Identifiable() {
-		this.id = (new Random()).nextInt();
+		this.code = (new Random()).nextInt();
 	}
 
-	public int getId() {
-		return id;
+	public int getCode() {
+		return code;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setCode(int code) {
+		this.code = code;
 	}
 }
