@@ -34,8 +34,7 @@ public class TdsLabelAdapter implements ILabelAdapter {
 			eLabel = servPersistencia.recuperarEntidad(l.getCode());
 		} catch (NullPointerException e) {
 		}
-		if (eLabel != null)
-			return;
+		if (eLabel != null) return;
 
 		// Create label entity
 		eLabel = new Entidad();
@@ -47,7 +46,6 @@ public class TdsLabelAdapter implements ILabelAdapter {
 				)
 			)
 		);
-
 		// Register label entity
 		eLabel = servPersistencia.registrarEntidad(eLabel);
 
@@ -70,7 +68,7 @@ public class TdsLabelAdapter implements ILabelAdapter {
 	@Override
 	public Label loadLabel(int code) {
 		Entidad eLabel = servPersistencia.recuperarEntidad(code);
-
+		
 		Label label = new Label(
 			getFieldValue(eLabel, "name")
 		);

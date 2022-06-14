@@ -18,14 +18,13 @@ public class SearchPanel extends CommonPanel {
 		this.controller = Controller.getUniqueInstance();
 		createScreen();
 	}
-
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	protected JPanel createInnerPanel() {
-		Object entries = controller.getAllVideos()
-			.stream()
-			.map( v -> new VideoListEntry(mainWindow, v))
-			.collect(Collectors.toList());
+		List<ListEntry> entries = controller.getAllVideos()
+				.stream()
+				.map( v -> new VideoListEntry(mainWindow, v))
+				.collect(Collectors.toList());
 		return new CommonListPanel(mainWindow, (List<ListEntry>) entries);
 	}
 

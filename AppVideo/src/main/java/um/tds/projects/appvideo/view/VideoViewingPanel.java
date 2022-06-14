@@ -16,7 +16,6 @@ import java.awt.event.FocusListener;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -47,7 +46,7 @@ public class VideoViewingPanel extends CommonPanel  {
 		this.controller.addViewToVideo(video);
 		createScreen();
 	}
-
+	
 	@Override
 	protected JPanel createInnerPanel() {
 		JPanel panel = new JPanel();
@@ -95,12 +94,10 @@ public class VideoViewingPanel extends CommonPanel  {
 		textField.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Label l = new Label(textField.getText());
-				if(controller.addLabelToVideo(video, l)) {
-					addLabelToVideo(l);
-					textField.setText("");
-					validate();
-				}
+				Label l = controller.addLabelToVideo(video, textField.getText());
+				addLabelToVideo(l);
+				textField.setText("");
+				validate();
 			}
 		});
 		

@@ -1,6 +1,7 @@
 package um.tds.projects.appvideo.controller;
 
 import um.tds.projects.appvideo.backend.Label;
+import um.tds.projects.appvideo.backend.LabelRepository;
 import um.tds.projects.appvideo.backend.Playlist;
 import um.tds.projects.appvideo.backend.User;
 import um.tds.projects.appvideo.backend.UserRepository;
@@ -8,6 +9,7 @@ import um.tds.projects.appvideo.backend.Video;
 import um.tds.projects.appvideo.backend.VideoRepository;
 import um.tds.projects.appvideo.backend.filters.IVideoFilter;
 import um.tds.projects.appvideo.persistence.DaoFactory;
+import um.tds.projects.appvideo.persistence.ILabelAdapter;
 import um.tds.projects.appvideo.persistence.IPlaylistAdapter;
 import um.tds.projects.appvideo.persistence.IUserAdapter;
 import um.tds.projects.appvideo.persistence.IVideoAdapter;
@@ -29,8 +31,11 @@ public class Controller {
 	private IPlaylistAdapter playlistAdapter;
 	private IUserAdapter     userAdapter;
 	private IVideoAdapter    videoAdapter;
+	private ILabelAdapter	 labelAdapter;
+	
 	private UserRepository   userRepository;
 	private VideoRepository  videoRepository;
+	private LabelRepository  labelRepository;
 	
 	// Current user
 	private User currentUser;
@@ -120,6 +125,10 @@ public class Controller {
 	public List<Video> getAllVideos() {
 		return videoRepository.getAllVideos();
 	}
+	
+	public List<Label> getAllLabels(){
+		return labelRepository.getAllLabels();
+	}
 
 	public List<Video> searchVideos(String str, List<IVideoFilter> filter) {
 		return videoRepository.findVideo(str, filter);
@@ -130,12 +139,16 @@ public class Controller {
 		videoAdapter.modifyVideo(v);
 	}
 	
-	public boolean addLabelToVideo(Video v,Label label) {
-		if(v.addLabel(label)) {
-			videoAdapter.modifyVideo(v);
-			return true;
+	public Label addLabelToVideo(Video v,String name) {
+		Label l = labelRepository.getLabel(name);
+		if(l == null) {
+			l = new Label(name);
+			labelAdapter.registerLabel(l);
+			labelRepository.addLabel(l);
 		}
-		return false;
+		v.addLabel(l);
+		videoAdapter.modifyVideo(v);
+		return l;
 	}
 
 	private void initializeAdapters(){
@@ -151,6 +164,7 @@ public class Controller {
 		userAdapter     = factory.getUserAdapter();
 		playlistAdapter = factory.getPlaylistAdapter();
 		videoAdapter    = factory.getVideoAdapter();
+		labelAdapter	= factory.getLabelAdapter();
 		
 		logger.info("Finished initialising the adapters");
 	}
@@ -159,6 +173,7 @@ public class Controller {
 		logger.info("Initialising repositories");
 		userRepository  = UserRepository.getUniqueInstance();
 		videoRepository = VideoRepository.getUniqueInstance(); 
+		labelRepository = LabelRepository.getUniqueInstance();
 	}
 	
 	private void cargarVideosPrueba() {

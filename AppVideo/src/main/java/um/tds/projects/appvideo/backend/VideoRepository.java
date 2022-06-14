@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 
 public class VideoRepository {
 
-
 	private Map<String, Video> cache;
 	private static VideoRepository instance;
 

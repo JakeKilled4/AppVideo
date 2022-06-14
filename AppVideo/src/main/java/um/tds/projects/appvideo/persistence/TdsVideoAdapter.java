@@ -113,6 +113,11 @@ public class TdsVideoAdapter implements IVideoAdapter {
 
 		// Load all labels
 		List<Label> labels = getLabelsFromCodes(getFieldValue(eVideo, "labels"));
+		System.out.println(video.getTitle());
+		System.out.println("Num labels:"+labels.size());
+		for(Label label:labels) {
+			System.out.println(label.getName());
+		}
 		for (Label label : labels)
 			video.addLabel(label);
 
@@ -135,21 +140,23 @@ public class TdsVideoAdapter implements IVideoAdapter {
 	private void modifyLabels(Video oldVideo, Video newVideo) {
 		// We will store the labels in two hash sets for rapidly
 		// computing whether some label belongs to both videos.
-		Set<Label> oldLabels = new HashSet<Label>();
-		Set<Label> newLabels = new HashSet<Label>();
+		Set<Integer> oldLabels = new HashSet<Integer>();
+		Set<Integer> newLabels = new HashSet<Integer>();
 
 		// Populate the sets with each video's labels.
 		for (Label label: oldVideo.getLabels())
-			oldLabels.add(label);
+			oldLabels.add(label.getCode());
+		
 		for (Label label: newVideo.getLabels())
-			newLabels.add(label);
+			newLabels.add(label.getCode());
 		
 		// Register the added labels, remove the deleted ones.
-		for (Label label: newVideo.getLabels())
-			if (!oldLabels.contains(label))
+		for (Label label : newVideo.getLabels())
+			if(!oldLabels.contains(label.getCode()))
 				labelAdapter.registerLabel(label);
+		
 		for (Label label: oldVideo.getLabels())
-			if (!newLabels.contains(label))
+			if(!newLabels.contains(label.getCode()))
 				labelAdapter.removeLabel(label);
 	}
 	

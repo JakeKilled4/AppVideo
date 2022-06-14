@@ -5,7 +5,6 @@ import java.util.List;
 
 public class Video extends Identifiable {
 	
-	private static int MAX_LABELS = 6;
 	private String url;
 	private String title;
 	private int numViews;
@@ -47,13 +46,9 @@ public class Video extends Identifiable {
 	public List<Label> getLabels() {
 		return labels;
 	}
-
-	public boolean addLabel(Label label) {
-		if(labels.size() < MAX_LABELS) {
-			labels.add(label);
-			return true;
-		}
-		return false;
+	
+	public void addLabel(Label l) {
+		labels.add(l);
 	}
 
 }

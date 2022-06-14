@@ -64,12 +64,14 @@ public class MainWindow extends JFrame {
 
 	public void activateSearchPanel() {
 		setContentPane(searchPanel);
+		searchPanel.update();
 		videoWeb.cancel();
 		validate();
 	}
 	
 	public void activatePreferencesPanel() {
 		setContentPane(preferencesPanel);
+		preferencesPanel.update();
 		videoWeb.cancel();
 		validate();
 	}

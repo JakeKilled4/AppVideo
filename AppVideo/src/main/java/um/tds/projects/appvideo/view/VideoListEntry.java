@@ -87,6 +87,5 @@ public class VideoListEntry extends ListEntry {
 		
 		return hPanel;
 	}
-	
 
 }

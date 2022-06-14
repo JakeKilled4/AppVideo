@@ -134,24 +134,24 @@ public class TdsUserAdapter implements IUserAdapter {
 	private void modifyPlaylists(User oldUser, User newUser) {
 		// We will store the playlists in two hash sets for rapidly
 		// computing whether some playlist belongs to both users.
-		Set<Playlist> oldPl = new HashSet<Playlist>();
-		Set<Playlist> newPl = new HashSet<Playlist>();
+		Set<Integer> oldPl = new HashSet<Integer>();
+		Set<Integer> newPl = new HashSet<Integer>();
 
 		// Populate the sets with each users's playlists.
 		for (Playlist pl: oldUser.getPlaylists())
-			oldPl.add(pl);
+			oldPl.add(pl.getCode());
 		for (Playlist pl: newUser.getPlaylists())
-			newPl.add(pl);
+			newPl.add(pl.getCode());
 		
 		// Register the added playlists, remove the deleted ones.
 		for (Playlist pl: newUser.getPlaylists()) {
-			if (!oldPl.contains(pl)) {
-				logger.info(String.format("Added playlist '%s' to user '%s'", pl.getName(), newUser.getName()));
+			if (!oldPl.contains(pl.getCode())) {
+				//logger.info(String.format("Added playlist '%s' to user '%s'", pl.getName(), newUser.getName()));
 				playlistAdapter.registerPlaylist(pl);
 			}
 		}
 		for (Playlist pl: oldUser.getPlaylists())
-			if (!newPl.contains(pl))
+			if (!newPl.contains(pl.getCode()))
 				playlistAdapter.removePlaylist(pl);
 	}
 	

@@ -21,6 +21,7 @@ public abstract class CommonPanel extends JPanel {
 	private JPanel searchBar;
 	private JPanel innerPanel;
 	private JPanel rightPanel;
+	private JPanel centerPanel;
 
 
 	public CommonPanel(MainWindow mainWindow) {
@@ -38,7 +39,7 @@ public abstract class CommonPanel extends JPanel {
 		innerPanel = createInnerPanel();
 		rightPanel = createRightPanel();
 
-		JPanel centerPanel = new JPanel();
+		centerPanel = new JPanel();
 		
 		centerPanel.setBackground(Constants.BACKGROUND_COLOR);
 		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
@@ -57,6 +58,12 @@ public abstract class CommonPanel extends JPanel {
 	}
 
 	protected abstract JPanel createInnerPanel();
+	public void update() {
+		this.centerPanel.remove(innerPanel);
+		this.innerPanel = createInnerPanel();
+		this.centerPanel.add(innerPanel);
+		validate();
+	}
 
 	protected JPanel createRightPanel() {
 		return null;

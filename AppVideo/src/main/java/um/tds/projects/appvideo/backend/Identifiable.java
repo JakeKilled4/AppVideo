@@ -1,13 +1,11 @@
 package um.tds.projects.appvideo.backend;
 
-import java.util.Random;
-
 public class Identifiable {
 
 	private int code;
 
 	public Identifiable() {
-		this.code = (new Random()).nextInt();
+		this.code = -1;
 	}
 
 	public int getCode() {

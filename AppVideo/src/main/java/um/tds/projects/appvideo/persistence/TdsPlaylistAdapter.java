@@ -13,7 +13,6 @@ import beans.Entidad;
 import beans.Propiedad;
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
-import um.tds.projects.appvideo.backend.Label;
 import um.tds.projects.appvideo.backend.Playlist;
 import um.tds.projects.appvideo.backend.Video;
 
@@ -133,21 +132,21 @@ public class TdsPlaylistAdapter implements IPlaylistAdapter {
 	private void modifyVideos(Playlist oldPl, Playlist newPl) {
 		// We will store the videos in two hash sets for rapidly
 		// computing whether some videos belongs to both playlists.
-		Set<Video> oldVideos = new HashSet<Video>();
-		Set<Video> newVideos = new HashSet<Video>();
+		Set<Integer> oldVideos = new HashSet<Integer>();
+		Set<Integer> newVideos = new HashSet<Integer>();
 
 		// Populate the sets with each playlist's videos.
 		for (Video v: oldPl.getVideos())
-			oldVideos.add(v);
+			oldVideos.add(v.getCode());
 		for (Video v: newPl.getVideos())
-			newVideos.add(v);
+			newVideos.add(v.getCode());
 		
 		// Register the added videos, remove the deleted ones.
 		for (Video v: newPl.getVideos())
-			if (!oldVideos.contains(v))
+			if (!oldVideos.contains(v.getCode()))
 				videoAdapter.registerVideo(v);
 		for (Video v: oldPl.getVideos())
-			if (!newVideos.contains(v))
+			if (!newVideos.contains(v.getCode()))
 				videoAdapter.removeVideo(v);
 	}
 	
