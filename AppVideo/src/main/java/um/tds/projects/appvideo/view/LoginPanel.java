@@ -92,7 +92,7 @@ public class LoginPanel extends JPanel
 			boolean loginOk = controller.login(username, password);
 			textField.setText("");
 			pwdPassword.setText("");
-			if (loginOk) mainWindow.activatePlaylistsPanel();
+			if (loginOk) mainWindow.enterApp();
 			else loginIncorrect.setVisible(true);
 			
 		});

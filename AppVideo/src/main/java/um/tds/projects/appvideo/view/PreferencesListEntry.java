@@ -15,15 +15,15 @@ public class PreferencesListEntry extends JPanel {
 
 	private JPanel vPanel;
 	private JComponent inner;
-
-	public PreferencesListEntry(JComponent inner) {
+	public PreferencesListEntry(JComponent inner, int height) {
 		this.inner = inner;
 
-		setBackground(Constants.BUTTON_COLOR);
+		setBackground(Constants.FOREGROUND_COLOR);
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		setMaximumSize(new Dimension(Constants.PAGE_WIDTH, Constants.VIDEOLIST_ENTRY_HEIGHT));
-		setMinimumSize(new Dimension(Constants.PAGE_WIDTH, Constants.VIDEOLIST_ENTRY_HEIGHT));
-		setPreferredSize(new Dimension(Constants.PAGE_WIDTH, Constants.VIDEOLIST_ENTRY_HEIGHT));
+		
+		setMaximumSize(new Dimension(Constants.PAGE_WIDTH, height));
+		setMinimumSize(new Dimension(Constants.PAGE_WIDTH, height));
+		setPreferredSize(new Dimension(Constants.PAGE_WIDTH, height));
 
 		addComponents();
 	}
@@ -41,13 +41,14 @@ public class PreferencesListEntry extends JPanel {
 		JPanel hPanel = new JPanel();
 		hPanel.setBackground(getBackground());
 		hPanel.setLayout(new BoxLayout(hPanel, BoxLayout.X_AXIS));
-		hPanel.setAlignmentX(LEFT_ALIGNMENT);
+		hPanel.setAlignmentX(CENTER_ALIGNMENT);
 		hPanel.add(inner);
 
 		vPanel.add(Box.createRigidArea(new Dimension(Constants.PAGE_WIDTH - 10, 5)));
 		vPanel.add(hPanel);
 		vPanel.add(Box.createRigidArea(new Dimension(Constants.PAGE_WIDTH - 10, 5)));
-
+		
+		
 		add(Box.createRigidArea(new Dimension(5, Constants.VIDEOLIST_ENTRY_HEIGHT)));
 		add(vPanel);
 		add(Box.createRigidArea(new Dimension(5, Constants.VIDEOLIST_ENTRY_HEIGHT)));

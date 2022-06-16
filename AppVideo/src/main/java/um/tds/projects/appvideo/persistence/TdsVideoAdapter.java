@@ -113,11 +113,7 @@ public class TdsVideoAdapter implements IVideoAdapter {
 
 		// Load all labels
 		List<Label> labels = getLabelsFromCodes(getFieldValue(eVideo, "labels"));
-		System.out.println(video.getTitle());
-		System.out.println("Num labels:"+labels.size());
-		for(Label label:labels) {
-			System.out.println(label.getName());
-		}
+		
 		for (Label label : labels)
 			video.addLabel(label);
 

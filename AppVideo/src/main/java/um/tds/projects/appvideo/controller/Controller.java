@@ -59,6 +59,10 @@ public class Controller {
 	public boolean userIsRegistered(String username) {
 		return userRepository.containsUser(username);
 	}
+	
+	public User getCurrentUser() {
+		return this.currentUser;
+	}
 
 	/**
 	 * Returns true iff the login was successful (If username was in the user db and the password is correct)

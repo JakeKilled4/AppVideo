@@ -196,7 +196,7 @@ public class RegisterPanel extends JPanel {
 			
 				resetFields();
 			
-			if (registerOk) mainWindow.activatePlaylistsPanel();
+			if (registerOk) mainWindow.enterApp();
 			else {
 				error.setText("This username is already taken");
 				error.setVisible(true);

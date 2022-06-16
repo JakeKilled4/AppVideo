@@ -27,10 +27,7 @@ public class MainWindow extends JFrame {
 	public MainWindow(VideoWeb videoWeb) {
 		this.videoWeb = videoWeb;
 		this.loginPanel        = new LoginPanel      (this);
-		this.playlistsPanel    = new PlaylistsPanel  (this);
-		this.preferencesPanel  = new PreferencesPanel(this);
-		this.searchPanel       = new SearchPanel     (this);
-		this.registerPanel 	  = new RegisterPanel   (this);
+		this.registerPanel 	   = new RegisterPanel   (this);
 	
 		videoViewingPanel = null; // Es redefinido al visualizar cada video.
 
@@ -45,6 +42,12 @@ public class MainWindow extends JFrame {
 		return videoWeb;
 	}
 
+	public void enterApp() {
+		this.preferencesPanel  = new PreferencesPanel(this);
+		this.playlistsPanel    = new PlaylistsPanel  (this);
+		this.searchPanel       = new SearchPanel     (this);
+		activateSearchPanel();
+	}
 	public void activateLoginPanel() {
 		setContentPane(loginPanel);
 		validate();
