@@ -1,11 +1,6 @@
 package um.tds.projects.appvideo.main;
 
 import java.awt.EventQueue;
-import java.util.List;
-
-import beans.Entidad;
-import tds.driver.FactoriaServicioPersistencia;
-import tds.driver.ServicioPersistencia;
 import tds.video.VideoWeb;
 import um.tds.projects.appvideo.view.MainWindow;
 

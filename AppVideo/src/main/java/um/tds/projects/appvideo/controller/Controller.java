@@ -19,7 +19,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
-
 public class Controller {
 
 	// Controller's unique instance
@@ -83,7 +82,25 @@ public class Controller {
 		logger.info("User logged out");
 		currentUser = null;
 	}
-
+	
+	/**
+	 * Returns true iff the change process was successful (If the username was not already taken)
+	 */
+	public boolean changeUserData(String name, String surname, Date dateOfBirth, String email, String username, String password) {
+		if(this.currentUser == null) return false;
+		if(!this.currentUser.getUsername().equals(username) && userRepository.containsUser(username)) return false;
+		userRepository.removeUser(this.currentUser);
+		this.currentUser.setName(name);
+		this.currentUser.setSurname(surname);
+		this.currentUser.setDateOfBirth(dateOfBirth);
+		this.currentUser.setEmail(email);
+		this.currentUser.setUsername(username);
+		this.currentUser.setPassword(password);
+		userRepository.addUser(this.currentUser);
+		userAdapter.modifyUser(this.currentUser);
+		return true;
+	}
+	
 	/**
 	 * Returns true iff the register process was successful (If the username was not already taken)
 	 */

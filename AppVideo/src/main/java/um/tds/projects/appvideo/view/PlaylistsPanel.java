@@ -10,11 +10,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;

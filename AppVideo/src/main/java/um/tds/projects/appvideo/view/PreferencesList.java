@@ -2,12 +2,10 @@ package um.tds.projects.appvideo.view;
 
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.File;
-
-
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -17,13 +15,13 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
-
+import javax.swing.UIManager;
 
 import com.toedter.calendar.JDateChooser;
-import com.toedter.calendar.JTextFieldDateEditor;
 
 import pulsador.Luz;
 import um.tds.projects.appvideo.backend.User;
@@ -35,14 +33,23 @@ public class PreferencesList extends JPanel {
 
 	private MainWindow mainWindow;
 	private JPanel innerPage;
-	private JDateChooser date;
 	private Controller controller;
 	private ComponentFactory componentFactory;
+	private JTextField nameFl;
+	private JTextField surnameFl;
+	private JTextField usernameFl; 
+	private JDateChooser date;
+	private JTextField emailFl;
+	private JPasswordField newPasswordFl;
+	private JPasswordField confirmNewPasswordFl;
+	private User u;
+	
 
 	public PreferencesList(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 		this.controller = Controller.getUniqueInstance();
 		this.componentFactory = ComponentFactory.getUniqueInstance();
+		this.u = controller.getCurrentUser();
 		setBackground(Constants.BACKGROUND_COLOR);
 		setLayout    (new BoxLayout(this, BoxLayout.Y_AXIS));
 		addComponents();
@@ -69,36 +76,40 @@ public class PreferencesList extends JPanel {
 	}
 	
 	private void addChangeForm() {
-		User u = controller.getCurrentUser();
+		
 		JPanel p = new JPanel();
 		p.setBackground(Constants.FOREGROUND_COLOR);
-		p.setLayout(new GridLayout(6, 2, 0, 10));
+		p.setLayout(new GridLayout(7, 2, 0, 10));
 		
 		JLabel nameLbl = this.componentFactory.specialLabel("Name:");
-		JTextField nameFl = this.componentFactory.specialTextField(u.getName());
+		nameFl = this.componentFactory.specialTextField(u.getName());
 		
 		JLabel surnameLbl = this.componentFactory.specialLabel("Surname:");
-		JTextField surnameFl = this.componentFactory.specialTextField(u.getSurname());
+		surnameFl = this.componentFactory.specialTextField(u.getSurname());
+		
+		JLabel usernameLbl = componentFactory.specialLabel("Username:");
+    	usernameFl = componentFactory.specialTextField(u.getUsername());
 		
 		JLabel dayOfBirthLbl = this.componentFactory.specialLabel("Date Of Birth:");
 		date = this.componentFactory.specialDateChooser(u.getDateOfBirth());
 		
 		JLabel emailLbl = this.componentFactory.specialLabel("Email");
-		JTextField emailFl = this.componentFactory.specialTextField(u.getEmail());
+		emailFl = this.componentFactory.specialTextField(u.getEmail());
 		
 		JLabel newPasswordLbl = this.componentFactory.specialLabel("Password:");
-		JPasswordField newPasswordFl = this.componentFactory.specialPasswordField(u.getPassword());
+		newPasswordFl = this.componentFactory.specialPasswordField(u.getPassword());
 		
 		JLabel confirmNewPasswordLbl = this.componentFactory.specialLabel("Confirm password:");
-		JPasswordField confirmNewPasswordFl = this.componentFactory.specialPasswordField(u.getPassword());
+		confirmNewPasswordFl = this.componentFactory.specialPasswordField(u.getPassword());
 		
 		p.add(nameLbl); p.add(nameFl);
 		p.add(surnameLbl); p.add(surnameFl);
+		p.add(usernameLbl); p.add(usernameFl);
 		p.add(dayOfBirthLbl); p.add(date);
 		p.add(emailLbl); p.add(emailFl); 
 		p.add(newPasswordLbl); p.add(newPasswordFl);
 		p.add(confirmNewPasswordLbl); p.add(confirmNewPasswordFl);
-		innerPage.add(new PreferencesListEntry(p, 210));
+		innerPage.add(new PreferencesListEntry(p, 240));
 		
 	}
 	
@@ -151,8 +162,56 @@ public class PreferencesList extends JPanel {
 		p.setBackground(Constants.FOREGROUND_COLOR);
 		JButton logoutBtn = new JButton("Log out");
 		JButton saveChangesBtn = new JButton("Save");
+		saveChangesBtn.addActionListener(e -> {
+			String name = nameFl.getText();
+			String surname = surnameFl.getText();
+			String username = usernameFl.getText();
+			Date dateOfBirth = date.getDate();
+			String email = emailFl.getText();
+			String password = String.valueOf(newPasswordFl.getPassword());
+			String confirmPassword = String.valueOf(confirmNewPasswordFl.getPassword());
+			
+			UIManager.put("OptionPane.background", Constants.BACKGROUND_COLOR);
+			UIManager.put("Panel.background", Constants.BACKGROUND_COLOR);
+			UIManager.put("OptionPane.messageForeground", Constants.FONT_COLOR);
+			
+			
+			if(name.isBlank() || username.isBlank() || dateOfBirth == null ||  password.isBlank()) {
+				JOptionPane.showMessageDialog(null,"Complete correctly all the mandatory fields","Error",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
+			if (!password.equals(confirmPassword)) {
+				newPasswordFl.setText(String.valueOf(u.getPassword()));
+				confirmNewPasswordFl.setText(String.valueOf(u.getPassword()));
+				JOptionPane.showMessageDialog(null,"Passwords doesn't match","Error",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+
+			boolean registerOk = controller.changeUserData(
+				name, surname, dateOfBirth, email,
+				username, password);
+			
+			if (registerOk) {/*
+				nameFl.setText(u.getName());
+	    		surnameFl.setText(u.getSurname());
+	    		date.setDate(u.getDateOfBirth());
+	    		emailFl.setText(u.getEmail());
+	    		usernameFl.setText(u.getUsername());
+	    		newPasswordFl.setText(u.getPassword());
+	    		confirmNewPasswordFl.setText(u.getPassword());
+				mainWindow.enterApp();*/
+				JOptionPane.showMessageDialog(null,"Saved correctly","Saved",JOptionPane.INFORMATION_MESSAGE);
+			}
+			else {
+				usernameFl.setText(u.getUsername());
+				JOptionPane.showMessageDialog(null,"This username is already taken","Error",JOptionPane.ERROR_MESSAGE);
+			}
+			
+		});
+		
 		logoutBtn.addActionListener(e -> {
-			mainWindow.activateLoginPanel();
+			 mainWindow.activateLoginPanel();
 		});
 		p.add(logoutBtn);
 		p.add(Box.createRigidArea(new Dimension(20,0)));

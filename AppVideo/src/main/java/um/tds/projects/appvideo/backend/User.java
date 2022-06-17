@@ -5,7 +5,6 @@ import um.tds.projects.appvideo.backend.filters.IVideoFilter;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 public class User extends Identifiable {
 	private String name;
