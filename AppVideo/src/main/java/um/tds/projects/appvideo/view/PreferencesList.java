@@ -37,10 +37,12 @@ public class PreferencesList extends JPanel {
 	private JPanel innerPage;
 	private JDateChooser date;
 	private Controller controller;
+	private ComponentFactory componentFactory;
 
 	public PreferencesList(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 		this.controller = Controller.getUniqueInstance();
+		this.componentFactory = ComponentFactory.getUniqueInstance();
 		setBackground(Constants.BACKGROUND_COLOR);
 		setLayout    (new BoxLayout(this, BoxLayout.Y_AXIS));
 		addComponents();
@@ -72,45 +74,23 @@ public class PreferencesList extends JPanel {
 		p.setBackground(Constants.FOREGROUND_COLOR);
 		p.setLayout(new GridLayout(6, 2, 0, 10));
 		
-		JLabel nameLbl = configLabel("Name:");
-		JTextField nameFl = configTextField();
-		nameFl.setText(u.getName());
+		JLabel nameLbl = this.componentFactory.specialLabel("Name:");
+		JTextField nameFl = this.componentFactory.specialTextField(u.getName());
 		
-		JLabel surnameLbl = configLabel("Surname:");
-		JTextField surnameFl = configTextField();
-		surnameFl.setText(u.getSurname());
+		JLabel surnameLbl = this.componentFactory.specialLabel("Surname:");
+		JTextField surnameFl = this.componentFactory.specialTextField(u.getSurname());
 		
-		JLabel dayOfBirthLbl = configLabel("Date Of Birth:");
-		date = new JDateChooser();
-		for(Component c : date.getComponents()) {
-			c.setBackground(Constants.SEARCH_COLOR);
-			c.setForeground(Constants.FONT_COLOR);
-		}
-		JTextFieldDateEditor e =  (JTextFieldDateEditor) date.getDateEditor();
-		e.setBorder(BorderFactory.createEmptyBorder());
-		e.setFont(Constants.DEFAULT_FONT);
-		e.setCaretColor(Constants.FONT_COLOR);
-		e.setDate(u.getDateOfBirth());
+		JLabel dayOfBirthLbl = this.componentFactory.specialLabel("Date Of Birth:");
+		date = this.componentFactory.specialDateChooser(u.getDateOfBirth());
 		
-		date.setBackground(Constants.SEARCH_COLOR);
-		date.setForeground(Constants.FONT_COLOR);
-		date.setFont(Constants.DEFAULT_FONT);
-		date.setBorder(BorderFactory.createEmptyBorder());
-		date.setMinimumSize(new Dimension(date.getWidth(),25));
-		date.setPreferredSize(new Dimension(date.getWidth(),25));
+		JLabel emailLbl = this.componentFactory.specialLabel("Email");
+		JTextField emailFl = this.componentFactory.specialTextField(u.getEmail());
 		
+		JLabel newPasswordLbl = this.componentFactory.specialLabel("Password:");
+		JPasswordField newPasswordFl = this.componentFactory.specialPasswordField(u.getPassword());
 		
-		JLabel emailLbl = configLabel("Email");
-		JTextField emailFl = configTextField();
-		emailFl.setText(u.getEmail());
-		
-		JLabel newPasswordLbl = configLabel("Password:");
-		JPasswordField newPasswordFl = configPasswordField();
-		newPasswordFl.setText(u.getPassword());		
-		
-		JLabel confirmNewPasswordLbl = configLabel("Confirm password:");
-		JPasswordField confirmNewPasswordFl = configPasswordField();
-		confirmNewPasswordFl.setText(u.getPassword());
+		JLabel confirmNewPasswordLbl = this.componentFactory.specialLabel("Confirm password:");
+		JPasswordField confirmNewPasswordFl = this.componentFactory.specialPasswordField(u.getPassword());
 		
 		p.add(nameLbl); p.add(nameFl);
 		p.add(surnameLbl); p.add(surnameFl);
@@ -120,39 +100,6 @@ public class PreferencesList extends JPanel {
 		p.add(confirmNewPasswordLbl); p.add(confirmNewPasswordFl);
 		innerPage.add(new PreferencesListEntry(p, 210));
 		
-	}
-	private JLabel configLabel(String name) {
-		JLabel label = new JLabel(name);
-		label.setBackground(Constants.FOREGROUND_COLOR);
-		label.setFont(Constants.DEFAULT_FONT);
-		label.setForeground(Constants.FONT_COLOR);
-		return label;
-	}
-	
-	private JTextField configTextField() {
-		JTextField tf = new JTextField();
-		tf.setColumns(10);
-		tf.setBackground(Constants.SEARCH_COLOR);
-		tf.setForeground(Constants.FONT_COLOR);
-		tf.setFont(Constants.DEFAULT_FONT);
-		tf.setBorder(BorderFactory.createEmptyBorder());
-		tf.setCaretColor(Constants.FONT_COLOR);
-		tf.setMinimumSize(new Dimension(tf.getWidth(),25));
-		tf.setPreferredSize(new Dimension(tf.getWidth(),25));
-		return tf;
-	}
-	
-	private JPasswordField configPasswordField() {
-		JPasswordField tf = new JPasswordField();
-		tf.setColumns(10);
-		tf.setBackground(Constants.SEARCH_COLOR);
-		tf.setForeground(Constants.FONT_COLOR);
-		tf.setFont(Constants.DEFAULT_FONT);
-		tf.setBorder(BorderFactory.createEmptyBorder());
-		tf.setCaretColor(Constants.FONT_COLOR);
-		tf.setMinimumSize(new Dimension(tf.getWidth(), 25));
-		tf.setPreferredSize(new Dimension(tf.getWidth(), 25));
-		return tf;
 	}
 	
 	private void addTitle() {

@@ -16,8 +16,11 @@ import javax.swing.JTextField;
 public class SearchBar extends JPanel{
 	
 	private JTextField txtSearch;
+	private ComponentFactory componentFactory;
 	
 	public SearchBar(Color backgroundColor){
+		this.componentFactory = ComponentFactory.getUniqueInstance();
+		
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		setMaximumSize(new Dimension(Short.MAX_VALUE,25));
 		setBackground(backgroundColor);
@@ -29,16 +32,7 @@ public class SearchBar extends JPanel{
 	
 		//add(Box.createRigidArea(new Dimension(5, 0)));
 		
-		txtSearch = new JTextField();
-		txtSearch.setColumns(10);
-		txtSearch.setBackground(Constants.SEARCH_COLOR);
-		txtSearch.setForeground(Constants.FONT_COLOR);
-		txtSearch.setFont(Constants.DEFAULT_FONT);
-		txtSearch.setBorder(BorderFactory.createEmptyBorder());
-		txtSearch.setCaretColor(Constants.FONT_COLOR);
-		txtSearch.setText("Search...");
-		txtSearch.setMinimumSize(new Dimension(txtSearch.getWidth(),25));
-		txtSearch.setPreferredSize(new Dimension(txtSearch.getWidth(),25));
+		txtSearch = componentFactory.specialTextField("Search...");
 		txtSearch.addFocusListener(new FocusListener() {
 			@Override
 			public void focusLost(FocusEvent e) {
