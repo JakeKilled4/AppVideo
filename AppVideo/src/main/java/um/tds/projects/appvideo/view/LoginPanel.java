@@ -12,7 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 
 import um.tds.projects.appvideo.controller.Controller;
 import javax.swing.JPasswordField;
@@ -77,12 +76,8 @@ public class LoginPanel extends JPanel
 			usernameField.setText("");
 			passwordField.setText("");
 			if (loginOk) mainWindow.enterApp();
-			else {
-				 UIManager.put("OptionPane.background", Constants.BACKGROUND_COLOR);
-				 UIManager.put("Panel.background", Constants.BACKGROUND_COLOR);
-				 UIManager.put("OptionPane.messageForeground", Constants.FONT_COLOR);
-				 JOptionPane.showMessageDialog(null,"Incorrect username or password","Error",JOptionPane.ERROR_MESSAGE);
-			}
+			else 		 mainWindow.showPopUp("Error","Incorrect username or password",JOptionPane.ERROR_MESSAGE);
+			
 		});
     	
     	JButton registerBtn = new JButton("Register");

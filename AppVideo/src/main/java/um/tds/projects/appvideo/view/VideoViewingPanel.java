@@ -19,7 +19,7 @@ import javax.swing.BoxLayout;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import javax.swing.JSeparator;
@@ -95,7 +95,9 @@ public class VideoViewingPanel extends CommonPanel  {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Label l = controller.addLabelToVideo(video, textField.getText());
-				addLabelToVideo(l);
+				if(l == null) 
+					mainWindow.showPopUp("Information", "The label is alredy in the video" , JOptionPane.INFORMATION_MESSAGE);
+				else addLabelToVideo(l);	
 				textField.setText("");
 				validate();
 			}

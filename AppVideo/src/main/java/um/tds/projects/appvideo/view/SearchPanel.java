@@ -30,8 +30,8 @@ public class SearchPanel extends CommonPanel {
 
 	@Override
 	protected JPanel createRightPanel() {
-		return new LabelPanel("Dibujos animados", "Pelicula", "Serie", "Intriga", "Terror", "Clasico", "Videoclip",
-				"Adultos", "Infantil");
+		
+		return new LabelPanel(controller.getAllLabels());
 	}
 
 }

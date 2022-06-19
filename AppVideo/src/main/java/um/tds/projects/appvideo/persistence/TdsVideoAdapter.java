@@ -157,7 +157,7 @@ public class TdsVideoAdapter implements IVideoAdapter {
 	}
 	
 	
-	private String getCodesLabels(List<Label> labels) {
+	private String getCodesLabels(Set<Label> labels) {
 		String out = "";
 		for (Label label : labels)
 			out += String.valueOf(label.getCode()) + " ";

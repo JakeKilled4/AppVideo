@@ -13,7 +13,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -102,19 +101,17 @@ public class RegisterPanel extends JPanel {
 			String password = String.valueOf(passwordField.getPassword());
 			String copassword = String.valueOf(confirmPasswordField.getPassword());
 			
-			UIManager.put("OptionPane.background", Constants.BACKGROUND_COLOR);
-			UIManager.put("Panel.background", Constants.BACKGROUND_COLOR);
-			UIManager.put("OptionPane.messageForeground", Constants.FONT_COLOR);
+			
 			
 			if(name.isBlank() || username.isBlank() || dateOfBirth == null ||  password.isBlank()) {
-				JOptionPane.showMessageDialog(null,"Complete correctly all the mandatory fields","Error",JOptionPane.ERROR_MESSAGE);
+				mainWindow.showPopUp("Error","Complete correctly all the mandatory fields", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			
 			if (!password.equals(copassword)) {
 				passwordField.setText("");
 				confirmPasswordField.setText("");
-				JOptionPane.showMessageDialog(null,"Passwords doesn't match","Error",JOptionPane.ERROR_MESSAGE);
+				mainWindow.showPopUp("Error","Passwords doesn't match", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 
@@ -134,7 +131,7 @@ public class RegisterPanel extends JPanel {
 			}
 			else {
 				usernameField.setText("");
-				JOptionPane.showMessageDialog(null,"This username is already taken","Error",JOptionPane.ERROR_MESSAGE);
+				mainWindow.showPopUp("Error","This username is already taken", JOptionPane.ERROR_MESSAGE);
 			}
 		});
     	

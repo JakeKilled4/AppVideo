@@ -1,24 +1,25 @@
 package um.tds.projects.appvideo.backend;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Video extends Identifiable {
 	
 	private String url;
 	private String title;
 	private int numViews;
-	private List<Label> labels;
+	//private List<Label> labels;
+	private Set<Label> labels;
 
 	public Video(String url, String title, int numViews) {
 		super();
 		this.url = url;
 		this.title = title;
 		this.numViews = numViews;
-		this.labels = new ArrayList<Label>();
+		this.labels = new TreeSet<Label>((l1, l2) -> l1.getName().compareTo(l2.getName()));
 	}
 
-	public Video(String url, String title, int numViews, List<Label> labels) {
+	public Video(String url, String title, int numViews,Set<Label> labels) {
 		this(url, title, numViews);
 		this.labels = labels;
 	}
@@ -43,12 +44,14 @@ public class Video extends Identifiable {
 		this.numViews++;
 	}
 
-	public List<Label> getLabels() {
+	public Set<Label> getLabels() {
 		return labels;
 	}
 	
-	public void addLabel(Label l) {
+	public boolean addLabel(Label l) {
+		if(labels.contains(l)) return false;
 		labels.add(l);
+		return true;
 	}
 
 }

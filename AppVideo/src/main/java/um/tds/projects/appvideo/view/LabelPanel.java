@@ -5,7 +5,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -21,6 +22,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import um.tds.projects.appvideo.backend.Label;
+
 import javax.swing.JList;
 
 @SuppressWarnings("serial")
@@ -35,7 +38,7 @@ public class LabelPanel extends JPanel{
 	private ArrayList<String> labels;
 	
 	
-	public LabelPanel(String...filterLabels) {
+	public LabelPanel(List<Label> filterLabels) {
 		
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 		setBackground(Constants.FOREGROUND_COLOR);
@@ -61,10 +64,9 @@ public class LabelPanel extends JPanel{
 		add(Box.createRigidArea(new Dimension(0, 5)));
 		
 		
-		labels = new ArrayList<String>(Arrays.asList(filterLabels));
 		
 		availableModel = new DefaultListModel<String>();
-		availableModel.addAll(Arrays.asList(filterLabels));
+		availableModel.addAll(filterLabels.stream().map(l -> l.getName()).collect(Collectors.toList()));
 
 		availableList = new JList<String>(availableModel);
 		availableList.setLayoutOrientation(JList.VERTICAL);

@@ -4,14 +4,14 @@ package um.tds.projects.appvideo.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.io.File;
+
 import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
+
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JLabel;
@@ -19,10 +19,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
+
 
 import com.toedter.calendar.JDateChooser;
 
+import pulsador.EncendidoEvent;
 import pulsador.Luz;
 import um.tds.projects.appvideo.backend.User;
 import um.tds.projects.appvideo.controller.Controller;
@@ -68,6 +69,7 @@ public class PreferencesList extends JPanel {
 		addLoadVideo();
 		addChangeForm();
 		addButtons();
+		addMandatoryFields();
 		
 		JScrollPane scrollPane = new JScrollPane(innerPage);
 		scrollPane.setBackground(Constants.BACKGROUND_COLOR);
@@ -81,25 +83,25 @@ public class PreferencesList extends JPanel {
 		p.setBackground(Constants.FOREGROUND_COLOR);
 		p.setLayout(new GridLayout(7, 2, 0, 10));
 		
-		JLabel nameLbl = this.componentFactory.specialLabel("Name:");
+		JLabel nameLbl = this.componentFactory.specialLabel("*Name:");
 		nameFl = this.componentFactory.specialTextField(u.getName());
 		
 		JLabel surnameLbl = this.componentFactory.specialLabel("Surname:");
 		surnameFl = this.componentFactory.specialTextField(u.getSurname());
 		
-		JLabel usernameLbl = componentFactory.specialLabel("Username:");
+		JLabel usernameLbl = componentFactory.specialLabel("*Username:");
     	usernameFl = componentFactory.specialTextField(u.getUsername());
 		
-		JLabel dayOfBirthLbl = this.componentFactory.specialLabel("Date Of Birth:");
+		JLabel dayOfBirthLbl = this.componentFactory.specialLabel("*Date Of Birth:");
 		date = this.componentFactory.specialDateChooser(u.getDateOfBirth());
 		
 		JLabel emailLbl = this.componentFactory.specialLabel("Email");
 		emailFl = this.componentFactory.specialTextField(u.getEmail());
 		
-		JLabel newPasswordLbl = this.componentFactory.specialLabel("Password:");
+		JLabel newPasswordLbl = this.componentFactory.specialLabel("*Password:");
 		newPasswordFl = this.componentFactory.specialPasswordField(u.getPassword());
 		
-		JLabel confirmNewPasswordLbl = this.componentFactory.specialLabel("Confirm password:");
+		JLabel confirmNewPasswordLbl = this.componentFactory.specialLabel("*Confirm password:");
 		confirmNewPasswordFl = this.componentFactory.specialPasswordField(u.getPassword());
 		
 		p.add(nameLbl); p.add(nameFl);
@@ -135,7 +137,7 @@ public class PreferencesList extends JPanel {
 		loadPanel.setAlignmentY(CENTER_ALIGNMENT);
 		loadPanel.setBackground(Constants.FOREGROUND_COLOR);
 		//JLabel loaderLbl = new JLabel("Load videos:");
-		//loaderLbl.setFont(Constants.DEFAULT_FONT);
+		//loaderLbl.setFont(Constants.DComponenteBuscadorVideos c = new ComponenteBuscadorVideos();EFAULT_FONT);
 		//loaderLbl.setForeground(Constants.FONT_COLOR);
 		
 		Luz luz = new Luz();
@@ -145,7 +147,12 @@ public class PreferencesList extends JPanel {
 		luz.setBackground(Constants.FOREGROUND_COLOR);
 		luz.setColor(Color.GREEN);
 		luz.addEncendidoListener(e -> {
-			selectFile();
+			EncendidoEvent p = (EncendidoEvent)e;
+			if(p.getNewEncendido()) {
+				this.controller.selectFile();
+				luz.setEncendido(false);
+			}
+			
 		});
 		
 		//loadPanel.add(loaderLbl);
@@ -162,6 +169,7 @@ public class PreferencesList extends JPanel {
 		p.setBackground(Constants.FOREGROUND_COLOR);
 		JButton logoutBtn = new JButton("Log out");
 		JButton saveChangesBtn = new JButton("Save");
+		
 		saveChangesBtn.addActionListener(e -> {
 			String name = nameFl.getText();
 			String surname = surnameFl.getText();
@@ -170,21 +178,16 @@ public class PreferencesList extends JPanel {
 			String email = emailFl.getText();
 			String password = String.valueOf(newPasswordFl.getPassword());
 			String confirmPassword = String.valueOf(confirmNewPasswordFl.getPassword());
-			
-			UIManager.put("OptionPane.background", Constants.BACKGROUND_COLOR);
-			UIManager.put("Panel.background", Constants.BACKGROUND_COLOR);
-			UIManager.put("OptionPane.messageForeground", Constants.FONT_COLOR);
-			
-			
+						
 			if(name.isBlank() || username.isBlank() || dateOfBirth == null ||  password.isBlank()) {
-				JOptionPane.showMessageDialog(null,"Complete correctly all the mandatory fields","Error",JOptionPane.ERROR_MESSAGE);
+				mainWindow.showPopUp("Error","Complete correctly all the mandatory fields", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			
 			if (!password.equals(confirmPassword)) {
 				newPasswordFl.setText(String.valueOf(u.getPassword()));
 				confirmNewPasswordFl.setText(String.valueOf(u.getPassword()));
-				JOptionPane.showMessageDialog(null,"Passwords doesn't match","Error",JOptionPane.ERROR_MESSAGE);
+				mainWindow.showPopUp("Error", "Passwords doesn't match", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 
@@ -201,32 +204,31 @@ public class PreferencesList extends JPanel {
 	    		newPasswordFl.setText(u.getPassword());
 	    		confirmNewPasswordFl.setText(u.getPassword());
 				mainWindow.enterApp();*/
-				JOptionPane.showMessageDialog(null,"Saved correctly","Saved",JOptionPane.INFORMATION_MESSAGE);
+				mainWindow.showPopUp("Saved", "Saved correctly", JOptionPane.INFORMATION_MESSAGE);
 			}
 			else {
 				usernameFl.setText(u.getUsername());
-				JOptionPane.showMessageDialog(null,"This username is already taken","Error",JOptionPane.ERROR_MESSAGE);
+				mainWindow.showPopUp("Error", "This username is already taken", JOptionPane.ERROR_MESSAGE);
 			}
 			
 		});
 		
 		logoutBtn.addActionListener(e -> {
-			 mainWindow.activateLoginPanel();
+			this.controller.logout();
+			mainWindow.activateLoginPanel();
 		});
 		p.add(logoutBtn);
 		p.add(Box.createRigidArea(new Dimension(20,0)));
 		p.add(saveChangesBtn);
-		innerPage.add(new PreferencesListEntry(p, 80 ));
+		innerPage.add(new PreferencesListEntry(p, 90 ));
 	}
-	
-	void selectFile() {
-		JFileChooser fileChooser = new JFileChooser();
-		int returnValue = fileChooser.showOpenDialog(null);
-
-		if (returnValue == JFileChooser.APPROVE_OPTION) {
-			File selectedFile = fileChooser.getSelectedFile();
-			System.out.println(selectedFile.getAbsolutePath());
-		}
+	private void addMandatoryFields() {
+		JPanel p = new JPanel();
+		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+		p.setBackground(Constants.FOREGROUND_COLOR);
+		JLabel mandatoryFields = componentFactory.specialLabel("*Mandatory fields");
+		p.add(mandatoryFields);
+		innerPage.add(new PreferencesListEntry(p, 40));
 	}
 
 }

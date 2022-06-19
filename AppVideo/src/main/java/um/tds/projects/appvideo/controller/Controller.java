@@ -13,13 +13,24 @@ import um.tds.projects.appvideo.persistence.ILabelAdapter;
 import um.tds.projects.appvideo.persistence.IPlaylistAdapter;
 import um.tds.projects.appvideo.persistence.IUserAdapter;
 import um.tds.projects.appvideo.persistence.IVideoAdapter;
+import um.tds.projects.appvideo.view.MainWindow;
+import umu.tds.componente.CargadorVideos;
+import umu.tds.componente.FicheroIncorrectoException;
+import umu.tds.componente.Videos;
+import umu.tds.componente.VideosEvent;
+import umu.tds.componente.VideosListener;
 
+import java.io.File;
 import java.util.Date;
-import java.util.LinkedList;
+import java.util.EventObject;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class Controller {
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
+
+public class Controller implements VideosListener{
 
 	// Controller's unique instance
 	private static Controller instance;
@@ -36,8 +47,12 @@ public class Controller {
 	private VideoRepository  videoRepository;
 	private LabelRepository  labelRepository;
 	
+	
 	// Current user
 	private User currentUser;
+	
+	// Main window
+	private MainWindow mainWindow;
 
 	private Controller() {
 		initializeAdapters();
@@ -51,7 +66,58 @@ public class Controller {
 			instance = new Controller();
 		return instance;
 	}
+	
+	public void setMainWindow(MainWindow mainWindow) {
+		this.mainWindow = mainWindow;
+	}
+	
+	@Override
+	public void hayNuevosVideos(EventObject arg) {
+		VideosEvent e = (VideosEvent)arg;
+		Videos videos =  e.getVideos();
+		for(umu.tds.componente.Video v : videos.getVideo()) {
+			Video video;
+			boolean videoExits = false;
+			if(videoRepository.containsVideo(v.getURL())) {
+				video = videoRepository.getVideo(v.getURL());
+				videoRepository.removeVideo(video);
+				videoExits = true;
+			}
+			else video = new Video(v.getURL(), v.getTitulo(), 0);
+			
+			for(String l : v.getEtiqueta()) {
+				Label label;
+				if(labelRepository.containsLabel(l)) 
+					label = labelRepository.getLabel(l);
+				else {
+					label = new Label(l);
+					labelRepository.addLabel(label);
+					labelAdapter.registerLabel(label);
+				}
+				video.addLabel(label);
+			}
+			videoRepository.addVideo(video);
+			if(videoExits) videoAdapter.modifyVideo(video);
+			else videoAdapter.registerVideo(video);
+		}
+	}
+	
+	public void selectFile() {
+		JFileChooser fileChooser = new JFileChooser();
+		int returnValue = fileChooser.showOpenDialog(null);
 
+		if (returnValue == JFileChooser.APPROVE_OPTION) {
+			File selectedFile = fileChooser.getSelectedFile();
+			CargadorVideos cargadorVideos = new CargadorVideos();
+			cargadorVideos.addVideosListener(this);
+			try {
+				cargadorVideos.cargarVideos(selectedFile);
+			} catch (FicheroIncorrectoException e) {
+				 mainWindow.showPopUp("Error","Invalid file",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+	
 	/**
 	 * Returns true if the user is already registered.
 	 */
@@ -167,9 +233,12 @@ public class Controller {
 			labelAdapter.registerLabel(l);
 			labelRepository.addLabel(l);
 		}
-		v.addLabel(l);
-		videoAdapter.modifyVideo(v);
-		return l;
+		// If the label isn't in the video
+		if(v.addLabel(l)) {
+			videoAdapter.modifyVideo(v);
+			return l;
+		}
+		return null;
 	}
 
 	private void initializeAdapters(){
@@ -196,28 +265,5 @@ public class Controller {
 		videoRepository = VideoRepository.getUniqueInstance(); 
 		labelRepository = LabelRepository.getUniqueInstance();
 	}
-	
-	private void cargarVideosPrueba() {
-		for(Video v : videoAdapter.loadAllVideos()) {
-			videoAdapter.removeVideo(v);
-		}
-		
-		List<Video> videoList = new LinkedList<Video>();
-		List<Label> l = new LinkedList<Label>();
-		for(int i = 0;i<0;i++) 
-			l.add(new Label("Label"+i));
-		videoList.add(new Video(
-				"https://www.youtube.com/watch?v=3095_w_666w",
-				"Top 40 Cello Covers of Popular Songs 2021 - Best Instrumental Cello Covers Songs All Time",
-				100,l));
-		videoList.add(new Video(
-				"https://www.youtube.com/watch?v=p_di4Zn4wz4",
-				"Vista general de ecuaciones diferenciales I Capítulo 1",
-				3,l));
-		for(Video v: videoList) {
-		if(!videoRepository.containsVideo(v.getUrl()))
-			videoRepository.addVideo(v);
-			videoAdapter.registerVideo(v);
-		}		
-	}
+
 }

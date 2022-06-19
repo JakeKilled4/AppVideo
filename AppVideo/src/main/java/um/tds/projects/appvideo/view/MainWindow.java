@@ -1,10 +1,13 @@
 package um.tds.projects.appvideo.view;
 
 import um.tds.projects.appvideo.backend.Video;
+import um.tds.projects.appvideo.controller.Controller;
 
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import tds.video.VideoWeb;
 
@@ -18,6 +21,7 @@ public class MainWindow extends JFrame {
 	private RegisterPanel     registerPanel;
 	private VideoViewingPanel videoViewingPanel;
 	private VideoWeb videoWeb;
+	private Controller controller;
 
 	public void showWindow() {
 		setLocationRelativeTo(null);
@@ -26,8 +30,11 @@ public class MainWindow extends JFrame {
 
 	public MainWindow(VideoWeb videoWeb) {
 		this.videoWeb = videoWeb;
+		this.controller = Controller.getUniqueInstance();
+		this.controller.setMainWindow(this);
 		this.loginPanel        = new LoginPanel      (this);
 		this.registerPanel 	   = new RegisterPanel   (this);
+		
 	
 		videoViewingPanel = null; // Es redefinido al visualizar cada video.
 
@@ -84,6 +91,13 @@ public class MainWindow extends JFrame {
 		videoViewingPanel = new VideoViewingPanel(this, video);
 		setContentPane(videoViewingPanel);
 		validate();
+	}
+	
+	public void showPopUp(String title,String message, int type) {
+		 UIManager.put("OptionPane.background", Constants.BACKGROUND_COLOR);
+		 UIManager.put("Panel.background", Constants.BACKGROUND_COLOR);
+		 UIManager.put("OptionPane.messageForeground", Constants.FONT_COLOR);
+		 JOptionPane.showMessageDialog(null,message,title,type);
 	}
 
 }

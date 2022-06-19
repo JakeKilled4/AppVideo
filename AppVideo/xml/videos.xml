@@ -1,0 +1,87 @@
+<?xml version="1.0" ?>
+<videos xmlns="http://www.tds.es/videos" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+	xs:schemaLocation="http://www.tds.es/videos videos.xsd">
+	
+	<video titulo="Invasion">
+		<URL><![CDATA[https://www.youtube.com/watch?v=DlaHxL3mHAU]]></URL>
+		<etiqueta>Series</etiqueta>
+		<etiqueta>AppleTV</etiqueta>
+	</video>
+
+	<video titulo="Radiohead - Lotus Flower">
+		<URL><![CDATA[https://www.youtube.com/watch?v=cfOa1a8hYP8]]></URL>
+		<etiqueta>Music</etiqueta>
+		<etiqueta>Radiohead</etiqueta>
+		<etiqueta>Electronic</etiqueta>
+	</video>
+	
+	<video titulo="Technology Is Reinventing Humanity - Jordan Nguyen">
+		<URL><![CDATA[https://www.youtube.com/watch?v=VxuWIXdYYyQ]]></URL>
+		<etiqueta>Tech</etiqueta>
+		<etiqueta>Speech</etiqueta>
+	</video>
+
+	<video titulo="House of Gucci">
+		<URL><![CDATA[https://www.youtube.com/watch?v=eGNnpVKxV6s]]></URL>
+		<etiqueta>Movie</etiqueta>
+		<etiqueta>Cinema</etiqueta>
+	</video>
+	
+	<video titulo="Arctic Monkeys - Do I Wanna Know?">
+		<URL><![CDATA[https://www.youtube.com/watch?v=bpOSxM0rNPM]]></URL>
+		<etiqueta>Music</etiqueta>
+		<etiqueta>Artic Monkeys</etiqueta>
+	</video>
+
+	<video titulo="Estopa, Fito y Fitipaldis - Camiseta de Rokanrol (Video Oficial)">
+		<URL><![CDATA[https://www.youtube.com/watch?v=ZxwUkc_DzYY]]></URL>
+		<etiqueta>Music</etiqueta>
+		<etiqueta>Estopa</etiqueta>
+	</video>
+
+	<video titulo="Estopa - Corazón Sin Salida (Lyric Video)">
+		<URL><![CDATA[https://www.youtube.com/watch?v=QtMBEeT1G54]]></URL>
+		<etiqueta>Music</etiqueta>
+		<etiqueta>Estopa</etiqueta>
+		<etiqueta>Fuego</etiqueta>
+	</video>
+
+	<video titulo="Estopa - Yo No Estoy Loco (Lyric Video)">
+		<URL><![CDATA[https://www.youtube.com/watch?v=Cl8tCZx-6Kk]]></URL>
+		<etiqueta>Music</etiqueta>
+		<etiqueta>Estopa</etiqueta>
+		<etiqueta>Fuego</etiqueta>
+	</video>
+
+	<video titulo="Estopa - Tragicomedia (Videoclip)">
+			<URL><![CDATA[https://www.youtube.com/watch?v=GvwzZOMf_aM]]></URL>
+			<etiqueta>Music</etiqueta>
+			<etiqueta>Estopa</etiqueta>
+	</video>
+
+	<video titulo="Estopa - Ya No Me Acuerdo (Videoclip)">
+			<URL><![CDATA[https://www.youtube.com/watch?v=IfAcrSwaeU0]]></URL>
+			<etiqueta>Music</etiqueta>
+			<etiqueta>Estopa</etiqueta>
+	</video>
+
+	<video titulo="Estopa - Me Falta el Aliento (Directo Acústico)">
+			<URL><![CDATA[https://www.youtube.com/watch?v=SOsFYpBQz80]]></URL>
+			<etiqueta>Music</etiqueta>
+			<etiqueta>Estopa</etiqueta>
+	</video>
+
+	<video titulo="Estopa - Tu Calorro (Videoclip) (En Directo)">
+			<URL><![CDATA[https://www.youtube.com/watch?v=uBFdSyDkPOU]]></URL>
+			<etiqueta>Music</etiqueta>
+			<etiqueta>Estopa</etiqueta>
+	</video>
+
+	<video titulo="Melendi - La promesa (Videoclip oficial)">
+			<URL><![CDATA[https://www.youtube.com/watch?v=7XPmRUp_Yf4]]></URL>
+			<etiqueta>Music</etiqueta>
+			<etiqueta>Estopa</etiqueta>
+	</video>
+
+
+</videos>
