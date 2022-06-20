@@ -11,7 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-
+import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JLabel;
@@ -43,6 +43,8 @@ public class PreferencesList extends JPanel {
 	private JTextField emailFl;
 	private JPasswordField newPasswordFl;
 	private JPasswordField confirmNewPasswordFl;
+	private JCheckBox premium;
+	private JButton generatePdf;
 	private User u;
 	
 
@@ -66,9 +68,12 @@ public class PreferencesList extends JPanel {
 		innerPage.setPreferredSize(new Dimension(Constants.PAGE_WIDTH, 30));
 
 		addTitle();
+		addSeparator();
 		addLoadVideo();
+		addSeparator();
+		addPremiumButton();
 		addChangeForm();
-		addButtons();
+		addSaveLogOutButtons();
 		addMandatoryFields();
 		
 		JScrollPane scrollPane = new JScrollPane(innerPage);
@@ -120,7 +125,6 @@ public class PreferencesList extends JPanel {
 		pageTitle.setFont(Constants.TITLE_FONT);
 		pageTitle.setForeground(Constants.LIGHT_FONT_COLOR);
 		innerPage.add(new PreferencesListEntry(pageTitle, Constants.DEFAULT_PREFERENCES_HEIGHT));
-		addSeparator();
 	}
 	
 	private void addSeparator() {
@@ -131,6 +135,8 @@ public class PreferencesList extends JPanel {
 		innerPage.add(sep);
 	}
 	
+	
+
 	private void addLoadVideo() {
 		JPanel loadPanel = new JPanel();
 		loadPanel.setLayout(new BoxLayout(loadPanel, BoxLayout.X_AXIS));
@@ -158,12 +164,25 @@ public class PreferencesList extends JPanel {
 		//loadPanel.add(loaderLbl);
 		//loadPanel.add(Box.createRigidArea(new Dimension(100,0)));
 		loadPanel.add(luz);
+		if(u.isPremium()) {
+			generatePdf = new JButton("Generate Pdf");
+			loadPanel.add(Box.createRigidArea(new Dimension(200,0)));
+			loadPanel.add(generatePdf);
+		}
 		
 		innerPage.add(new PreferencesListEntry(loadPanel, 2*Constants.DEFAULT_PREFERENCES_HEIGHT ));
-		addSeparator();
 	}
 	
-	private void addButtons() {
+	private void addPremiumButton() {
+		JPanel p = new JPanel();
+		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+		p.setBackground(Constants.FOREGROUND_COLOR);
+		premium = componentFactory.specialCheckBox("Premium");
+		premium.setSelected(u.isPremium());
+		p.add(premium);
+		innerPage.add(new PreferencesListEntry(p, 2*Constants.DEFAULT_PREFERENCES_HEIGHT ));
+	}
+	private void addSaveLogOutButtons() {
 		JPanel p = new JPanel();
 		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
 		p.setBackground(Constants.FOREGROUND_COLOR);
@@ -178,6 +197,7 @@ public class PreferencesList extends JPanel {
 			String email = emailFl.getText();
 			String password = String.valueOf(newPasswordFl.getPassword());
 			String confirmPassword = String.valueOf(confirmNewPasswordFl.getPassword());
+			boolean isPremium = premium.isSelected();
 						
 			if(name.isBlank() || username.isBlank() || dateOfBirth == null ||  password.isBlank()) {
 				mainWindow.showPopUp("Error","Complete correctly all the mandatory fields", JOptionPane.ERROR_MESSAGE);
@@ -191,11 +211,11 @@ public class PreferencesList extends JPanel {
 				return;
 			}
 
-			boolean registerOk = controller.changeUserData(
+			boolean changeOk = controller.changeUserData(
 				name, surname, dateOfBirth, email,
-				username, password);
+				username, password,isPremium);
 			
-			if (registerOk) {/*
+			if (changeOk) {/*
 				nameFl.setText(u.getName());
 	    		surnameFl.setText(u.getSurname());
 	    		date.setDate(u.getDateOfBirth());
@@ -205,6 +225,7 @@ public class PreferencesList extends JPanel {
 	    		confirmNewPasswordFl.setText(u.getPassword());
 				mainWindow.enterApp();*/
 				mainWindow.showPopUp("Saved", "Saved correctly", JOptionPane.INFORMATION_MESSAGE);
+				mainWindow.activatePreferencesPanel();
 			}
 			else {
 				usernameFl.setText(u.getUsername());

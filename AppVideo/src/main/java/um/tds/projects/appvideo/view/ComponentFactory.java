@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -80,5 +81,13 @@ public class ComponentFactory {
 		date.setMinimumSize(new Dimension(date.getWidth(),25));
 		date.setPreferredSize(new Dimension(date.getWidth(),25));
 		return date;
+	}
+	public JCheckBox specialCheckBox(String label) {
+		JCheckBox cb = new JCheckBox();
+		cb = new JCheckBox(label);
+		cb.setBackground(Constants.FOREGROUND_COLOR);
+		cb.setFont(Constants.DEFAULT_FONT);
+		cb.setForeground(Constants.FONT_COLOR);
+		return cb;
 	}
 }

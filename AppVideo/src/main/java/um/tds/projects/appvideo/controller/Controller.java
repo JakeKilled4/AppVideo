@@ -30,6 +30,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 
+
 public class Controller implements VideosListener{
 
 	// Controller's unique instance
@@ -57,7 +58,6 @@ public class Controller implements VideosListener{
 	private Controller() {
 		initializeAdapters();
 		initializeRepositories();
-		//cargarVideosPrueba();
 		this.currentUser = null;
 	}
 
@@ -152,7 +152,7 @@ public class Controller implements VideosListener{
 	/**
 	 * Returns true iff the change process was successful (If the username was not already taken)
 	 */
-	public boolean changeUserData(String name, String surname, Date dateOfBirth, String email, String username, String password) {
+	public boolean changeUserData(String name, String surname, Date dateOfBirth, String email, String username, String password, boolean isPremium) {
 		if(this.currentUser == null) return false;
 		if(!this.currentUser.getUsername().equals(username) && userRepository.containsUser(username)) return false;
 		userRepository.removeUser(this.currentUser);
@@ -162,6 +162,7 @@ public class Controller implements VideosListener{
 		this.currentUser.setEmail(email);
 		this.currentUser.setUsername(username);
 		this.currentUser.setPassword(password);
+		this.currentUser.setPremium(isPremium);
 		userRepository.addUser(this.currentUser);
 		userAdapter.modifyUser(this.currentUser);
 		return true;
