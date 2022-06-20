@@ -4,6 +4,7 @@ import um.tds.projects.appvideo.backend.Video;
 import um.tds.projects.appvideo.controller.Controller;
 
 import java.awt.Dimension;
+import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -13,7 +14,9 @@ import tds.video.VideoWeb;
 
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame {
-	
+
+	private static Logger logger = Logger.getLogger("um.tds.projects.appvideo.controller.controller");
+
 	private LoginPanel        loginPanel;
 	private PlaylistsPanel    playlistsPanel;
 	private PreferencesPanel  preferencesPanel;
@@ -29,6 +32,7 @@ public class MainWindow extends JFrame {
 	}
 
 	public MainWindow(VideoWeb videoWeb) {
+		logger.info("Starting MainWindow");
 		this.videoWeb = videoWeb;
 		this.controller = Controller.getUniqueInstance();
 		this.controller.setMainWindow(this);
@@ -38,6 +42,7 @@ public class MainWindow extends JFrame {
 	
 		videoViewingPanel = null; // Es redefinido al visualizar cada video.
 
+		logger.info("Entering login panel");
 		setContentPane(loginPanel);
 		
 		setMinimumSize(new Dimension(1000, 600));
@@ -94,8 +99,8 @@ public class MainWindow extends JFrame {
 	}
 	
 	public void showPopUp(String title,String message, int type) {
-		 UIManager.put("OptionPane.background", Constants.BACKGROUND_COLOR);
-		 UIManager.put("Panel.background", Constants.BACKGROUND_COLOR);
+		 UIManager.put("OptionPane.background",        Constants.BACKGROUND_COLOR);
+		 UIManager.put("Panel.background",             Constants.BACKGROUND_COLOR);
 		 UIManager.put("OptionPane.messageForeground", Constants.FONT_COLOR);
 		 JOptionPane.showMessageDialog(null,message,title,type);
 	}
