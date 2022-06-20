@@ -80,7 +80,6 @@ public class SearchPanel extends CommonPanel {
 
 	@Override
 	protected JPanel createRightPanel() {
-		
 		return new LabelPanel(controller.getAllLabels());
 	}
 

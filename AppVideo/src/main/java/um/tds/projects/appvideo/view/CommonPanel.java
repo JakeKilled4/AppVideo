@@ -58,10 +58,20 @@ public abstract class CommonPanel extends JPanel {
 	}
 
 	protected abstract JPanel createInnerPanel();
-	public void update() {
+	
+	public void updateCenterPanel() {
 		this.centerPanel.remove(innerPanel);
 		this.innerPanel = createInnerPanel();
 		this.centerPanel.add(innerPanel);
+		validate();
+	}
+	
+	public void updateRightPanel() {
+		if(this.rightPanel != null) {
+			remove(rightPanel);
+			rightPanel = createRightPanel();
+			add(rightPanel,BorderLayout.EAST);
+		}
 		validate();
 	}
 

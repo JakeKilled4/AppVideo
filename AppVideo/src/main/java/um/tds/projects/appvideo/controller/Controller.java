@@ -14,6 +14,7 @@ import um.tds.projects.appvideo.persistence.IPlaylistAdapter;
 import um.tds.projects.appvideo.persistence.IUserAdapter;
 import um.tds.projects.appvideo.persistence.IVideoAdapter;
 import um.tds.projects.appvideo.view.MainWindow;
+import um.tds.projects.appvideo.view.UpdateOption;
 import umu.tds.componente.CargadorVideos;
 import umu.tds.componente.FicheroIncorrectoException;
 import umu.tds.componente.Videos;
@@ -93,7 +94,7 @@ public class Controller implements VideosListener{
 	
 	public void searchVideos(String text) {
 		searchedTitle = text;
-		mainWindow.activateSearchPanel();
+		mainWindow.activateSearchPanel(UpdateOption.CENTER);
 	}
 	
 	public List<Video> getSearchedVideos() {

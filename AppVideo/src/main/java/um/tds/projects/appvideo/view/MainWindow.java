@@ -53,7 +53,7 @@ public class MainWindow extends JFrame {
 		this.preferencesPanel  = new PreferencesPanel(this);
 		this.playlistsPanel    = new PlaylistsPanel  (this);
 		this.searchPanel       = new SearchPanel     (this);
-		activateSearchPanel();
+		activateSearchPanel(UpdateOption.NONE);
 	}
 	public void activateLoginPanel() {
 		setContentPane(loginPanel);
@@ -72,16 +72,19 @@ public class MainWindow extends JFrame {
 		validate();
 	}
 
-	public void activateSearchPanel() {
+	public void activateSearchPanel(UpdateOption option) {
 		setContentPane(searchPanel);
-		searchPanel.update();
+		if(option == UpdateOption.BOTH || option == UpdateOption.CENTER) 
+			searchPanel.updateCenterPanel();
+		if(option == UpdateOption.BOTH || option == UpdateOption.RIGHT)
+			searchPanel.updateRightPanel();
 		videoWeb.cancel();
 		validate();
 	}
 	
 	public void activatePreferencesPanel() {
 		setContentPane(preferencesPanel);
-		preferencesPanel.update();
+		preferencesPanel.updateCenterPanel();
 		videoWeb.cancel();
 		validate();
 	}
