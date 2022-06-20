@@ -23,8 +23,10 @@ import umu.tds.componente.VideosListener;
 import java.io.File;
 import java.util.Date;
 import java.util.EventObject;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -48,6 +50,12 @@ public class Controller implements VideosListener{
 	private VideoRepository  videoRepository;
 	private LabelRepository  labelRepository;
 	
+	// Text searched by user
+	String searchedTitle;
+	
+	// List of labels selected to search
+	List<Label> selectedLabels;
+	
 	
 	// Current user
 	private User currentUser;
@@ -59,6 +67,8 @@ public class Controller implements VideosListener{
 		initializeAdapters();
 		initializeRepositories();
 		this.currentUser = null;
+		this.searchedTitle = "";
+		this.selectedLabels = new LinkedList<Label>();
 	}
 
 	public static Controller getUniqueInstance() {
@@ -70,7 +80,25 @@ public class Controller implements VideosListener{
 	public void setMainWindow(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 	}
+	public List<Label> getSelectedLabels(){
+		return selectedLabels;
+	}
+	public void setSelectedLabel(List<String> l) {
+		selectedLabels = l.stream().map(s -> new Label(s)).collect(Collectors.toList());
+	}
 	
+	public String getSearchTitle(){
+		return searchedTitle;
+	}
+	
+	public void searchVideos(String text) {
+		searchedTitle = text;
+		mainWindow.activateSearchPanel();
+	}
+	
+	public List<Video> getSearchedVideos() {
+		return videoRepository.findVideo(searchedTitle, new LinkedList<IVideoFilter>(), selectedLabels);
+	}
 	@Override
 	public void hayNuevosVideos(EventObject arg) {
 		VideosEvent e = (VideosEvent)arg;
@@ -218,10 +246,6 @@ public class Controller implements VideosListener{
 		return labelRepository.getAllLabels();
 	}
 
-	public List<Video> searchVideos(String str, List<IVideoFilter> filter) {
-		return videoRepository.findVideo(str, filter);
-	}
-	
 	public void addViewToVideo(Video v) {
 		v.addView();
 		videoAdapter.modifyVideo(v);

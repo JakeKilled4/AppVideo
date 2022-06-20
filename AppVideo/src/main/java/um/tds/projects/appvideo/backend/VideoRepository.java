@@ -69,15 +69,21 @@ public class VideoRepository {
 		return cache.values().stream().collect(Collectors.toList());
 	}
 
-	public List<Video> findVideo(String str, List<IVideoFilter> filters) {
+	public List<Video> findVideo(String str, List<IVideoFilter> filters, List<Label> labels) {
 		LinkedList<Video> res = new LinkedList<Video>();
 		for (Video v: cache.values()) {
-			if (v.getTitle().contains(str)) {
-				boolean valid = true;
-				for (IVideoFilter f: filters)
-					valid &= f.isVideoOk(v);
-				if (valid)
-					res.add(v);
+			boolean valid = true;
+			for (IVideoFilter f: filters)
+				valid &= f.isVideoOk(v);
+			if (valid && v.getTitle().contains(str)) {
+				boolean containLabel = false;
+				for(Label l : labels) {
+					if(v.containsLabel(l)) { 
+						containLabel = true;
+						break;
+					}
+				}
+				if(labels.isEmpty() || containLabel) res.add(v);
 			}
 		}
 		return res;

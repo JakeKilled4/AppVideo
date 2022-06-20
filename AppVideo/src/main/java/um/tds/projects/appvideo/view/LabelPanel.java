@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import um.tds.projects.appvideo.backend.Label;
+import um.tds.projects.appvideo.controller.Controller;
 
 import javax.swing.JList;
 
@@ -36,10 +38,11 @@ public class LabelPanel extends JPanel{
 	private ListSelectionListener listener1;
 	private ListSelectionListener listener2;
 	private ArrayList<String> labels;
+	private Controller controller;
 	
 	
 	public LabelPanel(List<Label> filterLabels) {
-		
+		this.controller = Controller.getUniqueInstance();
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 		setBackground(Constants.FOREGROUND_COLOR);
 		setMinimumSize  (new Dimension(Constants.TOOLBAR_OPEN_SIZE, Short.MAX_VALUE));
@@ -62,8 +65,6 @@ public class LabelPanel extends JPanel{
 		add(separator1);
 		
 		add(Box.createRigidArea(new Dimension(0, 5)));
-		
-		
 		
 		availableModel = new DefaultListModel<String>();
 		availableModel.addAll(filterLabels.stream().map(l -> l.getName()).collect(Collectors.toList()));
@@ -127,6 +128,13 @@ public class LabelPanel extends JPanel{
 					availableModel.remove(index);
                     availableList.addListSelectionListener(this);
                     selectedList.addListSelectionListener(listener2);
+                    
+                    List<String> selectedLabels = new LinkedList<String>();
+                    for (int i = 0; i < selectedModel.getSize(); i++) {
+                        String item = selectedModel.getElementAt(i);
+                        selectedLabels.add(item);
+                    }
+                    controller.setSelectedLabel(selectedLabels);
 				}
 			}
 		};
@@ -145,6 +153,13 @@ public class LabelPanel extends JPanel{
 					selectedModel.remove(index);
                     selectedList.addListSelectionListener(this);
                     availableList.addListSelectionListener(listener1);
+    
+                    List<String> selectedLabels = new LinkedList<String>();
+                    for (int i = 0; i < selectedModel.getSize(); i++) {
+                        String item = selectedModel.getElementAt(i);
+                        selectedLabels.add(item);
+                    }
+                    controller.setSelectedLabel(selectedLabels);
 				}
 			}
 		};

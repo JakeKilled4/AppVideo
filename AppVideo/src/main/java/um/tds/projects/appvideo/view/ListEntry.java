@@ -15,7 +15,6 @@ public abstract class ListEntry extends JPanel {
 
 	public ListEntry(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
-
 		setBackground(Constants.BUTTON_COLOR);
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		setMaximumSize(new Dimension(Constants.PAGE_WIDTH, Constants.VIDEOLIST_ENTRY_HEIGHT));
