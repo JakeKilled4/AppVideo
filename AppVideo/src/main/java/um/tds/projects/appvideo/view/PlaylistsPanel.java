@@ -138,19 +138,38 @@ public class PlaylistsPanel extends CommonPanel {
 	}
 	
 	private JComponent makeRemovePlaylistPanel(JPanel controlPanel, CardLayout layout) {
-		return new JLabel("remove");
+		JPanel cancelBtn = defineButton("Cancel");
+		
+		addClicker(
+			cancelBtn,
+			() -> {
+				layout.show(controlPanel, BUTTONS_LABEL);
+				for (PlaylistListEntry ple: playlistEntries) {
+					ple.setRemoveMode(false);
+				}
+			}
+		);
+
+		return cancelBtn;
 	}
 	
 
 	private JPanel defineButton(String text) {
 		JPanel button = new JPanel();
 		button.setBackground(Constants.BUTTON_COLOR);
-		button.setLayout(new BoxLayout(button, BoxLayout.X_AXIS));
+		button.setLayout    (new BoxLayout(button, BoxLayout.X_AXIS));
 		fixSize(button, Constants.PAGE_WIDTH / 2, Constants.VIDEOLIST_ENTRY_HEIGHT);
 
 		JLabel label = new JLabel(text);
 		label.setForeground(Constants.FONT_COLOR);
-		button.add(Box.createRigidArea(new Dimension(Constants.PAGE_WIDTH / 4, Constants.VIDEOLIST_ENTRY_HEIGHT)));
+		button.add(
+			Box.createRigidArea(
+				new Dimension(
+					Constants.PAGE_WIDTH / 4,
+					Constants.VIDEOLIST_ENTRY_HEIGHT
+				)
+			)
+		);
 		button.add(label);
 
 		button.addMouseListener(new MouseListener() {
@@ -183,59 +202,16 @@ public class PlaylistsPanel extends CommonPanel {
 	private void addClicker(JPanel button, Runnable func) {
 		button.addMouseListener(
 			new MouseListener() {
-
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					func.run();
 				}
 
-				@Override public void mousePressed(MouseEvent e)  { }
+				@Override public void mousePressed (MouseEvent e) { }
 				@Override public void mouseReleased(MouseEvent e) { }
-				@Override public void mouseEntered(MouseEvent e)  { }
-				@Override public void mouseExited(MouseEvent e)   { }
+				@Override public void mouseEntered (MouseEvent e) { }
+				@Override public void mouseExited  (MouseEvent e) { }
 			}
 		);
 	}
 }
-
-/*
-@SuppressWarnings("serial")
-public class PlaylistsPanel extends CommonPanel {
-
-	private Controller controller;
-	private List<Playlist> playlists;
-
-	public PlaylistsPanel(MainWindow mainWindow) {
-		super(mainWindow);
-		this.controller = Controller.getUniqueInstance();
-		this.playlists  = new LinkedList<Playlist>();
-		createScreen();
-	}
-	
-	public void build() {
-		playlists = controller.getPlaylists();
-	}
-
-	protected JPanel createInnerPanel() {
-		PlaylistsList playlistsList = new PlaylistsList(mainWindow, playlists);
-
-		// InnerPanel guarda entradas y botones.
-		JPanel innerPanel = new JPanel();
-		innerPanel.setBackground(Constants.BACKGROUND_COLOR);
-		innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
-		innerPanel.setAlignmentX(CENTER_ALIGNMENT);
-		fixSize(innerPanel, Constants.PAGE_WIDTH,
-				playlistsList.getLength() + 2 * (Constants.VIDEOLIST_ENTRY_HEIGHT + 10));
-
-		innerPanel.add(makeControlPanel());
-		innerPanel.add(playlistsList);
-
-		return innerPanel;
-	}
-	
-	
-
-	
-
-}
-*/

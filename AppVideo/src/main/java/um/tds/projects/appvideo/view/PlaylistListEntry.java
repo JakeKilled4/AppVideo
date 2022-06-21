@@ -41,7 +41,11 @@ public class PlaylistListEntry extends ListEntry {
 		public void mouseReleased(MouseEvent e) {}
 
 		public void mouseEntered(MouseEvent e) {
-			updateBackground(Constants.BUTTON_HOVER_COLOR);
+			if (removeMode) {
+				updateBackground(Constants.BUTTON_RED_HOVER_COLOR);
+			} else {
+				updateBackground(Constants.BUTTON_HOVER_COLOR);
+			}
 		}
 
 		public void mouseExited(MouseEvent e) {
