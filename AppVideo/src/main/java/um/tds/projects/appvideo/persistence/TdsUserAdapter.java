@@ -146,7 +146,6 @@ public class TdsUserAdapter implements IUserAdapter {
 		// Register the added playlists, remove the deleted ones.
 		for (Playlist pl: newUser.getPlaylists()) {
 			if (!oldPl.contains(pl.getCode())) {
-				//logger.info(String.format("Added playlist '%s' to user '%s'", pl.getName(), newUser.getName()));
 				playlistAdapter.registerPlaylist(pl);
 			}
 		}
@@ -187,7 +186,8 @@ public class TdsUserAdapter implements IUserAdapter {
 			user.addPlaylist(playlist);
 
 		// Load filters
-		List<IVideoFilter>filters = getFiltersFromCodes(getFieldValue(eUser, "filters"));
+		List<IVideoFilter> filters = getFiltersFromCodes(getFieldValue(eUser, "filters"));
+		
 		for (IVideoFilter filter : filters)
 			user.addFilter(filter);
 
@@ -226,21 +226,21 @@ public class TdsUserAdapter implements IUserAdapter {
 	private void modifyFilters(User oldUser, User newUser) {
 		// We will store the filters in two hash sets for rapidly
 		// computing whether some filter belongs to both users.
-		Set<IVideoFilter> oldFilters = new HashSet<IVideoFilter>();
-		Set<IVideoFilter> newFilters = new HashSet<IVideoFilter>();
+		Set<Integer> oldFilters = new HashSet<Integer>();
+		Set<Integer> newFilters = new HashSet<Integer>();
 		
 		// Populate the sets with each user's filters.
 		for (IVideoFilter f: oldUser.getFilters())
-			oldFilters.add(f);
+			oldFilters.add(f.getCode());
 		for (IVideoFilter f: newUser.getFilters())
-			newFilters.add(f);
+			newFilters.add(f.getCode());
 		
 		// Register the added filters, remove the deleted ones.
 		for (IVideoFilter f: newUser.getFilters())
-			if (!oldFilters.contains(f))
+			if (!oldFilters.contains(f.getCode()))
 				filterAdapter.registerFilter(f);
 		for (IVideoFilter f: oldUser.getFilters())
-			if (!newFilters.contains(f))
+			if (!newFilters.contains(f.getCode()))
 				filterAdapter.removeFilter(f);
 	}
 	
@@ -251,9 +251,9 @@ public class TdsUserAdapter implements IUserAdapter {
 		return plays.trim();
 	}
 
-	private String getCodesFilters(List<IVideoFilter> playlist) {
+	private String getCodesFilters(List<IVideoFilter> filters) {
 		String out = "";
-		for (IVideoFilter filt : playlist)
+		for (IVideoFilter filt : filters)
 			out += String.valueOf(filt.getCode()) + " ";
 		return out.trim();
 	}

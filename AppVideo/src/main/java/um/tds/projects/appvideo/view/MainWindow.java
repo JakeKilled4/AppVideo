@@ -36,6 +36,10 @@ public class MainWindow extends JFrame {
 		this.registerPanel 	   = new RegisterPanel   (this);
 		
 	
+		UIManager.put("OptionPane.background", Constants.BACKGROUND_COLOR);
+		UIManager.put("Panel.background", Constants.BACKGROUND_COLOR);
+		UIManager.put("OptionPane.messageForeground", Constants.FONT_COLOR);
+		 
 		videoViewingPanel = null; // Es redefinido al visualizar cada video.
 
 		setContentPane(loginPanel);
@@ -74,10 +78,10 @@ public class MainWindow extends JFrame {
 
 	public void activateSearchPanel(UpdateOption option) {
 		setContentPane(searchPanel);
-		if(option == UpdateOption.BOTH || option == UpdateOption.CENTER) 
-			searchPanel.updateCenterPanel();
 		if(option == UpdateOption.BOTH || option == UpdateOption.RIGHT)
 			searchPanel.updateRightPanel();
+		if(option == UpdateOption.BOTH || option == UpdateOption.CENTER) 
+			searchPanel.updateCenterPanel();
 		videoWeb.cancel();
 		validate();
 	}
@@ -97,9 +101,6 @@ public class MainWindow extends JFrame {
 	}
 	
 	public void showPopUp(String title,String message, int type) {
-		 UIManager.put("OptionPane.background", Constants.BACKGROUND_COLOR);
-		 UIManager.put("Panel.background", Constants.BACKGROUND_COLOR);
-		 UIManager.put("OptionPane.messageForeground", Constants.FONT_COLOR);
 		 JOptionPane.showMessageDialog(null,message,title,type);
 	}
 

@@ -4,7 +4,7 @@ import um.tds.projects.appvideo.backend.Video;
 
 public class ListFilter implements IVideoFilter {
 	private int code;
-	private final String type = this.getClass().getSimpleName();
+	private final String type = this.getClass().getName();
 	
 	public ListFilter(){ this.code = 0; }
 	

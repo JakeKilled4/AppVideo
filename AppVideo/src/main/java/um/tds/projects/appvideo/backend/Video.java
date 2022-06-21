@@ -48,8 +48,8 @@ public class Video extends Identifiable {
 		return labels;
 	}
 	
-	public boolean containsLabel(Label l) {
-		if(labels.contains(l)) return true;
+	public boolean containsLabel(String l) {
+		if(labels.contains(new Label(l))) return true;
 		return false;
 	}
 	
