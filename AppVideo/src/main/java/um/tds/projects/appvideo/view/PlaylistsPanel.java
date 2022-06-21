@@ -38,7 +38,6 @@ public class PlaylistsPanel extends CommonPanel {
 	
 	public void build() {
 		playlists = controller.getPlaylists();
-		createScreen();
 	}
 
 	protected JPanel createInnerPanel() {
@@ -95,7 +94,7 @@ public class PlaylistsPanel extends CommonPanel {
 
 				boolean created = controller.createPlaylist(res.getText());
 				if (created) {
-					build();
+					mainWindow.activatePlaylistsPanel();
 				} else {
 					// Popup: error
 				}

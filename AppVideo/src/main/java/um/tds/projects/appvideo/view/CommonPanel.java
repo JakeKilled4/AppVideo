@@ -67,7 +67,7 @@ public abstract class CommonPanel extends JPanel {
 	}
 	
 	public void updateRightPanel() {
-		if(this.rightPanel != null) {
+		if (this.rightPanel != null) {
 			remove(rightPanel);
 			rightPanel = createRightPanel();
 			add(rightPanel,BorderLayout.EAST);
