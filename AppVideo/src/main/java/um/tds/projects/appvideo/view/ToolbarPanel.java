@@ -95,7 +95,7 @@ public class ToolbarPanel extends JPanel {
 		
 		entryPlaylists.  addClickAction(() -> mainWindow.activatePlaylistsPanel());
 		entryPreferences.addClickAction(() -> mainWindow.activatePreferencesPanel());
-		entrySearch.     addClickAction(() -> mainWindow.activateSearchPanel());
+		entrySearch.     addClickAction(() -> mainWindow.activateSearchPanel(UpdateOption.BOTH));
 
 		add(Box.createRigidArea(new Dimension(0, 30)));
 		add(entryPlaylists);

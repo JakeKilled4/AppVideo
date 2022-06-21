@@ -43,6 +43,10 @@ public class LabelPanel extends JPanel{
 	
 	public LabelPanel(List<Label> filterLabels) {
 		this.controller = Controller.getUniqueInstance();
+		
+		// Reset selected labels
+		controller.setSelectedLabel(new LinkedList<String>());
+		
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 		setBackground(Constants.FOREGROUND_COLOR);
 		setMinimumSize  (new Dimension(Constants.TOOLBAR_OPEN_SIZE, Short.MAX_VALUE));

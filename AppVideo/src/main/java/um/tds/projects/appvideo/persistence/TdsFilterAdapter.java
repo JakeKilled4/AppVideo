@@ -43,9 +43,11 @@ public class TdsFilterAdapter implements IFilterAdapter {
 		
 		// Register filter entity
 		eFilter = servPersistencia.registrarEntidad(eFilter);
-
+		
 		// Unique identifier
 		f.setCode(eFilter.getId());
+		
+		System.out.println("Guardando filtro tipo: "+f.getType()+" codigo: "+f.getCode());
 	}
 	
 	@Override
@@ -61,7 +63,6 @@ public class TdsFilterAdapter implements IFilterAdapter {
 		// No properties modifiable
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public IVideoFilter loadFilter(int code) {
 		Entidad eFilter;
@@ -70,8 +71,9 @@ public class TdsFilterAdapter implements IFilterAdapter {
 		
 		eFilter = servPersistencia.recuperarEntidad(code);
 		type = servPersistencia.recuperarPropiedadEntidad(eFilter, "type");
+		System.out.println("Obteniendo filtro codifgo: " + code + " tipo "+type);
 		try {
-			filter = (IVideoFilter) Class.forName(type).newInstance();
+			filter = (IVideoFilter) Class.forName(type).getDeclaredConstructor().newInstance();
 			filter.setCode(code);
 			
 		} catch (Exception e) {

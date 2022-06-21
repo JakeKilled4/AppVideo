@@ -7,13 +7,14 @@ import um.tds.projects.appvideo.backend.User;
 import um.tds.projects.appvideo.backend.UserRepository;
 import um.tds.projects.appvideo.backend.Video;
 import um.tds.projects.appvideo.backend.VideoRepository;
-import um.tds.projects.appvideo.backend.filters.IVideoFilter;
 import um.tds.projects.appvideo.persistence.DaoFactory;
+import um.tds.projects.appvideo.persistence.IFilterAdapter;
 import um.tds.projects.appvideo.persistence.ILabelAdapter;
 import um.tds.projects.appvideo.persistence.IPlaylistAdapter;
 import um.tds.projects.appvideo.persistence.IUserAdapter;
 import um.tds.projects.appvideo.persistence.IVideoAdapter;
 import um.tds.projects.appvideo.view.MainWindow;
+import um.tds.projects.appvideo.view.UpdateOption;
 import umu.tds.componente.CargadorVideos;
 import umu.tds.componente.FicheroIncorrectoException;
 import umu.tds.componente.Videos;
@@ -21,6 +22,7 @@ import umu.tds.componente.VideosEvent;
 import umu.tds.componente.VideosListener;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.EventObject;
 import java.util.LinkedList;
@@ -45,6 +47,7 @@ public class Controller implements VideosListener{
 	private IUserAdapter     userAdapter;
 	private IVideoAdapter    videoAdapter;
 	private ILabelAdapter	 labelAdapter;
+	private IFilterAdapter 	 filterAdapter;
 	
 	private UserRepository   userRepository;
 	private VideoRepository  videoRepository;
@@ -56,13 +59,12 @@ public class Controller implements VideosListener{
 	// List of labels selected to search
 	List<Label> selectedLabels;
 	
-	
 	// Current user
 	private User currentUser;
 	
 	// Main window
 	private MainWindow mainWindow;
-
+	
 	private Controller() {
 		initializeAdapters();
 		initializeRepositories();
@@ -71,6 +73,18 @@ public class Controller implements VideosListener{
 		this.selectedLabels = new LinkedList<Label>();
 	}
 
+	public boolean underEighteen() {
+		Calendar a = Calendar.getInstance();
+		a.setTime(currentUser.getDateOfBirth());
+		Calendar b = Calendar.getInstance();
+	    int diff = b.get(Calendar.YEAR) - a.get(Calendar.YEAR);
+	    if (a.get(Calendar.MONTH) > b.get(Calendar.MONTH) || 
+	        (a.get(Calendar.MONTH) == b.get(Calendar.MONTH) && a.get(Calendar.DATE) > b.get(Calendar.DATE))) {
+	        diff--;
+	    }
+	    return diff < 18;
+	}
+	
 	public static Controller getUniqueInstance() {
 		if (instance == null)
 			instance = new Controller();
@@ -83,6 +97,7 @@ public class Controller implements VideosListener{
 	public List<Label> getSelectedLabels(){
 		return selectedLabels;
 	}
+	
 	public void setSelectedLabel(List<String> l) {
 		selectedLabels = l.stream().map(s -> new Label(s)).collect(Collectors.toList());
 	}
@@ -93,11 +108,11 @@ public class Controller implements VideosListener{
 	
 	public void searchVideos(String text) {
 		searchedTitle = text;
-		mainWindow.activateSearchPanel();
+		mainWindow.activateSearchPanel(UpdateOption.CENTER);
 	}
 	
 	public List<Video> getSearchedVideos() {
-		return videoRepository.findVideo(searchedTitle, new LinkedList<IVideoFilter>(), selectedLabels);
+		return videoRepository.findVideo(searchedTitle, currentUser.getFilters(), selectedLabels);
 	}
 	@Override
 	public void hayNuevosVideos(EventObject arg) {
@@ -163,7 +178,6 @@ public class Controller implements VideosListener{
 	public boolean login(String username, String password) {
 		User u = userRepository.getUser(username);
 		if (u != null && u.checkPassword(password)) {
-			logger.info("User correctly logged in");
 			currentUser = u;
 			return true;
 		} else {
@@ -280,6 +294,7 @@ public class Controller implements VideosListener{
 		playlistAdapter = factory.getPlaylistAdapter();
 		videoAdapter    = factory.getVideoAdapter();
 		labelAdapter	= factory.getLabelAdapter();
+		filterAdapter 	= factory.getFilterAdapter();
 		
 		logger.info("Finished initialising the adapters");
 	}

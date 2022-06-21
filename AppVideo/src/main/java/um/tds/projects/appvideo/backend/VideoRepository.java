@@ -78,7 +78,7 @@ public class VideoRepository {
 			if (valid && v.getTitle().contains(str)) {
 				boolean containLabel = false;
 				for(Label l : labels) {
-					if(v.containsLabel(l)) { 
+					if(v.containsLabel(l.getName())) { 
 						containLabel = true;
 						break;
 					}
