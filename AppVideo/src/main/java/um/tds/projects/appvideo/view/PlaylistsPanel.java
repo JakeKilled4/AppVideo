@@ -1,6 +1,5 @@
 package um.tds.projects.appvideo.view;
 
-import um.tds.projects.appvideo.backend.Playlist;
 import um.tds.projects.appvideo.controller.Controller;
 
 import java.awt.CardLayout;
@@ -8,8 +7,8 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -26,34 +25,53 @@ public class PlaylistsPanel extends CommonPanel {
 	private static String REMOVE_PLAYLIST_LABEL = "rm";
 	
 	private Controller controller;
-	private List<Playlist> playlists;
 
 	public PlaylistsPanel(MainWindow mainWindow) {
 		super(mainWindow);
 		this.controller = Controller.getUniqueInstance();
-		this.playlists  = new LinkedList<Playlist>();
 		createScreen();
 	}
 	
-	public void build() {
-		playlists = controller.getPlaylists();
-	}
-
+	@Override
 	protected JPanel createInnerPanel() {
-		PlaylistsList playlistsList = new PlaylistsList(mainWindow, playlists);
+		List<ListEntry> entries = controller.getPlaylists()
+			.stream()
+			.map   (p -> new PlaylistListEntry(mainWindow, p))
+			.collect(Collectors.toList());
+		entries.add(0, makeControlsPanel());
+		
+		return new CommonListPanel(mainWindow, entries);
+	}
+	
+	private ListEntry makeControlsPanel() {
+		return new ListEntry(mainWindow) {
+			{
+				addComponents();
+			}
+			@Override
+			protected JPanel createInnerPanel() {
+				JPanel     controlPanel = new JPanel();
+				CardLayout layout       = new CardLayout();
+				
+				controlPanel.setLayout(layout);
 
-		// InnerPanel guarda entradas y botones.
-		JPanel innerPanel = new JPanel();
-		innerPanel.setBackground(Constants.BACKGROUND_COLOR);
-		innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
-		innerPanel.setAlignmentX(CENTER_ALIGNMENT);
-		fixSize(innerPanel, Constants.PAGE_WIDTH,
-				playlistsList.getLength() + 2 * (Constants.VIDEOLIST_ENTRY_HEIGHT + 10));
+				controlPanel.add(
+					makeButtonsPanel(controlPanel, layout),
+					BUTTONS_LABEL
+				);
+				controlPanel.add(
+					makeAddPlaylistPanel(controlPanel, layout),
+					ADD_PLAYLIST_LABEL
+				);
+				controlPanel.add(
+					makeRemovePlaylistPanel(controlPanel, layout),
+					REMOVE_PLAYLIST_LABEL
+				);
 
-		innerPanel.add(makeControlPanel());
-		innerPanel.add(playlistsList);
-
-		return innerPanel;
+				return controlPanel;
+			}
+			
+		};
 	}
 	
 	private JComponent makeButtonsPanel(JPanel controlPanel, CardLayout layout) {
@@ -109,27 +127,6 @@ public class PlaylistsPanel extends CommonPanel {
 		return new JLabel("remove");
 	}
 	
-	private JPanel makeControlPanel() {
-		JPanel     controlPanel = new JPanel();
-		CardLayout layout       = new CardLayout();
-		
-		controlPanel.setLayout(layout);
-
-		controlPanel.add(
-			makeButtonsPanel(controlPanel, layout),
-			BUTTONS_LABEL
-		);
-		controlPanel.add(
-			makeAddPlaylistPanel(controlPanel, layout),
-			ADD_PLAYLIST_LABEL
-		);
-		controlPanel.add(
-			makeRemovePlaylistPanel(controlPanel, layout),
-			REMOVE_PLAYLIST_LABEL
-		);
-
-		return controlPanel;
-	}
 
 	private JPanel defineButton(String text) {
 		JPanel button = new JPanel();
@@ -185,11 +182,46 @@ public class PlaylistsPanel extends CommonPanel {
 			}
 		);
 	}
+}
 
-	private void fixSize(JComponent component, int x, int y) {
-		component.setMinimumSize(new Dimension(x, y));
-		component.setMaximumSize(new Dimension(x, y));
-		component.setPreferredSize(new Dimension(x, y));
+/*
+@SuppressWarnings("serial")
+public class PlaylistsPanel extends CommonPanel {
+
+	private Controller controller;
+	private List<Playlist> playlists;
+
+	public PlaylistsPanel(MainWindow mainWindow) {
+		super(mainWindow);
+		this.controller = Controller.getUniqueInstance();
+		this.playlists  = new LinkedList<Playlist>();
+		createScreen();
+	}
+	
+	public void build() {
+		playlists = controller.getPlaylists();
 	}
 
+	protected JPanel createInnerPanel() {
+		PlaylistsList playlistsList = new PlaylistsList(mainWindow, playlists);
+
+		// InnerPanel guarda entradas y botones.
+		JPanel innerPanel = new JPanel();
+		innerPanel.setBackground(Constants.BACKGROUND_COLOR);
+		innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
+		innerPanel.setAlignmentX(CENTER_ALIGNMENT);
+		fixSize(innerPanel, Constants.PAGE_WIDTH,
+				playlistsList.getLength() + 2 * (Constants.VIDEOLIST_ENTRY_HEIGHT + 10));
+
+		innerPanel.add(makeControlPanel());
+		innerPanel.add(playlistsList);
+
+		return innerPanel;
+	}
+	
+	
+
+	
+
 }
+*/

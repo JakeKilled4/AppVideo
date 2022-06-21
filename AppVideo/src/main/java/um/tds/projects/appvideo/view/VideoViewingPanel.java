@@ -226,11 +226,6 @@ public class VideoViewingPanel extends CommonPanel  {
 		return sep;
 	}
 
-	private void fixSize(JComponent component, int x, int y) {
-		component.setMinimumSize  (new Dimension(x, y));
-		component.setMaximumSize  (new Dimension(x, y));
-		component.setPreferredSize(new Dimension(x, y));
-	}
 	
 	private void addLabelToVideo(Label label) {
 		JPanel p = new JPanel();

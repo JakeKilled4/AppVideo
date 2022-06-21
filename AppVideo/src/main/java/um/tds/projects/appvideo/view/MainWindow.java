@@ -79,7 +79,6 @@ public class MainWindow extends JFrame {
 
 	public void activatePlaylistsPanel() {
 		setContentPane(playlistsPanel);
-		playlistsPanel.build();
 		playlistsPanel.updateCenterPanel();
 		videoWeb.cancel();
 		validate();

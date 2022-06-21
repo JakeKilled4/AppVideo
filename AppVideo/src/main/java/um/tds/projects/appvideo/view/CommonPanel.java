@@ -79,7 +79,7 @@ public abstract class CommonPanel extends JPanel {
 		return null;
 	}
 
-	private void fixSize(JComponent component, int x, int y) {
+	protected void fixSize(JComponent component, int x, int y) {
 		component.setMinimumSize  (new Dimension(x, y));
 		component.setMaximumSize  (new Dimension(x, y));
 		component.setPreferredSize(new Dimension(x, y));
