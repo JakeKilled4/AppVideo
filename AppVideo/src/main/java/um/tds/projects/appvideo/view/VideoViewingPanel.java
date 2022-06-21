@@ -36,7 +36,6 @@ public class VideoViewingPanel extends CommonPanel  {
 
 	private Video      video;
 	private VideoWeb   videoWeb;
-	private JPanel     rightPanel;
 	private Controller controller;
 
 	public VideoViewingPanel(MainWindow mainWindow, Video video) {
@@ -84,7 +83,7 @@ public class VideoViewingPanel extends CommonPanel  {
 		hPanel.setLayout(new BoxLayout(hPanel, BoxLayout.X_AXIS));
 		hPanel.setAlignmentX(LEFT_ALIGNMENT);
 
-		rightPanel = new JPanel();
+		JPanel rightPanel = new JPanel();
 		FlowLayout layout = new FlowLayout();
 	    layout.setHgap(10);
 	    layout.setVgap(10);
