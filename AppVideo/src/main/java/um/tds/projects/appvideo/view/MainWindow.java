@@ -1,5 +1,6 @@
 package um.tds.projects.appvideo.view;
 
+import um.tds.projects.appvideo.backend.Playlist;
 import um.tds.projects.appvideo.backend.Video;
 import um.tds.projects.appvideo.controller.Controller;
 
@@ -17,12 +18,13 @@ public class MainWindow extends JFrame {
 
 	private static Logger logger = Logger.getLogger("um.tds.projects.appvideo.controller.controller");
 
-	private LoginPanel        loginPanel;
-	private PlaylistsPanel    playlistsPanel;
-	private PreferencesPanel  preferencesPanel;
-	private SearchPanel       searchPanel;
-	private RegisterPanel     registerPanel;
-	private VideoViewingPanel videoViewingPanel;
+	private LoginPanel          loginPanel;
+	private PlaylistsPanel      playlistsPanel;
+	private PreferencesPanel    preferencesPanel;
+	private SearchPanel         searchPanel;
+	private RegisterPanel       registerPanel;
+	private VideoViewingPanel   videoViewingPanel;
+	private SinglePlaylistPanel singlePlaylistPanel;
 	private VideoWeb videoWeb;
 	private Controller controller;
 
@@ -44,7 +46,8 @@ public class MainWindow extends JFrame {
 		UIManager.put("Panel.background", Constants.BACKGROUND_COLOR);
 		UIManager.put("OptionPane.messageForeground", Constants.FONT_COLOR);
 		 
-		videoViewingPanel = null; // Es redefinido al visualizar cada video.
+		videoViewingPanel   = null; // Es redefinido al visualizar cada video.
+		singlePlaylistPanel = null; // Redefinido al entrar a cada playlsit;
 
 		logger.info("Entering login panel");
 		setContentPane(loginPanel);
@@ -103,6 +106,12 @@ public class MainWindow extends JFrame {
 		videoWeb.cancel();
 		videoViewingPanel = new VideoViewingPanel(this, video);
 		setContentPane(videoViewingPanel);
+		validate();
+	}
+	
+	public void activateSinglePlaylistPanel(Playlist playlist) {
+		singlePlaylistPanel = new SinglePlaylistPanel(this, playlist);
+		setContentPane(singlePlaylistPanel);
 		validate();
 	}
 	

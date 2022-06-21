@@ -15,9 +15,19 @@ import javax.swing.JLabel;
 
 @SuppressWarnings("serial")
 public class PlaylistListEntry extends JPanel {
+
+	private MainWindow mainWindow;
+	private Playlist playlist;
+	private JLabel name;
+	private JLabel numVideos;
+	private JPanel vPanel;
+	private JPanel hPanel;
+	private JPanel labelPanel;
 	
 	private final class HoverMouseListener implements MouseListener {
-		public void mouseClicked(MouseEvent e) {}
+		public void mouseClicked(MouseEvent e) {
+			mainWindow.activateSinglePlaylistPanel(playlist);
+		}
 		public void mousePressed(MouseEvent e) {}
 		public void mouseReleased(MouseEvent e) {}
 
@@ -29,15 +39,9 @@ public class PlaylistListEntry extends JPanel {
 			updateBackground(Constants.BUTTON_COLOR);
 		}
 	}
-
-	private Playlist playlist;
-	private JLabel name;
-	private JLabel numVideos;
-	private JPanel vPanel;
-	private JPanel hPanel;
-	private JPanel labelPanel;
 	
 	public PlaylistListEntry(MainWindow mainWindow, Playlist playlist) {
+		this.mainWindow = mainWindow;
 		this.playlist = playlist;
 		
 		
