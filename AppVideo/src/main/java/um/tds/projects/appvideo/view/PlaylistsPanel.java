@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -24,7 +26,8 @@ public class PlaylistsPanel extends CommonPanel {
 	private static String ADD_PLAYLIST_LABEL    = "add";
 	private static String REMOVE_PLAYLIST_LABEL = "rm";
 	
-	private Controller controller;
+	private Controller              controller;
+	private List<PlaylistListEntry> playlistEntries;
 
 	public PlaylistsPanel(MainWindow mainWindow) {
 		super(mainWindow);
@@ -34,11 +37,15 @@ public class PlaylistsPanel extends CommonPanel {
 	
 	@Override
 	protected JPanel createInnerPanel() {
-		List<ListEntry> entries = controller.getPlaylists()
+		playlistEntries = controller.getPlaylists()
 			.stream()
 			.map   (p -> new PlaylistListEntry(mainWindow, p))
 			.collect(Collectors.toList());
-		entries.add(0, makeControlsPanel());
+		List<ListEntry> entries = new LinkedList<ListEntry>();
+		entries.add(makeControlsPanel());
+		for (ListEntry le: playlistEntries) {
+			entries.add(le);
+		}
 		
 		return new CommonListPanel(mainWindow, entries);
 	}
@@ -93,6 +100,9 @@ public class PlaylistsPanel extends CommonPanel {
 			rmvListBtn,
 			() -> {
 				layout.show(controlPanel, REMOVE_PLAYLIST_LABEL);
+				for (PlaylistListEntry ple: playlistEntries) {
+					ple.setRemoveMode(true);
+				}
 			}
 		);
 
@@ -113,7 +123,11 @@ public class PlaylistsPanel extends CommonPanel {
 				if (created) {
 					mainWindow.activatePlaylistsPanel();
 				} else {
-					// Popup: error
+					mainWindow.showPopUp(
+						"Playlist not created",
+						"There is already a playlist of that name",
+						JOptionPane.ERROR_MESSAGE
+					);
 				}
 
 				res.setText("Playlist name");

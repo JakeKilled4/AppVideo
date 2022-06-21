@@ -235,7 +235,9 @@ public class Controller implements VideosListener{
 	}
 
 	public void removePlaylist(Playlist playlist) {
-		playlistAdapter.removePlaylist(playlist);
+		logger.info("Removing the playlist '" + playlist.getName() + "'");
+		currentUser.removePlaylist(playlist);
+		userAdapter.modifyUser(currentUser);
 	}
 
 	public void addVideoToPlaylist(Playlist playlist, Video video) {

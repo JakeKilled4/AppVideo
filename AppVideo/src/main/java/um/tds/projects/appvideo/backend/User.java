@@ -104,7 +104,7 @@ public class User extends Identifiable {
 	
 	public boolean createPlaylist(String name) {
 		for (Playlist p: playlists)
-			if (p.getName() == name)
+			if (name.equals(p.getName()))
 				return false;
 
 		playlists.add(
