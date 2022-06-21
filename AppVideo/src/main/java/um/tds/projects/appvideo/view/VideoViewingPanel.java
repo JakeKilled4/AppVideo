@@ -32,16 +32,15 @@ import tds.video.VideoWeb;
 @SuppressWarnings("serial")
 public class VideoViewingPanel extends CommonPanel  {
 
-	private Video  video;
-	private VideoWeb videoWeb;
-	private JTextField textField;
-	private JPanel rightPanel;
+	private Video      video;
+	private VideoWeb   videoWeb;
+	private JPanel     rightPanel;
 	private Controller controller;
 
 	public VideoViewingPanel(MainWindow mainWindow, Video video) {
 		super(mainWindow);
-		this.video = video;
-		this.videoWeb = mainWindow.getVideoWeb();
+		this.video      = video;
+		this.videoWeb   = mainWindow.getVideoWeb();
 		this.controller = Controller.getUniqueInstance();
 		this.controller.addViewToVideo(video);
 		createScreen();
@@ -54,13 +53,30 @@ public class VideoViewingPanel extends CommonPanel  {
 		panel.setBackground(Constants.BACKGROUND_COLOR);
 		panel.setAlignmentX(CENTER_ALIGNMENT);
 		fixSize(panel, Constants.PAGE_WIDTH, 310);
+		
+		panel.add(    makeTitleLabel         ());
+		panel.add(    makeSeparator          (Color.WHITE));
+		panel.add(Box.createRigidArea        (new Dimension(0, 10)));
+		panel.add(    makeVideoAndLabelsPanel());
+		panel.add(    makeNumViewsLabel      ());
+		panel.add(Box.createRigidArea        (new Dimension(10,10)));
+		panel.add(    makeTextField          ());
 
+		// Start playing the video
+		videoWeb.playVideo(video.getUrl());
+		return panel;
+	}
+
+	private JLabel makeTitleLabel() {
 		JLabel title = new JLabel(video.getTitle());
-		title.setFont(Constants.TITLE_FONT);
+		title.setFont      (Constants.TITLE_FONT);
 		title.setBackground(Constants.FONT_COLOR);
 		title.setForeground(Constants.FONT_COLOR);
 		title.setAlignmentX(LEFT_ALIGNMENT);
+		return title;
+	}
 
+	private JPanel makeVideoAndLabelsPanel() {
 		JPanel hPanel = new JPanel();
 		hPanel.setBackground(Constants.BACKGROUND_COLOR);
 		hPanel.setLayout(new BoxLayout(hPanel, BoxLayout.X_AXIS));
@@ -75,74 +91,77 @@ public class VideoViewingPanel extends CommonPanel  {
 		rightPanel.setBackground(Constants.BACKGROUND_COLOR);
 		fixSize(rightPanel,400,200);
 		
-		for(Label label : video.getLabels()) 
+		for (Label label : video.getLabels()) 
 			addLabelToVideo(label);
 
 		hPanel.add(videoWeb);
 		hPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		hPanel.add(rightPanel);
+		return hPanel;
+	}
 
-		
+	private JLabel makeNumViewsLabel() {
 		String numViews    = Integer.toString(video.getNumViews());
 		JLabel numViewsLbl = new JLabel(numViews + ((numViews.equals("1")) ? " view" : " views"));
-		numViewsLbl.setFont(Constants.ITALIC_FONT);
+		numViewsLbl.setFont      (Constants.ITALIC_FONT);	
 		numViewsLbl.setBackground(Constants.LIGHT_FONT_COLOR);
 		numViewsLbl.setForeground(Constants.LIGHT_FONT_COLOR);
 		numViewsLbl.setAlignmentX(LEFT_ALIGNMENT);
-		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Label l = controller.addLabelToVideo(video, textField.getText());
-				if(l == null) 
-					mainWindow.showPopUp("Information", "The label is alredy in the video" , JOptionPane.INFORMATION_MESSAGE);
-				else addLabelToVideo(l);	
-				textField.setText("");
-				validate();
-			}
-		});
-		
-		textField.setBackground(Constants.SEARCH_COLOR);
-		textField.setForeground(Constants.FONT_COLOR);
-		textField.setFont(Constants.DEFAULT_FONT);
-		textField.setBorder(BorderFactory.createEmptyBorder());
-		textField.setCaretColor(Constants.FONT_COLOR);
-		textField.setText("Add label...");
-		textField.setMinimumSize(new Dimension(textField.getWidth(),25));
-		textField.setPreferredSize(new Dimension(textField.getWidth(),25));
-		textField.addFocusListener(new FocusListener() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				if(textField.getText().trim().equals("")) textField.setText("Add label...");
-			}
-			
-			@Override
-			public void focusGained(FocusEvent e) {
-				  if(textField.getText().trim().equals("Add label...")) textField.setText("");
-			}
-		});
-		
-		panel.add(title);
-		addSeparator(panel, Color.WHITE);
-		panel.add(Box.createRigidArea(new Dimension(0, 10)));
-		panel.add(hPanel);
-		panel.add(numViewsLbl);
-		panel.add(Box.createRigidArea(new Dimension(10,10)));
-		panel.add(textField);
-
-		// Start playing the video
-		videoWeb.playVideo(video.getUrl());
-		return panel;
+		return numViewsLbl;
 	}
 
-	static private void addSeparator(JPanel panel, Color color) {
+	private JTextField makeTextField() {
+		JTextField textField = new JTextField();
+		textField.setColumns      (10);
+		textField.setBackground   (Constants.SEARCH_COLOR);
+		textField.setForeground   (Constants.FONT_COLOR);
+		textField.setFont         (Constants.DEFAULT_FONT);
+		textField.setBorder       (BorderFactory.createEmptyBorder());
+		textField.setCaretColor   (Constants.FONT_COLOR);
+		textField.setText         ("Add label...");
+		textField.setMinimumSize  (new Dimension(textField.getWidth(),25));
+		textField.setPreferredSize(new Dimension(textField.getWidth(),25));
+		textField.addFocusListener(
+			new FocusListener() {
+				@Override
+				public void focusLost(FocusEvent e) {
+					if(textField.getText().trim().equals("")) textField.setText("Add label...");
+				}
+				
+				@Override
+				public void focusGained(FocusEvent e) {
+					  if(textField.getText().trim().equals("Add label...")) textField.setText("");
+				}
+			}
+		);
+		textField.addActionListener(
+			new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Label l = controller.addLabelToVideo(video, textField.getText());
+					if (l == null) {
+						mainWindow.showPopUp(
+							"Information",
+							"The label is alredy in the video" ,
+							JOptionPane.INFORMATION_MESSAGE
+						);
+					} else {
+						addLabelToVideo(l);	
+					}
+					textField.setText("");
+					validate();
+				}
+			}
+		);
+		return textField;
+	}
+
+	static private JSeparator makeSeparator(Color color) {
 		JSeparator sep = new JSeparator();
 		sep.setMaximumSize(new Dimension(Short.MAX_VALUE, Constants.SEPARATOR_HEIGHT));
 		sep.setBackground(color);
 		sep.setForeground(color);
-		panel.add(sep);
+		return sep;
 	}
 
 	private void fixSize(JComponent component, int x, int y) {
