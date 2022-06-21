@@ -86,7 +86,7 @@ public class VideoViewingPanel extends CommonPanel  {
 
 		rightPanel = new JPanel();
 		FlowLayout layout = new FlowLayout();
-	    layout.setHgap(10);              
+	    layout.setHgap(10);
 	    layout.setVgap(10);
 	     
 		rightPanel.setLayout(layout);
