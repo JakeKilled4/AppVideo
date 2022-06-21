@@ -83,11 +83,12 @@ public class VideoViewingPanel extends CommonPanel  {
 		hPanel.add(rightPanel);
 
 		
-		JLabel numViews = new JLabel(Integer.toString(video.getNumViews()) + " views");
-		numViews.setFont(Constants.ITALIC_FONT);
-		numViews.setBackground(Constants.LIGHT_FONT_COLOR);
-		numViews.setForeground(Constants.LIGHT_FONT_COLOR);
-		numViews.setAlignmentX(LEFT_ALIGNMENT);
+		String numViews    = Integer.toString(video.getNumViews());
+		JLabel numViewsLbl = new JLabel(numViews + ((numViews.equals("1")) ? " view" : " views"));
+		numViewsLbl.setFont(Constants.ITALIC_FONT);
+		numViewsLbl.setBackground(Constants.LIGHT_FONT_COLOR);
+		numViewsLbl.setForeground(Constants.LIGHT_FONT_COLOR);
+		numViewsLbl.setAlignmentX(LEFT_ALIGNMENT);
 		
 		textField = new JTextField();
 		textField.setColumns(10);
@@ -127,7 +128,7 @@ public class VideoViewingPanel extends CommonPanel  {
 		addSeparator(panel, Color.WHITE);
 		panel.add(Box.createRigidArea(new Dimension(0, 10)));
 		panel.add(hPanel);
-		panel.add(numViews);
+		panel.add(numViewsLbl);
 		panel.add(Box.createRigidArea(new Dimension(10,10)));
 		panel.add(textField);
 
