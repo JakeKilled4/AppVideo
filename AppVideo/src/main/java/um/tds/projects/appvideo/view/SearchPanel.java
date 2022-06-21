@@ -81,7 +81,6 @@ public class SearchPanel extends CommonPanel {
 
 	@Override
 	protected JPanel createRightPanel() {
-		controller.setSelectedLabel(new LinkedList<String>());
 		return new LabelPanel(controller.getAllLabels());
 	}
 
