@@ -1,6 +1,7 @@
 package um.tds.projects.appvideo.view;
 
 import um.tds.projects.appvideo.backend.Label;
+import um.tds.projects.appvideo.backend.Playlist;
 import um.tds.projects.appvideo.backend.Video;
 
 import java.awt.Color;
@@ -12,11 +13,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -60,7 +62,7 @@ public class VideoViewingPanel extends CommonPanel  {
 		panel.add(    makeVideoAndLabelsPanel());
 		panel.add(    makeNumViewsLabel      ());
 		panel.add(Box.createRigidArea        (new Dimension(10,10)));
-		panel.add(    makeTextField          ());
+		panel.add(    makeBottomComponent    ());
 
 		// Start playing the video
 		videoWeb.playVideo(video.getUrl());
@@ -110,50 +112,110 @@ public class VideoViewingPanel extends CommonPanel  {
 		return numViewsLbl;
 	}
 
-	private JTextField makeTextField() {
-		JTextField textField = new JTextField();
-		textField.setColumns      (10);
-		textField.setBackground   (Constants.SEARCH_COLOR);
-		textField.setForeground   (Constants.FONT_COLOR);
-		textField.setFont         (Constants.DEFAULT_FONT);
-		textField.setBorder       (BorderFactory.createEmptyBorder());
-		textField.setCaretColor   (Constants.FONT_COLOR);
-		textField.setText         ("Add label...");
-		textField.setMinimumSize  (new Dimension(textField.getWidth(),25));
-		textField.setPreferredSize(new Dimension(textField.getWidth(),25));
-		textField.addFocusListener(
-			new FocusListener() {
-				@Override
-				public void focusLost(FocusEvent e) {
-					if(textField.getText().trim().equals("")) textField.setText("Add label...");
-				}
-				
-				@Override
-				public void focusGained(FocusEvent e) {
-					  if(textField.getText().trim().equals("Add label...")) textField.setText("");
-				}
-			}
-		);
-		textField.addActionListener(
+	private JPanel makeBottomComponent() {
+		JPanel hPanel = new JPanel();
+		hPanel.setBackground(Constants.BACKGROUND_COLOR);
+		hPanel.setLayout(new BoxLayout(hPanel, BoxLayout.X_AXIS));
+		hPanel.setAlignmentX(LEFT_ALIGNMENT);
+
+		hPanel.add(    makeAddLabelsField());
+		hPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+		hPanel.add(    makePlaylistButton());
+		
+		return hPanel;
+	}
+
+	private JButton makePlaylistButton() {
+		JButton playlistButton = new JButton("Add video to playlist");
+		playlistButton.addActionListener(
 			new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					Label l = controller.addLabelToVideo(video, textField.getText());
-					if (l == null) {
-						mainWindow.showPopUp(
-							"Information",
-							"The label is alredy in the video" ,
-							JOptionPane.INFORMATION_MESSAGE
-						);
+					List<Playlist> playlists     = controller.getPlaylists();
+					if (playlists.isEmpty()) {
+						JOptionPane.showMessageDialog(playlistButton, "There are no playlists!");
 					} else {
-						addLabelToVideo(l);	
+						Object[] playlistNames = playlists.stream().map(Playlist::getName).toList().toArray();
+						String choosenPlaylistName = (String) JOptionPane.showInputDialog(
+							playlistButton,
+							"To which playlist would you like ot add the video?",
+							"Playlist selection",
+							JOptionPane.PLAIN_MESSAGE,
+							null,
+							playlistNames,
+							playlistNames[0]
+						);
+						if (choosenPlaylistName != null) {
+							Playlist choosenPlaylist = null;
+							for (Playlist playlist: playlists) {
+								if (choosenPlaylistName.equals(playlist.getName())) {
+									choosenPlaylist = playlist;
+									break;
+								}
+							}
+							
+							if (choosenPlaylist == null) {
+								logger.severe("The playlist chooser returned a string not corresponding to any playlist");
+								return;
+							} else {
+								controller.addVideoToPlaylist(choosenPlaylist, video);
+							}
+						}
 					}
-					textField.setText("");
-					validate();
 				}
 			}
 		);
+		return playlistButton;
+	}
+
+	private JTextField makeAddLabelsField() {
+		JTextField textField = new JTextField();
+		textField.setColumns       (10);
+		textField.setBackground    (Constants    .SEARCH_COLOR);
+		textField.setForeground    (Constants    .FONT_COLOR);
+		textField.setFont          (Constants    .DEFAULT_FONT);
+		textField.setCaretColor    (Constants    .FONT_COLOR);
+		textField.setBorder        (BorderFactory.createEmptyBorder());
+		textField.setText          ("Add label...");
+		textField.setMinimumSize   (new Dimension(textField.getWidth(),25));
+		textField.setPreferredSize (new Dimension(textField.getWidth(),25));
+		textField.addFocusListener (makeTextFieldFocusListener(textField));
+		textField.addActionListener(makeTextFieldActionListener(textField));
 		return textField;
+	}
+	
+	private FocusListener makeTextFieldFocusListener(JTextField textField) {
+		return new FocusListener() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(textField.getText().trim().equals("")) textField.setText("Add label...");
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				  if(textField.getText().trim().equals("Add label...")) textField.setText("");
+			}
+		};
+	}
+	
+	private ActionListener makeTextFieldActionListener(JTextField textField) {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Label l = controller.addLabelToVideo(video, textField.getText());
+				if (l == null) {
+					mainWindow.showPopUp(
+						"Information",
+						"The label is alredy in the video" ,
+						JOptionPane.INFORMATION_MESSAGE
+					);
+				} else {
+					addLabelToVideo(l);	
+				}
+				textField.setText("");
+				validate();
+			}
+		};
 	}
 
 	static private JSeparator makeSeparator(Color color) {
