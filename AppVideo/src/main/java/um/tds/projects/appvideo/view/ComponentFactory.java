@@ -8,6 +8,7 @@ import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -28,6 +29,13 @@ public class ComponentFactory {
 		return instance;
 	}
 
+	public JComboBox<String> specialComboBox(String options[]){
+		JComboBox<String> comboBox = new JComboBox<String>(options);
+		comboBox.setBackground(Constants.FOREGROUND_COLOR);
+		comboBox.setFont(Constants.DEFAULT_FONT);
+		comboBox.setForeground(Constants.FONT_COLOR);
+		return comboBox;
+	}
 	public JLabel specialLabel(String name) {
 		JLabel label = new JLabel(name);
 		label.setBackground(Constants.FOREGROUND_COLOR);

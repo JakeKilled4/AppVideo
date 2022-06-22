@@ -69,13 +69,10 @@ public class VideoRepository {
 		return cache.values().stream().collect(Collectors.toList());
 	}
 
-	public List<Video> findVideo(String str, List<IVideoFilter> filters, List<Label> labels) {
+	public List<Video> findVideo(String str, IVideoFilter filter, List<Label> labels) {
 		LinkedList<Video> res = new LinkedList<Video>();
 		for (Video v: cache.values()) {
-			boolean valid = true;
-			for (IVideoFilter f: filters)
-				valid &= f.isVideoOk(v);
-			if (valid && v.getTitle().contains(str)) {
+			if (filter.isVideoOk(v) && v.getTitle().contains(str)) {
 				boolean containLabel = false;
 				for(Label l : labels) {
 					if(v.containsLabel(l.getName())) { 

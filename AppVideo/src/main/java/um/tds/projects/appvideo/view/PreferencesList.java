@@ -6,12 +6,14 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JLabel;
@@ -26,6 +28,7 @@ import com.toedter.calendar.JDateChooser;
 import pulsador.EncendidoEvent;
 import pulsador.Luz;
 import um.tds.projects.appvideo.backend.User;
+import um.tds.projects.appvideo.backend.filters.IVideoFilter;
 import um.tds.projects.appvideo.controller.Controller;
 
 
@@ -45,6 +48,7 @@ public class PreferencesList extends JPanel {
 	private JPasswordField confirmNewPasswordFl;
 	private JCheckBox premium;
 	private JButton generatePdf;
+	private JComboBox<String> comboBox;
 	private User u;
 	
 
@@ -73,6 +77,7 @@ public class PreferencesList extends JPanel {
 		addSeparator();
 		addPremiumButton();
 		addChangeForm();
+		if(u.isPremium()) addFilterSelector();
 		addSaveLogOutButtons();
 		addMandatoryFields();
 		
@@ -135,16 +140,11 @@ public class PreferencesList extends JPanel {
 		innerPage.add(sep);
 	}
 	
-	
-
 	private void addLoadVideo() {
 		JPanel loadPanel = new JPanel();
 		loadPanel.setLayout(new BoxLayout(loadPanel, BoxLayout.X_AXIS));
 		loadPanel.setAlignmentY(CENTER_ALIGNMENT);
 		loadPanel.setBackground(Constants.FOREGROUND_COLOR);
-		//JLabel loaderLbl = new JLabel("Load videos:");
-		//loaderLbl.setFont(Constants.DComponenteBuscadorVideos c = new ComponenteBuscadorVideos();EFAULT_FONT);
-		//loaderLbl.setForeground(Constants.FONT_COLOR);
 		
 		Luz luz = new Luz();
 		luz.setPreferredSize(new Dimension(100, 100));
@@ -161,8 +161,6 @@ public class PreferencesList extends JPanel {
 			
 		});
 		
-		//loadPanel.add(loaderLbl);
-		//loadPanel.add(Box.createRigidArea(new Dimension(100,0)));
 		loadPanel.add(luz);
 		if(u.isPremium()) {
 			generatePdf = new JButton("Generate Pdf");
@@ -198,6 +196,8 @@ public class PreferencesList extends JPanel {
 			String password = String.valueOf(newPasswordFl.getPassword());
 			String confirmPassword = String.valueOf(confirmNewPasswordFl.getPassword());
 			boolean isPremium = premium.isSelected();
+			String filter = "No filter";
+			if(u.isPremium()) filter = (String) comboBox.getSelectedItem();
 						
 			if(name.isBlank() || username.isBlank() || dateOfBirth == null ||  password.isBlank()) {
 				mainWindow.showPopUp("Error","Complete correctly all the mandatory fields", JOptionPane.ERROR_MESSAGE);
@@ -213,7 +213,7 @@ public class PreferencesList extends JPanel {
 
 			boolean changeOk = controller.changeUserData(
 				name, surname, dateOfBirth, email,
-				username, password,isPremium);
+				username, password,isPremium,filter);
 			
 			if (changeOk) {/*
 				nameFl.setText(u.getName());
@@ -250,6 +250,25 @@ public class PreferencesList extends JPanel {
 		JLabel mandatoryFields = componentFactory.specialLabel("*Mandatory fields");
 		p.add(mandatoryFields);
 		innerPage.add(new PreferencesListEntry(p, 40));
+	}
+	
+	private void addFilterSelector() {
+		JPanel p = new JPanel();
+		p.setAlignmentY(CENTER_ALIGNMENT);
+		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+		p.setBackground(Constants.FOREGROUND_COLOR);
+		p.setMaximumSize(new Dimension(Constants.PAGE_WIDTH,30));
+		p.setBackground(Constants.FOREGROUND_COLOR);
+		JLabel selectFilter = componentFactory.specialLabel("Select filter:");
+		List<String> options = IVideoFilter.getAllFiltersNames();
+		String[] opt = new String[options.size()];
+		options.toArray(opt);
+		comboBox = componentFactory.specialComboBox(opt);
+		comboBox.setSelectedItem(IVideoFilter.getFilterName(u.getFilter()));
+		p.add(selectFilter);
+		p.add(Box.createRigidArea(new Dimension(20,0)));
+		p.add(comboBox);
+		innerPage.add(new PreferencesListEntry(p, 60));
 	}
 
 }

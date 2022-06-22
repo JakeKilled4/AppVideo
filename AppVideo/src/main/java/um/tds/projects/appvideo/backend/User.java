@@ -1,6 +1,7 @@
 package um.tds.projects.appvideo.backend;
 
 import um.tds.projects.appvideo.backend.filters.IVideoFilter;
+import um.tds.projects.appvideo.backend.filters.NoFilter;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -15,7 +16,7 @@ public class User extends Identifiable {
 	private String password;
 	private boolean isPremium;
 	private List<Playlist> playlists;
-	private List<IVideoFilter> filters;
+	private IVideoFilter filter;
 
 	public User(String name, String surname, Date dateOfBirth, String email, String username, String password) {
 		super();
@@ -27,15 +28,15 @@ public class User extends Identifiable {
 		this.password = password;
 		this.isPremium = false;
 		this.playlists = new LinkedList<Playlist>();
-		this.filters = new LinkedList<IVideoFilter>();
+		this.filter = new NoFilter();
 	}
 	
-	public List<IVideoFilter> getFilters() {
-		return filters;
+	public IVideoFilter getFilter() {
+		return this.filter;
 	}
 
-	public void setFilters(List<IVideoFilter> filters) {
-		this.filters = filters;
+	public void setFilter(IVideoFilter filter) {
+		this.filter = filter;
 	}
 
 	public List<Playlist> getPlaylists() {
@@ -122,13 +123,6 @@ public class User extends Identifiable {
 		playlists.remove(pl);
 	}
 
-	public void addFilter(IVideoFilter fl) {
-		filters.add(fl);
-	}
-
-	public void removeFilter(IVideoFilter fl) {
-		filters.remove(fl);
-	}
 	public boolean checkPassword(String _password) {
 		return password.equals(_password);
 	}

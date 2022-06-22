@@ -28,7 +28,6 @@ public class TdsUserAdapter implements IUserAdapter {
 	
 	private SimpleDateFormat   dateFormat; // Format of the date in the DB
 	private TdsPlaylistAdapter playlistAdapter;
-	private TdsFilterAdapter   filterAdapter;
 
 	public static TdsUserAdapter getUniqueInstance() {
 		if (instance == null)
@@ -39,7 +38,6 @@ public class TdsUserAdapter implements IUserAdapter {
 	private TdsUserAdapter() {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 		playlistAdapter  = TdsPlaylistAdapter.getUniqueInstance();
-		filterAdapter    = TdsFilterAdapter.getUniqueInstance();
 		dateFormat       = new SimpleDateFormat("dd/MM/yyyy");
 	}
 
@@ -58,10 +56,6 @@ public class TdsUserAdapter implements IUserAdapter {
 		for (Playlist playlist : u.getPlaylists())
 			playlistAdapter.registerPlaylist(playlist);
 
-		// Register videoFilter
-		for (IVideoFilter filter : u.getFilters())
-			filterAdapter.registerFilter(filter);
-
 		// Create user entity
 		eUser = new Entidad();
 
@@ -77,7 +71,7 @@ public class TdsUserAdapter implements IUserAdapter {
 					new Propiedad("password",                      u.getPassword()),
 					new Propiedad("isPremium",   String.valueOf(   u.isPremium())),
 					new Propiedad("playlists",   getCodesPlaylist( u.getPlaylists())),
-					new Propiedad("filters",     getCodesFilters(  u.getFilters()))
+					new Propiedad("filter",     				   IVideoFilter.getFilterName(u.getFilter()))
 				)
 			)
 		);
@@ -108,7 +102,6 @@ public class TdsUserAdapter implements IUserAdapter {
 		
 		User oldUser = loadUser(u.getCode());
 		modifyPlaylists(oldUser, u);
-		modifyFilters  (oldUser, u);
 
 		eUser = servPersistencia.recuperarEntidad(u.getCode());
 		for (Propiedad prop: eUser.getPropiedades()) {
@@ -120,7 +113,7 @@ public class TdsUserAdapter implements IUserAdapter {
 			modifyField(prop, "password",                      u.getPassword());
 			modifyField(prop, "isPremium",   String.valueOf(   u.isPremium()));
 			modifyField(prop, "playlists",   getCodesPlaylist( u.getPlaylists()));
-			modifyField(prop, "filters",     getCodesFilters(  u.getFilters()));
+			modifyField(prop, "filter",     				   IVideoFilter.getFilterName(u.getFilter()));
 			servPersistencia.modificarPropiedad(prop);
 		}
 	}
@@ -181,16 +174,11 @@ public class TdsUserAdapter implements IUserAdapter {
 		for (Playlist playlist : playlists)
 			user.addPlaylist(playlist);
 
-		// Load filters
-		List<IVideoFilter> filters = getFiltersFromCodes(getFieldValue(eUser, "filters"));
-		
-		for (IVideoFilter filter : filters)
-			user.addFilter(filter);
-
+		String filterName = getFieldValue(eUser, "filter");
+		IVideoFilter filter = IVideoFilter.makeFilter(filterName);
+		user.setFilter(filter);
 		return user;
 	}
-	
-
 
 	@Override
 	public List<User> loadAllUsers() {
@@ -218,34 +206,11 @@ public class TdsUserAdapter implements IUserAdapter {
 			prop.setValor(newValue);
 	}
 	
-	/* Removes the deleted filters and registers the new ones.*/
-	private void modifyFilters(User oldUser, User newUser) {
-		// We will store the filters in two hash sets for rapidly
-		// computing whether some filter belongs to both users.
-		Set<Integer> oldFilters = new HashSet<Integer>();
-		
-		// Populate the sets with each user's filters.
-		for (IVideoFilter f: oldUser.getFilters())
-			oldFilters.add(f.getCode());
-		
-		// Register the added filters, remove the deleted ones.
-		for (IVideoFilter f: newUser.getFilters())
-			if (!oldFilters.contains(f.getCode()))
-				filterAdapter.registerFilter(f);
-	}
-	
 	private String getCodesPlaylist(List<Playlist> playlist) {
 		String plays = "";
 		for (Playlist list : playlist)
 			plays += String.valueOf(list.getCode()) + " ";
 		return plays.trim();
-	}
-
-	private String getCodesFilters(List<IVideoFilter> filters) {
-		String out = "";
-		for (IVideoFilter filt : filters)
-			out += String.valueOf(filt.getCode()) + " ";
-		return out.trim();
 	}
 
 	private List<Playlist> getPlaylistsFromCodes(String playlists) {
@@ -262,20 +227,5 @@ public class TdsUserAdapter implements IUserAdapter {
 			);
 		}
 		return playlistList;
-	}
-
-	private List<IVideoFilter> getFiltersFromCodes(String filters) {
-		List<IVideoFilter> filterList = new LinkedList<IVideoFilter>();
-		StringTokenizer    strTok     = new StringTokenizer(filters, " ");
-		while (strTok.hasMoreTokens()) {
-			filterList.add(
-				filterAdapter.loadFilter(
-					Integer.valueOf(
-						(String) strTok.nextElement()
-					)
-				)
-			);
-		}
-		return filterList;
 	}
 }

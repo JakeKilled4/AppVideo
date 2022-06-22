@@ -6,11 +6,6 @@ public class TdsDaoFactory extends DaoFactory {
 	public TdsDaoFactory() { }
 
 	@Override
-	public IFilterAdapter getFilterAdapter() {
-		return TdsFilterAdapter.getUniqueInstance();
-	}
-
-	@Override
 	public IPlaylistAdapter getPlaylistAdapter() {
 		return TdsPlaylistAdapter.getUniqueInstance();
 	}

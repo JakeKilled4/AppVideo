@@ -7,8 +7,8 @@ import um.tds.projects.appvideo.backend.User;
 import um.tds.projects.appvideo.backend.UserRepository;
 import um.tds.projects.appvideo.backend.Video;
 import um.tds.projects.appvideo.backend.VideoRepository;
+import um.tds.projects.appvideo.backend.filters.IVideoFilter;
 import um.tds.projects.appvideo.persistence.DaoFactory;
-import um.tds.projects.appvideo.persistence.IFilterAdapter;
 import um.tds.projects.appvideo.persistence.ILabelAdapter;
 import um.tds.projects.appvideo.persistence.IPlaylistAdapter;
 import um.tds.projects.appvideo.persistence.IUserAdapter;
@@ -47,7 +47,6 @@ public class Controller implements VideosListener{
 	private IUserAdapter     userAdapter;
 	private IVideoAdapter    videoAdapter;
 	private ILabelAdapter	 labelAdapter;
-	private IFilterAdapter 	 filterAdapter;
 	
 	private UserRepository   userRepository;
 	private VideoRepository  videoRepository;
@@ -72,7 +71,13 @@ public class Controller implements VideosListener{
 		this.searchedTitle = "";
 		this.selectedLabels = new LinkedList<Label>();
 	}
-
+	
+	public static Controller getUniqueInstance() {
+		if (instance == null)
+			instance = new Controller();
+		return instance;
+	}
+	
 	public boolean underEighteen() {
 		Calendar a = Calendar.getInstance();
 		a.setTime(currentUser.getDateOfBirth());
@@ -85,12 +90,12 @@ public class Controller implements VideosListener{
 	    return diff < 18;
 	}
 	
-	public static Controller getUniqueInstance() {
-		if (instance == null)
-			instance = new Controller();
-		return instance;
+	public boolean videoInSomePlaylist(Video v) {
+		for(Playlist p : currentUser.getPlaylists()) {
+			if(p.containsVideo(v)) return true;
+		}
+		return false;
 	}
-	
 	public void setMainWindow(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 	}
@@ -112,7 +117,7 @@ public class Controller implements VideosListener{
 	}
 	
 	public List<Video> getSearchedVideos() {
-		return videoRepository.findVideo(searchedTitle, currentUser.getFilters(), selectedLabels);
+		return videoRepository.findVideo(searchedTitle, currentUser.getFilter(), selectedLabels);
 	}
 	@Override
 	public void hayNuevosVideos(EventObject arg) {
@@ -194,7 +199,7 @@ public class Controller implements VideosListener{
 	/**
 	 * Returns true iff the change process was successful (If the username was not already taken)
 	 */
-	public boolean changeUserData(String name, String surname, Date dateOfBirth, String email, String username, String password, boolean isPremium) {
+	public boolean changeUserData(String name, String surname, Date dateOfBirth, String email, String username, String password, boolean isPremium, String filter) {
 		if(this.currentUser == null) return false;
 		if(!this.currentUser.getUsername().equals(username) && userRepository.containsUser(username)) return false;
 		userRepository.removeUser(this.currentUser);
@@ -205,6 +210,8 @@ public class Controller implements VideosListener{
 		this.currentUser.setUsername(username);
 		this.currentUser.setPassword(password);
 		this.currentUser.setPremium(isPremium);
+		this.currentUser.setFilter(IVideoFilter.makeFilter(filter));
+	
 		userRepository.addUser(this.currentUser);
 		userAdapter.modifyUser(this.currentUser);
 		return true;
@@ -300,7 +307,6 @@ public class Controller implements VideosListener{
 		playlistAdapter = factory.getPlaylistAdapter();
 		videoAdapter    = factory.getVideoAdapter();
 		labelAdapter	= factory.getLabelAdapter();
-		filterAdapter 	= factory.getFilterAdapter();
 		
 		logger.info("Finished initialising the adapters");
 	}
