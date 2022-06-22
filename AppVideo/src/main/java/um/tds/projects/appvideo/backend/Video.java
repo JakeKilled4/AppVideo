@@ -49,14 +49,32 @@ public class Video extends Identifiable {
 	}
 	
 	public boolean containsLabel(String l) {
-		if(labels.contains(new Label(l))) return true;
-		return false;
+		if (labels.contains(new Label(l))) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public boolean addLabel(Label l) {
-		if(labels.contains(l)) return false;
-		labels.add(l);
-		return true;
+		if (labels.contains(l)) {
+			return false;
+		} else {
+			labels.add(l);
+			return true;
+		}
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		
+		return url.equals(((Video) obj).getUrl());
 	}
 
 }

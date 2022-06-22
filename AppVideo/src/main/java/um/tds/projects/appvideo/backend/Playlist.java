@@ -25,9 +25,23 @@ public class Playlist extends Identifiable {
 	public List<Video> getVideos(){
 		return this.videos;
 	}
+	
+	public boolean containsVideo(Video video) {
+		for (Video v: videos) {
+			if (v.equals(video)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-	public void addVideo(Video video) {
-		videos.add(video);
+	public boolean addVideo(Video video) {
+		if (containsVideo(video)) {
+			return false;
+		} else {
+			videos.add(video);
+			return true;
+		}
 	}
 
 	public void removeVideo(Video video) {

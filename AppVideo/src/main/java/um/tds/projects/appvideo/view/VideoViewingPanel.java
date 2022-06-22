@@ -131,11 +131,14 @@ public class VideoViewingPanel extends CommonPanel  {
 			new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					List<Playlist> playlists     = controller.getPlaylists();
+					List<Playlist> playlists = controller.getPlaylists()
+							.stream ()
+							.filter (p -> !p.containsVideo(video))
+							.toList ();
 					if (playlists.isEmpty()) {
-						JOptionPane.showMessageDialog(playlistButton, "There are no playlists!");
+						JOptionPane.showMessageDialog(playlistButton, "This video can't be added to any playlist!");
 					} else {
-						Object[] playlistNames = playlists.stream().map(Playlist::getName).toList().toArray();
+						Object[] playlistNames = playlists.stream().map(Playlist::getName).toArray();
 						String choosenPlaylistName = (String) JOptionPane.showInputDialog(
 							playlistButton,
 							"To which playlist would you like ot add the video?",

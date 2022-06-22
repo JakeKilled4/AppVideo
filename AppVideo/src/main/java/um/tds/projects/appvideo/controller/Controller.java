@@ -240,9 +240,13 @@ public class Controller implements VideosListener{
 		userAdapter.modifyUser(currentUser);
 	}
 
-	public void addVideoToPlaylist(Playlist playlist, Video video) {
-		playlist.addVideo(video);
-		playlistAdapter.modifyPlaylist(playlist);
+	public boolean addVideoToPlaylist(Playlist playlist, Video video) {
+		if (playlist.addVideo(video)) {
+			playlistAdapter.modifyPlaylist(playlist);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void removeVideoFromPlaylist(Playlist playlist, Video video) {
