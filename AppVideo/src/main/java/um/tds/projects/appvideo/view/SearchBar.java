@@ -37,18 +37,7 @@ public class SearchBar extends JPanel{
 	
 		//add(Box.createRigidArea(new Dimension(5, 0)));
 		
-		txtSearch = componentFactory.specialTextField("Search...");
-		txtSearch.addFocusListener(new FocusListener() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				if(txtSearch.getText().trim().equals("")) txtSearch.setText("Search...");
-			}
-			
-			@Override
-			public void focusGained(FocusEvent e) {
-				  if(txtSearch.getText().trim().equals("Search...")) txtSearch.setText("");
-			}
-		});
+		txtSearch = componentFactory.specialTextField("Search...",true);
 		txtSearch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

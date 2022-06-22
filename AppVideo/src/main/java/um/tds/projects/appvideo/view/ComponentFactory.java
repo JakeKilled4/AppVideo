@@ -2,6 +2,8 @@ package um.tds.projects.appvideo.view;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -34,7 +36,7 @@ public class ComponentFactory {
 		return label;
 	}
 	
-	public JTextField specialTextField(String name) {
+	public JTextField specialTextField(String name, boolean hideText) {
 		JTextField tf = new JTextField();
 		tf.setColumns(10);
 		tf.setBackground(Constants.SEARCH_COLOR);
@@ -44,7 +46,22 @@ public class ComponentFactory {
 		tf.setCaretColor(Constants.FONT_COLOR);
 		tf.setMinimumSize(new Dimension(tf.getWidth(),25));
 		tf.setPreferredSize(new Dimension(tf.getWidth(),25));
-		if(name != null) tf.setText(name);
+		if(name != null) {
+			tf.setText(name);
+			if(hideText) {
+				tf.addFocusListener(new FocusListener() {
+					@Override
+					public void focusLost(FocusEvent e) {
+						if(tf.getText().trim().equals("")) tf.setText(name);
+					}
+					
+					@Override
+					public void focusGained(FocusEvent e) {
+						  if(tf.getText().trim().equals(name)) tf.setText("");
+					}
+				});
+			}
+		}
 		return tf;
 	}
 	

@@ -55,19 +55,19 @@ public class RegisterPanel extends JPanel {
     	panel1.add(appTitle);
     	
     	JLabel nameLbl = componentFactory.specialLabel("*Name:");
-    	JTextField nameField = componentFactory.specialTextField(null);
+    	JTextField nameField = componentFactory.specialTextField(null,false);
     	
     	JLabel surnameLbl = componentFactory.specialLabel("Surname:");
-    	JTextField surnameField = componentFactory.specialTextField(null);
+    	JTextField surnameField = componentFactory.specialTextField(null,false);
     	
     	JLabel dateOfBirthLbl = componentFactory.specialLabel("*Day of birth:");
     	JDateChooser dateOfBirthField = componentFactory.specialDateChooser(null);
     	
     	JLabel emailLbl = componentFactory.specialLabel("Email:");
-    	JTextField emailField = componentFactory.specialTextField(null);
+    	JTextField emailField = componentFactory.specialTextField(null,false);
     	
     	JLabel usernameLbl = componentFactory.specialLabel("*Username:");
-    	JTextField usernameField = componentFactory.specialTextField(null);
+    	JTextField usernameField = componentFactory.specialTextField(null,false);
     	
     	JLabel passwordLbl = componentFactory.specialLabel("*Password:");
     	JPasswordField passwordField = componentFactory.specialPasswordField(null);

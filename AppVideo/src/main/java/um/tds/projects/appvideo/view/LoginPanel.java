@@ -52,7 +52,7 @@ public class LoginPanel extends JPanel
     	panel1.add(appTitle);
     	
     	JLabel usernameLbl = componentFactory.specialLabel("Username:");
-    	JTextField usernameField = componentFactory.specialTextField(null);
+    	JTextField usernameField = componentFactory.specialTextField(null,false);
     	
     	JLabel passwordLbl = componentFactory.specialLabel("Password:");
     	JPasswordField passwordField = componentFactory.specialPasswordField(null);

@@ -28,10 +28,12 @@ public class PlaylistsPanel extends CommonPanel {
 	
 	private Controller              controller;
 	private List<PlaylistListEntry> playlistEntries;
+	private ComponentFactory componentFactory;
 
 	public PlaylistsPanel(MainWindow mainWindow) {
 		super(mainWindow);
 		this.controller = Controller.getUniqueInstance();
+		this.componentFactory = ComponentFactory.getUniqueInstance();
 		createScreen();
 	}
 	
@@ -113,7 +115,7 @@ public class PlaylistsPanel extends CommonPanel {
 	}
 	
 	private JComponent makeAddPlaylistPanel(JPanel controlPanel, CardLayout layout) {
-		JTextField res = new JTextField("Playlist name");
+		JTextField res = componentFactory.specialTextField("Playlist name...",true);
 		
 		res.addActionListener(
 			(ActionEvent e) -> {

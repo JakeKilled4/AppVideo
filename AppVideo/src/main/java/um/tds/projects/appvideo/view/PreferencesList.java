@@ -89,19 +89,19 @@ public class PreferencesList extends JPanel {
 		p.setLayout(new GridLayout(7, 2, 0, 10));
 		
 		JLabel nameLbl = this.componentFactory.specialLabel("*Name:");
-		nameFl = this.componentFactory.specialTextField(u.getName());
+		nameFl = this.componentFactory.specialTextField(u.getName(),false);
 		
 		JLabel surnameLbl = this.componentFactory.specialLabel("Surname:");
-		surnameFl = this.componentFactory.specialTextField(u.getSurname());
+		surnameFl = this.componentFactory.specialTextField(u.getSurname(),false);
 		
 		JLabel usernameLbl = componentFactory.specialLabel("*Username:");
-    	usernameFl = componentFactory.specialTextField(u.getUsername());
+    	usernameFl = componentFactory.specialTextField(u.getUsername(),false);
 		
 		JLabel dayOfBirthLbl = this.componentFactory.specialLabel("*Date Of Birth:");
 		date = this.componentFactory.specialDateChooser(u.getDateOfBirth());
 		
 		JLabel emailLbl = this.componentFactory.specialLabel("Email");
-		emailFl = this.componentFactory.specialTextField(u.getEmail());
+		emailFl = this.componentFactory.specialTextField(u.getEmail(),false);
 		
 		JLabel newPasswordLbl = this.componentFactory.specialLabel("*Password:");
 		newPasswordFl = this.componentFactory.specialPasswordField(u.getPassword());
