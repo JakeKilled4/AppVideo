@@ -21,6 +21,7 @@ public class ToolbarPanel extends JPanel {
 	private ToolbarEntryPanel entryPlaylists;
 	private ToolbarEntryPanel entryPreferences;
 	private ToolbarEntryPanel entrySearch;
+	private ToolbarEntryPanel entryRecents;
 	private List<JSeparator>  separators;
 
 	public ToolbarPanel(MainWindow mainWindow) {
@@ -54,6 +55,7 @@ public class ToolbarPanel extends JPanel {
 			entryPlaylists.  setVisible(true);
 			entryPreferences.setVisible(true);
 			entrySearch.     setVisible(true);
+			entryRecents.    setVisible(true);
 			separators.stream().forEach( s -> s.setVisible(true) );
 		} else {
 			setBackground(Constants.BACKGROUND_COLOR);
@@ -61,6 +63,7 @@ public class ToolbarPanel extends JPanel {
 			entryPlaylists.  setVisible(false);
 			entryPreferences.setVisible(false);
 			entrySearch.     setVisible(false);
+			entryRecents.    setVisible(false);
 			separators.stream().forEach( s -> s.setVisible(false) );
 		}
 	}
@@ -69,6 +72,7 @@ public class ToolbarPanel extends JPanel {
 		entryPlaylists   = new ToolbarEntryPanel(null, "Playlists");
 		entryPreferences = new ToolbarEntryPanel(null, "Preferences");
 		entrySearch      = new ToolbarEntryPanel(null, "Search");
+		entryRecents     = new ToolbarEntryPanel(null, "Recents");
 		separators       = new ArrayList<JSeparator>();
 		  
 		JLabel icon = new JLabel(new ImageIcon("./src/images/MenuGrey.png"));
@@ -96,6 +100,7 @@ public class ToolbarPanel extends JPanel {
 		entryPlaylists.  addClickAction(() -> mainWindow.activatePlaylistsPanel());
 		entryPreferences.addClickAction(() -> mainWindow.activatePreferencesPanel());
 		entrySearch.     addClickAction(() -> mainWindow.activateSearchPanel(UpdateOption.BOTH));
+		entryRecents.    addClickAction(() -> mainWindow.activateRecentsPanel());
 
 		add(Box.createRigidArea(new Dimension(0, 30)));
 		add(entryPlaylists);
@@ -103,6 +108,8 @@ public class ToolbarPanel extends JPanel {
 		add(entryPreferences);
 		addSeparator();
 		add(entrySearch);
+		addSeparator();
+		add(entryRecents);
 	}
 	
 	private void addSeparator() {
