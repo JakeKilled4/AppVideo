@@ -21,6 +21,7 @@ import umu.tds.componente.Videos;
 import umu.tds.componente.VideosEvent;
 import umu.tds.componente.VideosListener;
 
+import java.lang.Math;
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
@@ -53,13 +54,15 @@ public class Controller implements VideosListener{
 	private LabelRepository  labelRepository;
 	
 	// Text searched by user
-	String searchedTitle;
+	private String searchedTitle;
 	
 	// List of labels selected to search
-	List<Label> selectedLabels;
+	private List<Label> selectedLabels;
 	
 	// Current user
 	private User currentUser;
+	
+	private List<Video> history;
 	
 	// Main window
 	private MainWindow mainWindow;
@@ -67,9 +70,10 @@ public class Controller implements VideosListener{
 	private Controller() {
 		initializeAdapters();
 		initializeRepositories();
-		this.currentUser = null;
-		this.searchedTitle = "";
+		this.currentUser    = null;
+		this.searchedTitle  = "";
 		this.selectedLabels = new LinkedList<Label>();
+		this.history        = new LinkedList<Video>();
 	}
 	
 	public static Controller getUniqueInstance() {
@@ -96,6 +100,11 @@ public class Controller implements VideosListener{
 		}
 		return false;
 	}
+	
+	public boolean userIsPremium() {
+		return currentUser.isPremium();
+	}
+	
 	public void setMainWindow(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 	}
@@ -116,9 +125,30 @@ public class Controller implements VideosListener{
 		mainWindow.activateSearchPanel(UpdateOption.CENTER);
 	}
 	
+	public void registerVideo(Video v) {
+		history.add(0, v);
+	}
+	
+	public List<Video> getMostRecentVideos(int n) {
+		history = history.stream().distinct().collect(Collectors.toList());
+		if (history.isEmpty() || n == 0) {
+			return new LinkedList<Video>();
+		} else {
+			return history.subList(
+				0,
+				Math.min(n, history.size() - 1)
+			);
+		}
+	}
+	
+	public List<Video> getMostPopularVideos(int n) {
+		return videoRepository.getMostPopularVideos(n);
+	}
+	
 	public List<Video> getSearchedVideos() {
 		return videoRepository.findVideo(searchedTitle, currentUser.getFilter(), selectedLabels);
 	}
+	
 	@Override
 	public void hayNuevosVideos(EventObject arg) {
 		VideosEvent e = (VideosEvent)arg;
@@ -193,7 +223,10 @@ public class Controller implements VideosListener{
 
 	public void logout() {
 		logger.info("User logged out");
-		currentUser = null;
+		currentUser    = null;
+		searchedTitle  = "";
+		selectedLabels = new LinkedList<Label>();
+		history        = new LinkedList<Video>();
 	}
 	
 	/**
