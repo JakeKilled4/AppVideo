@@ -22,9 +22,9 @@ import javax.swing.JTextField;
 @SuppressWarnings("serial")
 public class PlaylistsPanel extends CommonPanel {
 
-	private static String BUTTONS_LABEL         = "buttons";
-	private static String ADD_PLAYLIST_LABEL    = "add";
-	private static String REMOVE_PLAYLIST_LABEL = "rm";
+	private static final String BUTTONS_LABEL         = "buttons";
+	private static final String ADD_PLAYLIST_LABEL    = "add";
+	private static final String REMOVE_PLAYLIST_LABEL = "rm";
 	
 	private Controller              controller;
 	private List<PlaylistListEntry> playlistEntries;

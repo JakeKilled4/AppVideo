@@ -1,6 +1,8 @@
 package um.tds.projects.appvideo.view;
 
+import um.tds.projects.appvideo.backend.Playlist;
 import um.tds.projects.appvideo.backend.Video;
+import um.tds.projects.appvideo.controller.Controller;
 
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
@@ -18,33 +20,55 @@ import javax.swing.JLabel;
 @SuppressWarnings("serial")
 public class VideoListEntry extends ListEntry {
 
-	private Video video;
-	private JLabel title;
-	private JLabel numViews;
-	private JPanel hPanel;
-	private JPanel labelPanel;
-	private JLabel icon;
+	private Video    video;
+	private JLabel   title;
+	private JLabel   numViews;
+	private JPanel   hPanel;
+	private JPanel   labelPanel;
+	private JLabel   icon;
 	private VideoWeb videoWeb;
+	private boolean  removeMode;
+	private Playlist parent;
 
 	public VideoListEntry(MainWindow mainWindow, Video video) {
 		super(mainWindow);
 		this.video      = video;
-		this.videoWeb = mainWindow.getVideoWeb();
+		this.videoWeb   = mainWindow.getVideoWeb();
+		this.removeMode = false;
+		this.parent     = null;
 		addMouseListener(new HoverMouseListener());
 		addComponents();
 	}
 	
+	public VideoListEntry(MainWindow mainWindow, Video video, Playlist parent) {
+		this(mainWindow, video);
+		this.parent = parent;
+	}
+	
+	public void setRemoveMode(boolean removeMode) {
+		this.removeMode = removeMode;
+	}
+	
 	private final class HoverMouseListener implements MouseListener {
 		public void mouseClicked(MouseEvent e) {
-			updateBackground(Constants.BUTTON_COLOR);
-			mainWindow.activateVideoViewingPanel(video);
+			if (removeMode && parent != null) {
+				Controller.getUniqueInstance().removeVideoFromPlaylist(parent, video);
+				mainWindow.activateSinglePlaylistPanel(parent);
+			} else {
+				updateBackground(Constants.BUTTON_COLOR);
+				mainWindow.activateVideoViewingPanel(video);
+			}
 		}
 
 		public void mousePressed(MouseEvent e) {}
 		public void mouseReleased(MouseEvent e) {}
 
 		public void mouseEntered(MouseEvent e) {
-			updateBackground(Constants.BUTTON_HOVER_COLOR);
+			if (removeMode) {
+				updateBackground(Constants.BUTTON_RED_HOVER_COLOR);
+			} else{
+				updateBackground(Constants.BUTTON_HOVER_COLOR);
+			}
 		}
 
 		public void mouseExited(MouseEvent e) {
