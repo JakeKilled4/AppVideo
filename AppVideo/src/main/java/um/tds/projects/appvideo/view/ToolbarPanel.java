@@ -22,6 +22,7 @@ public class ToolbarPanel extends JPanel {
 	private ToolbarEntryPanel entryPreferences;
 	private ToolbarEntryPanel entrySearch;
 	private ToolbarEntryPanel entryRecents;
+	private ToolbarEntryPanel entryPopularVideos;
 	private List<JSeparator>  separators;
 
 	public ToolbarPanel(MainWindow mainWindow) {
@@ -52,28 +53,31 @@ public class ToolbarPanel extends JPanel {
 		if (open == true) {
 			setBackground(Constants.FOREGROUND_COLOR);
 			setPreferredSize(new Dimension(Constants.TOOLBAR_OPEN_SIZE, Short.MAX_VALUE));
-			entryPlaylists.  setVisible(true);
-			entryPreferences.setVisible(true);
-			entrySearch.     setVisible(true);
-			entryRecents.    setVisible(true);
+			entryPlaylists.    setVisible(true);
+			entryPreferences.  setVisible(true);
+			entrySearch.       setVisible(true);
+			entryRecents.      setVisible(true);
+			entryPopularVideos.setVisible(true);
 			separators.stream().forEach( s -> s.setVisible(true) );
 		} else {
 			setBackground(Constants.BACKGROUND_COLOR);
 			setPreferredSize(new Dimension(Constants.TOOLBAR_CLOSED_SIZE, Short.MIN_VALUE));
-			entryPlaylists.  setVisible(false);
-			entryPreferences.setVisible(false);
-			entrySearch.     setVisible(false);
-			entryRecents.    setVisible(false);
+			entryPlaylists.    setVisible(false);
+			entryPreferences.  setVisible(false);
+			entrySearch.       setVisible(false);
+			entryRecents.      setVisible(false);
+			entryPopularVideos.setVisible(false);
 			separators.stream().forEach( s -> s.setVisible(false) );
 		}
 	}
 
 	private void addComponents() {
-		entryPlaylists   = new ToolbarEntryPanel(null, "Playlists");
-		entryPreferences = new ToolbarEntryPanel(null, "Preferences");
-		entrySearch      = new ToolbarEntryPanel(null, "Search");
-		entryRecents     = new ToolbarEntryPanel(null, "Recents");
-		separators       = new ArrayList<JSeparator>();
+		entryPlaylists     = new ToolbarEntryPanel(null, "Playlists");
+		entryPreferences   = new ToolbarEntryPanel(null, "Preferences");
+		entrySearch        = new ToolbarEntryPanel(null, "Search");
+		entryRecents       = new ToolbarEntryPanel(null, "Recents");
+		entryPopularVideos = new ToolbarEntryPanel(null, "Popular Videos");
+		separators         = new ArrayList<JSeparator>();
 		  
 		JLabel icon = new JLabel(new ImageIcon("./src/images/MenuGrey.png"));
 		JPanel btnPanel = new JPanel();
@@ -91,16 +95,17 @@ public class ToolbarPanel extends JPanel {
 				else
 					setOpen(true);
 			}
-			public void mousePressed(MouseEvent e) {}
+			public void mousePressed (MouseEvent e) {}
 			public void mouseReleased(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
-			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered (MouseEvent e) {}
+			public void mouseExited  (MouseEvent e) {}
 		});
 		
-		entryPlaylists.  addClickAction(() -> mainWindow.activatePlaylistsPanel());
-		entryPreferences.addClickAction(() -> mainWindow.activatePreferencesPanel());
-		entrySearch.     addClickAction(() -> mainWindow.activateSearchPanel(UpdateOption.BOTH));
-		entryRecents.    addClickAction(() -> mainWindow.activateRecentsPanel());
+		entryPlaylists.    addClickAction(() -> mainWindow.activatePlaylistsPanel());
+		entryPreferences.  addClickAction(() -> mainWindow.activatePreferencesPanel());
+		entrySearch.       addClickAction(() -> mainWindow.activateSearchPanel(UpdateOption.BOTH));
+		entryRecents.      addClickAction(() -> mainWindow.activateRecentsPanel());
+		entryPopularVideos.addClickAction(() -> mainWindow.activatePopularVideosPanel());
 
 		add(Box.createRigidArea(new Dimension(0, 30)));
 		add(entryPlaylists);
@@ -110,6 +115,8 @@ public class ToolbarPanel extends JPanel {
 		add(entrySearch);
 		addSeparator();
 		add(entryRecents);
+		addSeparator();
+		add(entryPopularVideos);
 	}
 	
 	private void addSeparator() {

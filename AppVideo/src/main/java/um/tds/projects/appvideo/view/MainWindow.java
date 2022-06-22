@@ -26,6 +26,7 @@ public class MainWindow extends JFrame {
 	private VideoViewingPanel   videoViewingPanel;
 	private SinglePlaylistPanel singlePlaylistPanel;
 	private RecentsPanel        recentsPanel;
+	private PopularVideosPanel  popularVideosPanel;
 	private VideoWeb videoWeb;
 	private Controller controller;
 
@@ -63,10 +64,11 @@ public class MainWindow extends JFrame {
 	}
 
 	public void enterApp() {
-		this.preferencesPanel  = new PreferencesPanel(this);
-		this.playlistsPanel    = new PlaylistsPanel  (this);
-		this.searchPanel       = new SearchPanel     (this);
-		this.recentsPanel      = new RecentsPanel (this);
+		this.preferencesPanel   = new PreferencesPanel  (this);
+		this.playlistsPanel     = new PlaylistsPanel    (this);
+		this.searchPanel        = new SearchPanel       (this);
+		this.recentsPanel       = new RecentsPanel      (this);
+		this.popularVideosPanel = new PopularVideosPanel(this);
 		activateSearchPanel(UpdateOption.NONE);
 	}
 	public void activateLoginPanel() {
@@ -121,12 +123,18 @@ public class MainWindow extends JFrame {
 		 UIManager.put("OptionPane.background",        Constants.BACKGROUND_COLOR);
 		 UIManager.put("Panel.background",             Constants.BACKGROUND_COLOR);
 		 UIManager.put("OptionPane.messageForeground", Constants.FONT_COLOR);
-		 JOptionPane.showMessageDialog(null,message,title,type);
+		 JOptionPane.showMessageDialog(null, message, title, type);
 	}
 	
 	public void activateRecentsPanel() {
 		setContentPane(recentsPanel);
 		recentsPanel.updateCenterPanel();
+		validate();
+	}
+	
+	public void activatePopularVideosPanel() {
+		setContentPane(popularVideosPanel);
+		popularVideosPanel.updateCenterPanel();
 		validate();
 	}
 

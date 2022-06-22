@@ -30,6 +30,16 @@ public class VideoRepository {
 			e.printStackTrace();
 		}
 	}
+	
+	public List<Video> getMostPopularVideos(int n) {
+		return cache
+			.values()
+			.stream()
+			.distinct()
+			.sorted((v1, v2) -> v2.getNumViews() - v1.getNumViews())
+			.limit(n)
+			.collect(Collectors.toList());
+	}
 
 	private void loadRepository() throws DaoException {
 		List<Video> videos = videoAdapter.loadAllVideos();

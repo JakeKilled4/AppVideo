@@ -95,6 +95,10 @@ public class Controller implements VideosListener{
 		return instance;
 	}
 	
+	public boolean userIsPremium() {
+		return currentUser.isPremium();
+	}
+	
 	public void setMainWindow(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 	}
@@ -105,7 +109,6 @@ public class Controller implements VideosListener{
 	public void setSelectedLabel(List<String> l) {
 		selectedLabels = l.stream().map(s -> new Label(s)).collect(Collectors.toList());
 	}
-	
 	
 	public String getSearchTitle(){
 		return searchedTitle;
@@ -132,9 +135,14 @@ public class Controller implements VideosListener{
 		}
 	}
 	
+	public List<Video> getMostPopularVideos(int n) {
+		return videoRepository.getMostPopularVideos(n);
+	}
+	
 	public List<Video> getSearchedVideos() {
 		return videoRepository.findVideo(searchedTitle, currentUser.getFilters(), selectedLabels);
 	}
+	
 	@Override
 	public void hayNuevosVideos(EventObject arg) {
 		VideosEvent e = (VideosEvent)arg;
@@ -209,7 +217,10 @@ public class Controller implements VideosListener{
 
 	public void logout() {
 		logger.info("User logged out");
-		currentUser = null;
+		currentUser    = null;
+		searchedTitle  = "";
+		selectedLabels = new LinkedList<Label>();
+		history        = new LinkedList<Video>();
 	}
 	
 	/**
