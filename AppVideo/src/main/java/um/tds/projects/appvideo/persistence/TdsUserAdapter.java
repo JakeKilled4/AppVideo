@@ -97,10 +97,6 @@ public class TdsUserAdapter implements IUserAdapter {
 		for (Playlist playlist : u.getPlaylists())
 			playlistAdapter.removePlaylist(playlist);
 		
-		// Remove the user's filters
-		for (IVideoFilter filter : u.getFilters())
-			filterAdapter.removeFilter(filter);
-
 		Entidad eUser = servPersistencia.recuperarEntidad(u.getCode());
 		servPersistencia.borrarEntidad(eUser);
 	}
@@ -227,21 +223,15 @@ public class TdsUserAdapter implements IUserAdapter {
 		// We will store the filters in two hash sets for rapidly
 		// computing whether some filter belongs to both users.
 		Set<Integer> oldFilters = new HashSet<Integer>();
-		Set<Integer> newFilters = new HashSet<Integer>();
 		
 		// Populate the sets with each user's filters.
 		for (IVideoFilter f: oldUser.getFilters())
 			oldFilters.add(f.getCode());
-		for (IVideoFilter f: newUser.getFilters())
-			newFilters.add(f.getCode());
 		
 		// Register the added filters, remove the deleted ones.
 		for (IVideoFilter f: newUser.getFilters())
 			if (!oldFilters.contains(f.getCode()))
 				filterAdapter.registerFilter(f);
-		for (IVideoFilter f: oldUser.getFilters())
-			if (!newFilters.contains(f.getCode()))
-				filterAdapter.removeFilter(f);
 	}
 	
 	private String getCodesPlaylist(List<Playlist> playlist) {

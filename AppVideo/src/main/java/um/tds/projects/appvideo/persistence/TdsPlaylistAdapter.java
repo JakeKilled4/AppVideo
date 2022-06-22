@@ -75,10 +75,6 @@ public class TdsPlaylistAdapter implements IPlaylistAdapter {
 	
 	@Override
 	public void removePlaylist(Playlist p) {
-		// Remove videos in the playlist
-		for (Video video : p.getVideos())
-			videoAdapter.removeVideo(video);
-
 		servPersistencia.borrarEntidad(
 			servPersistencia.recuperarEntidad(p.getCode())
 		);
@@ -133,21 +129,15 @@ public class TdsPlaylistAdapter implements IPlaylistAdapter {
 		// We will store the videos in two hash sets for rapidly
 		// computing whether some videos belongs to both playlists.
 		Set<Integer> oldVideos = new HashSet<Integer>();
-		Set<Integer> newVideos = new HashSet<Integer>();
 
 		// Populate the sets with each playlist's videos.
 		for (Video v: oldPl.getVideos())
 			oldVideos.add(v.getCode());
-		for (Video v: newPl.getVideos())
-			newVideos.add(v.getCode());
 		
 		// Register the added videos, remove the deleted ones.
 		for (Video v: newPl.getVideos())
 			if (!oldVideos.contains(v.getCode()))
 				videoAdapter.registerVideo(v);
-		for (Video v: oldPl.getVideos())
-			if (!newVideos.contains(v.getCode()))
-				videoAdapter.removeVideo(v);
 	}
 	
 	private String getCodesVideos(List<Video> videos) {
