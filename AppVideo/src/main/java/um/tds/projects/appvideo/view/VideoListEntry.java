@@ -78,7 +78,7 @@ public class VideoListEntry extends ListEntry {
 
 	@Override
 	protected JPanel createInnerPanel() {
-		
+		// Include an image representing the video.
 		icon = new JLabel();
 		icon.setIcon(videoWeb.getThumb(video.getUrl()));
 		title = new JLabel(video.getTitle());
@@ -87,20 +87,22 @@ public class VideoListEntry extends ListEntry {
 		numViews.setForeground(Constants.FONT_COLOR);
 		numViews.setFont(Constants.ITALIC_FONT);
 
+		// hPanel will hold the innerPanel.
 		hPanel = new JPanel();
 		hPanel.setBackground(getBackground());
 		hPanel.setLayout(new BoxLayout(hPanel, BoxLayout.X_AXIS));
 
+		// Stores the labels.
 		labelPanel = new JPanel();
 		labelPanel.setBackground(getBackground());
 		labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.Y_AXIS));
-		
 
 		title.setAlignmentX(LEFT_ALIGNMENT);
 		numViews.setAlignmentX(LEFT_ALIGNMENT);
 		labelPanel.add(title);
 		labelPanel.add(numViews);
 		
+		// Sets the dimensions and adds the contents.
 		hPanel.setAlignmentX(RIGHT_ALIGNMENT);
 		hPanel.setMinimumSize(new Dimension(Constants.PAGE_WIDTH - 10, Constants.VIDEOLIST_ENTRY_HEIGHT - 10));
 		hPanel.setMaximumSize(new Dimension(Constants.PAGE_WIDTH - 10, Constants.VIDEOLIST_ENTRY_HEIGHT - 10));

@@ -22,6 +22,7 @@ public class RecentsPanel extends CommonPanel {
 	
 	@Override
 	protected JPanel createInnerPanel() {
+		// Get all recent videos.
 		List<ListEntry> entries = Controller
 			.getUniqueInstance  ()
 			.getMostRecentVideos()

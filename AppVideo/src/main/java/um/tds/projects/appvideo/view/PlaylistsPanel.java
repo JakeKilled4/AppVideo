@@ -41,10 +41,12 @@ public class PlaylistsPanel extends CommonPanel {
 	
 	@Override
 	protected JPanel createInnerPanel() {
+		// Retrieve all the playlist entries and store them appart.
 		playlistEntries = controller.getPlaylists()
 			.stream()
 			.map   (p -> new PlaylistListEntry(mainWindow, p))
 			.collect(Collectors.toList());
+		// Join normal entries with the top entry.
 		List<ListEntry> entries = new LinkedList<ListEntry>();
 		entries.add(makeControlsPanel());
 		for (ListEntry le: playlistEntries) {
@@ -61,13 +63,17 @@ public class PlaylistsPanel extends CommonPanel {
 			}
 			@Override
 			protected JPanel createInnerPanel() {
+				// The panel consists of three panels stacked on top of each
+				// other by means of a card layout.
 				JPanel     controlPanel = new JPanel();
 				CardLayout layout       = new CardLayout();
 				
+				// Configure the layout.
 				controlPanel.setLayout(layout);
 				controlPanel.setAlignmentX(CENTER_ALIGNMENT);
 				fixSize(controlPanel,400,60);
 
+				// Define and add the three panels.
 				controlPanel.add(
 					makeButtonsPanel(controlPanel, layout),
 					BUTTONS_LABEL
@@ -88,6 +94,7 @@ public class PlaylistsPanel extends CommonPanel {
 	}
 	
 	private JComponent makeButtonsPanel(JPanel controlPanel, CardLayout layout) {
+		// The panel consists of an 'add' and of a 'remove' button.
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setBackground(Constants.BUTTON_COLOR);
 		buttonsPanel.setLayout(new GridLayout(0,2));
@@ -95,7 +102,7 @@ public class PlaylistsPanel extends CommonPanel {
 		JPanel newListBtn = defineButton("Add");
 		JPanel rmvListBtn = defineButton("Remove");
 		
-		
+		// Define the action for each button.
 		addClicker(
 			newListBtn,
 			() -> {
@@ -106,6 +113,8 @@ public class PlaylistsPanel extends CommonPanel {
 			rmvListBtn,
 			() -> {
 				layout.show(controlPanel, REMOVE_PLAYLIST_LABEL);
+				// The user wishes to delete a playlist, so we set the remove mode
+				// on every playlist.
 				for (PlaylistListEntry ple: playlistEntries) {
 					ple.setRemoveMode(true);
 				}
@@ -119,20 +128,25 @@ public class PlaylistsPanel extends CommonPanel {
 	}
 	
 	private JComponent makeAddPlaylistPanel(JPanel controlPanel, CardLayout layout) {
+		// The panel contains a text field for introducing the playlist name.
 		JPanel p = new JPanel();
 		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
 		fixSize(p, 400, 30);
 		p.setBackground(Constants.FOREGROUND_COLOR);
 		JTextField res = componentFactory.specialTextField("Playlist name...",true);
 		
+		// When clicked, try to create the playlist.
 		res.addActionListener(
 			(ActionEvent e) -> {
 				layout.show(controlPanel, BUTTONS_LABEL);
 
 				boolean created = controller.createPlaylist(res.getText());
 				if (created) {
+					// If successful reload the screen, since there will be a new playlist
+					// to show.
 					mainWindow.activatePlaylistsPanel();
 				} else {
+					// Else, communicate the user the playlist could not be created.
 					mainWindow.showPopUp(
 						"Playlist not created",
 						"There is already a playlist of that name",
@@ -155,6 +169,7 @@ public class PlaylistsPanel extends CommonPanel {
 			cancelBtn,
 			() -> {
 				layout.show(controlPanel, BUTTONS_LABEL);
+				// Restore the remove mode for every playlist.
 				for (PlaylistListEntry ple: playlistEntries) {
 					ple.setRemoveMode(false);
 				}
@@ -180,12 +195,6 @@ public class PlaylistsPanel extends CommonPanel {
 				button.setBackground(Constants.BUTTON_COLOR);
 			}
 
-			public void mousePressed(MouseEvent e) {
-			}
-
-			public void mouseReleased(MouseEvent e) {
-			}
-
 			public void mouseEntered(MouseEvent e) {
 				button.setBackground(Constants.BUTTON_HOVER_COLOR);
 				label.setFont(Constants.BOLD_FONT);
@@ -196,6 +205,8 @@ public class PlaylistsPanel extends CommonPanel {
 				label.setFont(Constants.DEFAULT_FONT);
 			}
 
+			public void mousePressed (MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {}
 		});
 
 		return button;

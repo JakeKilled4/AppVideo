@@ -30,11 +30,6 @@ public class SearchBar extends JPanel{
 		
 		add(Box.createRigidArea(new Dimension(10, 0)));
 		
-		//JButton btnSearch = new JButton("Search");
-		//add(btnSearch);
-	
-		//add(Box.createRigidArea(new Dimension(5, 0)));
-		
 		txtSearch = componentFactory.specialTextField("Search...",true);
 		txtSearch.addActionListener(new ActionListener() {
 			@Override

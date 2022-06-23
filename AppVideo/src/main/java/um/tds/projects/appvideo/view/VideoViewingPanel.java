@@ -55,6 +55,7 @@ public class VideoViewingPanel extends CommonPanel  {
 		panel.setAlignmentX(CENTER_ALIGNMENT);
 		fixSize(panel, Constants.PAGE_WIDTH, 310);
 		
+		// Add the contents.
 		panel.add(    makeTitleLabel         ());
 		panel.add(    makeSeparator          (Color.WHITE));
 		panel.add(Box.createRigidArea        (new Dimension(0, 10)));
@@ -63,8 +64,9 @@ public class VideoViewingPanel extends CommonPanel  {
 		panel.add(Box.createRigidArea        (new Dimension(10,10)));
 		panel.add(    makeBottomComponent    ());
 
-		// Start playing the video
+		// Start playing the video.
 		videoWeb.playVideo(video.getUrl());
+
 		return panel;
 	}
 
@@ -78,6 +80,7 @@ public class VideoViewingPanel extends CommonPanel  {
 	}
 
 	private JPanel makeVideoAndLabelsPanel() {
+		// Central panel storing the video on the left and its labels on the right.
 		JPanel hPanel = new JPanel();
 		hPanel.setBackground(Constants.BACKGROUND_COLOR);
 		hPanel.setLayout(new BoxLayout(hPanel, BoxLayout.X_AXIS));
@@ -130,6 +133,7 @@ public class VideoViewingPanel extends CommonPanel  {
 			new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					// Retrieve the playlists not containing this video.
 					List<Playlist> playlists = controller.getPlaylists()
 							.stream ()
 							.filter (p -> !p.containsVideo(video))
@@ -137,6 +141,7 @@ public class VideoViewingPanel extends CommonPanel  {
 					if (playlists.isEmpty()) {
 						JOptionPane.showMessageDialog(playlistButton, "This video can't be added to any playlist!");
 					} else {
+						// Let the user choose a playlist.
 						Object[] playlistNames = playlists.stream().map(Playlist::getName).toArray();
 						String choosenPlaylistName = (String) JOptionPane.showInputDialog(
 							playlistButton,
@@ -148,6 +153,7 @@ public class VideoViewingPanel extends CommonPanel  {
 							playlistNames[0]
 						);
 						if (choosenPlaylistName != null) {
+							// Retrieve the chosen playlist from its name.
 							Playlist choosenPlaylist = null;
 							for (Playlist playlist: playlists) {
 								if (choosenPlaylistName.equals(playlist.getName())) {
@@ -201,6 +207,7 @@ public class VideoViewingPanel extends CommonPanel  {
 	}
 	
 	private ActionListener makeTextFieldActionListener(JTextField textField) {
+		// Action to be performed when the user inputs a new label.
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

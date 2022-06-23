@@ -28,6 +28,7 @@ public class PopularVideosPanel extends CommonPanel {
 	protected JPanel createInnerPanel() {
 		List<ListEntry> entries = new LinkedList<ListEntry>();
 		
+		// This panel is only accessible for paid users.
 		if (controller.userIsPremium()) {
 			entries = controller
 				.getMostPopularVideos(NUM_ENTRIES)
@@ -55,8 +56,10 @@ public class PopularVideosPanel extends CommonPanel {
 				ComponentFactory componentFactory = ComponentFactory.getUniqueInstance();
 				JLabel           titleLabel       = null;
 				if (controller.userIsPremium()) {
+					// If being used by a paid user, display the number of videos.
 					titleLabel = componentFactory.specialLabel("Displaying the " + NUM_ENTRIES + " most popular videos");
 				} else {
+					// Otherwise, note it.
 					titleLabel = componentFactory.specialLabel("Just for premium users!");
 				}
 				titleLabel.setFont      (new Font("Default", Font.ITALIC, 17));

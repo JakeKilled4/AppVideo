@@ -59,10 +59,11 @@ public class ToolbarEntryPanel extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				action.execute();
 			}
-			public void mousePressed(MouseEvent e) {}
+
+			public void mousePressed (MouseEvent e) {}
 			public void mouseReleased(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
-			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered (MouseEvent e) {}
+			public void mouseExited  (MouseEvent e) {}
 		});
 	}
 

@@ -183,6 +183,7 @@ public class PreferencesList extends JPanel {
 		p.add(premium);
 		innerPage.add(new PreferencesListEntry(p, 2*Constants.DEFAULT_PREFERENCES_HEIGHT ));
 	}
+
 	private void addSaveLogOutButtons() {
 		JPanel p = new JPanel();
 		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
@@ -190,7 +191,9 @@ public class PreferencesList extends JPanel {
 		JButton logoutBtn = new JButton("Log out");
 		JButton saveChangesBtn = new JButton("Save");
 		
+		// Implement the actions of the "save" button.
 		saveChangesBtn.addActionListener(e -> {
+			// Retrieve all fields.
 			String name = nameFl.getText();
 			String surname = surnameFl.getText();
 			String username = usernameFl.getText();
@@ -202,11 +205,13 @@ public class PreferencesList extends JPanel {
 			String filter = "No filter";
 			if(u.isPremium() && isPremium) filter = (String) comboBox.getSelectedItem();
 						
+			// Check the required fields.
 			if(name.isBlank() || username.isBlank() || dateOfBirth == null ||  password.isBlank()) {
 				mainWindow.showPopUp("Error","Complete correctly all the mandatory fields", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			
+			// Check the password is correct.
 			if (!password.equals(confirmPassword)) {
 				newPasswordFl.setText(String.valueOf(u.getPassword()));
 				confirmNewPasswordFl.setText(String.valueOf(u.getPassword()));
@@ -218,6 +223,7 @@ public class PreferencesList extends JPanel {
 				name, surname, dateOfBirth, email,
 				username, password,isPremium,filter);
 			
+			// Check whether the username was already taken.
 			if (changeOk) {
 				mainWindow.showPopUp("Saved", "Saved correctly", JOptionPane.INFORMATION_MESSAGE);
 				mainWindow.activatePreferencesPanel();
@@ -229,6 +235,7 @@ public class PreferencesList extends JPanel {
 			
 		});
 		
+		// Implement the logout button.
 		logoutBtn.addActionListener(e -> {
 			this.controller.logout();
 			mainWindow.activateLoginPanel();

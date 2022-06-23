@@ -29,7 +29,7 @@ import um.tds.projects.appvideo.controller.Controller;
 import javax.swing.JList;
 
 @SuppressWarnings("serial")
-public class LabelPanel extends JPanel{
+public class LabelPanel extends JPanel {
 	
 	private DefaultListModel<String> availableModel;
 	private DefaultListModel<String> selectedModel;
@@ -44,9 +44,10 @@ public class LabelPanel extends JPanel{
 	public LabelPanel(List<Label> filterLabels) {
 		this.controller = Controller.getUniqueInstance();
 		
-		// Reset selected labels
+		// Reset selected labels.
 		controller.setSelectedLabel(new LinkedList<String>());
 		
+		// Define layout, background and size.
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 		setBackground(Constants.FOREGROUND_COLOR);
 		setMinimumSize  (new Dimension(Constants.TOOLBAR_OPEN_SIZE, Short.MAX_VALUE));
@@ -55,6 +56,7 @@ public class LabelPanel extends JPanel{
 		
 		add(Box.createRigidArea(new Dimension(0, 10)));
 		
+		// Add top text.
 		JLabel availableLabels = new JLabel("Available labels");
 		availableLabels.setForeground(Constants.FONT_COLOR);
 		availableLabels.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -63,6 +65,7 @@ public class LabelPanel extends JPanel{
 		
 		add(Box.createRigidArea(new Dimension(0, 2)));
 		
+		// Add separator.
 		JSeparator separator1 = new JSeparator(SwingConstants.HORIZONTAL);
 		separator1.setMaximumSize(new Dimension(Short.MAX_VALUE, 0));
 		separator1.setBackground(new Color(99, 130, 191));
@@ -70,6 +73,7 @@ public class LabelPanel extends JPanel{
 		
 		add(Box.createRigidArea(new Dimension(0, 5)));
 		
+		// Define a list with all the available (and unselected) labels.
 		availableModel = new DefaultListModel<String>();
 		availableModel.addAll(filterLabels.stream().map(l -> l.getName()).collect(Collectors.toList()));
 
@@ -88,6 +92,7 @@ public class LabelPanel extends JPanel{
 		
 		add(Box.createRigidArea(new Dimension(0, 10)));
 	
+		// Define a title for the selected labels.
 		JLabel selectedLabels = new JLabel("Selected labels");
 		selectedLabels.setForeground(Constants.FONT_COLOR);
 		selectedLabels.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -96,6 +101,7 @@ public class LabelPanel extends JPanel{
 		
 		add(Box.createRigidArea(new Dimension(0, 2)));
 		
+		// Add a separator for the selected labels.
 		JSeparator separator2 = new JSeparator(SwingConstants.HORIZONTAL);
 		separator2.setMaximumSize(new Dimension(Short.MAX_VALUE, 0));
 		separator2.setBackground(new Color(99, 130, 191));
@@ -103,6 +109,7 @@ public class LabelPanel extends JPanel{
 		
 		add(Box.createRigidArea(new Dimension(0, 5)));
 		
+		// Add the list of selected labels.
 		selectedModel = new DefaultListModel<String>();
 		selectedList = new JList<String>(selectedModel);
 		selectedList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -117,7 +124,7 @@ public class LabelPanel extends JPanel{
 		selectedScroll.setBorder(BorderFactory.createEmptyBorder());
 		add(selectedScroll);
 		
-		
+		// Listen for selections in the list of available labels.
 		listener1 = new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent event) {
 				if (!event.getValueIsAdjusting()){
@@ -143,6 +150,7 @@ public class LabelPanel extends JPanel{
 			}
 		};
 		
+		// Listen for selections in the list of selected labels.
 		listener2 = new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent event) {
 				if (!event.getValueIsAdjusting()){
@@ -171,8 +179,9 @@ public class LabelPanel extends JPanel{
 		availableList.addListSelectionListener(listener1);
 		selectedList.addListSelectionListener(listener2);
 	}
+
 	public void addLabel(String label) {
-		if(!labels.contains(label)) {
+		if (!labels.contains(label)) {
 			availableList.removeListSelectionListener(listener1);
 			availableModel.addElement(label);
 			labels.add(label);

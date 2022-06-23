@@ -43,7 +43,7 @@ public class MainWindow extends JFrame {
 		this.loginPanel        = new LoginPanel   (this);
 		this.registerPanel 	   = new RegisterPanel(this);
 		
-	
+		// Set some general UI options.
 		UIManager.put("OptionPane.background",        Constants.BACKGROUND_COLOR);
 		UIManager.put("Panel.background",             Constants.BACKGROUND_COLOR);
 		UIManager.put("OptionPane.messageForeground", Constants.FONT_COLOR);
@@ -54,6 +54,7 @@ public class MainWindow extends JFrame {
 		logger.info("Entering login panel");
 		setContentPane(loginPanel);
 		
+		// Set the application bounds.
 		setMinimumSize(new Dimension(1000, 600));
 		setBounds(100, 100, 450, 300);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,6 +65,7 @@ public class MainWindow extends JFrame {
 	}
 
 	public void enterApp() {
+		// Initialises all panels whose state require being logged in.
 		this.preferencesPanel   = new PreferencesPanel  (this);
 		this.playlistsPanel     = new PlaylistsPanel    (this);
 		this.searchPanel        = new SearchPanel       (this);

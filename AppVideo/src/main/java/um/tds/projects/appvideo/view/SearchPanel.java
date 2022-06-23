@@ -51,11 +51,13 @@ public class SearchPanel extends CommonPanel {
 			@Override
 			protected JPanel createInnerPanel() {
 				ComponentFactory componentFactory = ComponentFactory.getUniqueInstance();
-				JPanel p = new JPanel();
+				JPanel           p                = new JPanel();
 				p.setLayout    (new BoxLayout(p, BoxLayout.Y_AXIS));
 				p.setAlignmentX(CENTER_ALIGNMENT);
 				p.setBackground(Constants.FOREGROUND_COLOR);
-				
+
+				// Check whether we are displaying the result of a search or not,
+				// and display accordingly the pertinent information.
 				boolean noLabels    = controller.getSelectedLabels().isEmpty();
 				String  searchTitle = controller.getSearchTitle   ();
 				String  titleText   = "Title: \""+searchTitle+"\"";

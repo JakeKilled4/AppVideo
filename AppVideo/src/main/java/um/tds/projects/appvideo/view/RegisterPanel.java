@@ -54,6 +54,7 @@ public class RegisterPanel extends JPanel {
     	appTitle.setBackground(Constants.BACKGROUND_COLOR);
     	panel1.add(appTitle);
     	
+    	// Define all fields.
     	JLabel nameLbl = componentFactory.specialLabel("*Name:");
     	JTextField nameField = componentFactory.specialTextField(null,false);
     	
@@ -75,6 +76,7 @@ public class RegisterPanel extends JPanel {
     	JLabel confirmPasswordLbl = componentFactory.specialLabel("*Confirm Password:");
     	JPasswordField confirmPasswordField = componentFactory.specialPasswordField(null);
     	
+    	// Include the fields.
     	panel2.add(nameLbl);				panel2.add(nameField);
     	panel2.add(surnameLbl);				panel2.add(surnameField);
     	panel2.add(dateOfBirthLbl);			panel2.add(dateOfBirthField);
@@ -92,6 +94,7 @@ public class RegisterPanel extends JPanel {
     	panel3.setBackground(Constants.BACKGROUND_COLOR);
     	JButton registerBtn = new JButton("Register");
     	
+    	// Implement the register button.
     	registerBtn.addActionListener(e -> {
 			String name = nameField.getText();
 			String surname = surnameField.getText();
@@ -100,8 +103,6 @@ public class RegisterPanel extends JPanel {
 			String username = usernameField.getText();
 			String password = String.valueOf(passwordField.getPassword());
 			String copassword = String.valueOf(confirmPasswordField.getPassword());
-			
-			
 			
 			if(name.isBlank() || username.isBlank() || dateOfBirth == null ||  password.isBlank()) {
 				mainWindow.showPopUp("Error","Complete correctly all the mandatory fields", JOptionPane.ERROR_MESSAGE);
@@ -119,6 +120,7 @@ public class RegisterPanel extends JPanel {
 				name, surname, dateOfBirth, email,
 				username, password);
 			
+			// Check whether the registration was OK.
 			if (registerOk) {
 				nameField.setText("");
 	    		surnameField.setText("");

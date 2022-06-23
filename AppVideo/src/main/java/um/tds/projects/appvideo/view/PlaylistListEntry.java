@@ -26,12 +26,15 @@ public class PlaylistListEntry extends ListEntry {
 		addComponents();
 	}
 	
+	// Controls the behaviour when the cursor enters or leaves the button.
 	private final class HoverMouseListener implements MouseListener {
 		public void mouseClicked(MouseEvent e) {
 			if (removeMode) {
+				// If on remove mode, delete the play list when clicked.
 				Controller.getUniqueInstance().removePlaylist(playlist);
 				mainWindow.activatePlaylistsPanel();
 			} else {
+				// Otherwise, activate the play list view panel.
 				updateBackground(Constants.BUTTON_COLOR);
 				mainWindow.activateSinglePlaylistPanel(playlist);
 			}
@@ -42,8 +45,10 @@ public class PlaylistListEntry extends ListEntry {
 
 		public void mouseEntered(MouseEvent e) {
 			if (removeMode) {
+				// If on remove mode, set a red accent colour.
 				updateBackground(Constants.BUTTON_RED_HOVER_COLOR);
 			} else {
+				// Otherwise, go for the default colour.
 				updateBackground(Constants.BUTTON_HOVER_COLOR);
 			}
 		}
@@ -55,12 +60,14 @@ public class PlaylistListEntry extends ListEntry {
 
 	@Override
 	protected JPanel createInnerPanel() {
+		// Panel content.
 		JLabel title = new JLabel(playlist.getName());
 		title.setForeground(Constants.FONT_COLOR);
 		JLabel numViews = new JLabel(Integer.toString(playlist.getNumVideos()) + " videos");
 		numViews.setForeground(Constants.FONT_COLOR);
 		numViews.setFont(Constants.ITALIC_FONT);
 
+		// Main content pane.
 		JPanel hPanel = new JPanel();
 		hPanel.setBackground(getBackground());
 		hPanel.setLayout(new BoxLayout(hPanel, BoxLayout.X_AXIS));
@@ -68,7 +75,6 @@ public class PlaylistListEntry extends ListEntry {
 		JPanel labelPanel = new JPanel();
 		labelPanel.setBackground(getBackground());
 		labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.Y_AXIS));
-		
 
 		title.setAlignmentX(LEFT_ALIGNMENT);
 		numViews.setAlignmentX(LEFT_ALIGNMENT);

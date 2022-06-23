@@ -50,6 +50,7 @@ public class ToolbarPanel extends JPanel {
 	}
 
 	private void adjustSize() {
+		// Set the entries visible iff the panel is open.
 		if (open == true) {
 			setBackground(Constants.FOREGROUND_COLOR);
 			setPreferredSize(new Dimension(Constants.TOOLBAR_OPEN_SIZE, Short.MAX_VALUE));
@@ -72,6 +73,7 @@ public class ToolbarPanel extends JPanel {
 	}
 
 	private void addComponents() {
+		// Define the entries.
 		entryPlaylists     = new ToolbarEntryPanel(null, "Playlists");
 		entryPreferences   = new ToolbarEntryPanel(null, "Preferences");
 		entrySearch        = new ToolbarEntryPanel(null, "Search");
@@ -79,6 +81,7 @@ public class ToolbarPanel extends JPanel {
 		entryPopularVideos = new ToolbarEntryPanel(null, "Popular Videos");
 		separators         = new ArrayList<JSeparator>();
 		  
+		// Define panel's button.
 		JLabel icon = new JLabel(new ImageIcon("./src/images/MenuGrey.png"));
 		JPanel btnPanel = new JPanel();
 		btnPanel.setBackground(Constants.FOREGROUND_COLOR);
@@ -101,12 +104,14 @@ public class ToolbarPanel extends JPanel {
 			public void mouseExited  (MouseEvent e) {}
 		});
 		
+		// Define each entry's binding.
 		entryPlaylists.    addClickAction(() -> mainWindow.activatePlaylistsPanel());
 		entryPreferences.  addClickAction(() -> mainWindow.activatePreferencesPanel());
 		entrySearch.       addClickAction(() -> mainWindow.activateSearchPanel(UpdateOption.BOTH));
 		entryRecents.      addClickAction(() -> mainWindow.activateRecentsPanel());
 		entryPopularVideos.addClickAction(() -> mainWindow.activatePopularVideosPanel());
 
+		// Include the entries.
 		add(Box.createRigidArea(new Dimension(0, 30)));
 		add(entrySearch);
 		addSeparator();

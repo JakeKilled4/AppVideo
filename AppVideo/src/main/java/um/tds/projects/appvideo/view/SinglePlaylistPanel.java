@@ -146,20 +146,17 @@ public class SinglePlaylistPanel extends CommonPanel {
 				button.setBackground(Constants.BUTTON_COLOR);
 			}
 
-			public void mousePressed(MouseEvent e) {
-			}
-
-			public void mouseReleased(MouseEvent e) {
-			}
+			public void mousePressed (MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {}
 
 			public void mouseEntered(MouseEvent e) {
 				button.setBackground(Constants.BUTTON_HOVER_COLOR);
-				label.setFont(Constants.BOLD_FONT);
+				label .setFont      (Constants.BOLD_FONT);
 			}
 
 			public void mouseExited(MouseEvent e) {
 				button.setBackground(Constants.BUTTON_COLOR);
-				label.setFont(Constants.DEFAULT_FONT);
+				label .setFont      (Constants.DEFAULT_FONT);
 			}
 
 		});
