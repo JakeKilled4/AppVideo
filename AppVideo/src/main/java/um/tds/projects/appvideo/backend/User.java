@@ -3,11 +3,13 @@ package um.tds.projects.appvideo.backend;
 import um.tds.projects.appvideo.backend.filters.IVideoFilter;
 import um.tds.projects.appvideo.backend.filters.NoFilter;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 public class User extends Identifiable {
+	private static int NUM_VIDEOS_HISTORY = 5;
 	private String name;
 	private String surname;
 	private Date dateOfBirth;
@@ -16,6 +18,7 @@ public class User extends Identifiable {
 	private String password;
 	private boolean isPremium;
 	private List<Playlist> playlists;
+	private List<Video> history;
 	private IVideoFilter filter;
 
 	public User(String name, String surname, Date dateOfBirth, String email, String username, String password) {
@@ -28,7 +31,30 @@ public class User extends Identifiable {
 		this.password = password;
 		this.isPremium = false;
 		this.playlists = new LinkedList<Playlist>();
+		this.history = new ArrayList<Video>();
 		this.filter = new NoFilter();
+	}
+	
+	public void addBeginningHistory(Video v) {
+		for(int i = 0;i<this.history.size();i++) {
+			Video video = this.history.get(i);
+			if(video.getUrl().equals(v.getUrl())) {
+				this.history.remove(i);
+				break;
+			}
+		}
+		
+		this.history.add(0, v);
+		if(this.history.size() > NUM_VIDEOS_HISTORY) this.history.remove(NUM_VIDEOS_HISTORY);
+		
+	}
+	
+	public void setHistory(List<Video> history){
+		this.history = history;
+	}
+	
+	public List<Video> getHistory(){
+		return this.history;
 	}
 	
 	public IVideoFilter getFilter() {

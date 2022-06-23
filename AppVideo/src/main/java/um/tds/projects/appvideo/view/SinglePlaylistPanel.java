@@ -5,6 +5,7 @@ import um.tds.projects.appvideo.backend.Playlist;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.LinkedList;
@@ -16,6 +17,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 public class SinglePlaylistPanel extends CommonPanel {
@@ -59,10 +61,9 @@ public class SinglePlaylistPanel extends CommonPanel {
 				p.setLayout    (new BoxLayout(p, BoxLayout.Y_AXIS));
 				p.setAlignmentX(CENTER_ALIGNMENT);
 				p.setBackground(Constants.FOREGROUND_COLOR);
-
 				ComponentFactory componentFactory = ComponentFactory.getUniqueInstance();
 				JLabel           titleLabel       = componentFactory.specialLabel("Playlist '" + playlist.getName() + "'");
-				titleLabel.setFont      (new Font("Default", Font.ITALIC, 17));
+				titleLabel.setFont(new Font("Default", Font.ITALIC, 17));
 				titleLabel.setAlignmentX(CENTER_ALIGNMENT);
 				
 				p.add(titleLabel);
@@ -81,6 +82,7 @@ public class SinglePlaylistPanel extends CommonPanel {
 			protected JPanel createInnerPanel() {
 				JPanel     controlPanel = new JPanel();
 				CardLayout layout       = new CardLayout();
+				fixSize(controlPanel, 400, 60);
 				
 				controlPanel.setLayout(layout);
 				
@@ -133,19 +135,11 @@ public class SinglePlaylistPanel extends CommonPanel {
 	private JPanel defineButton(String text) {
 		JPanel button = new JPanel();
 		button.setBackground(Constants.BUTTON_COLOR);
-		button.setLayout    (new BoxLayout(button, BoxLayout.X_AXIS));
-		fixSize(button, Constants.PAGE_WIDTH / 2, Constants.VIDEOLIST_ENTRY_HEIGHT);
-
-		JLabel label = new JLabel(text);
+		
+		button.setBackground(Constants.BUTTON_COLOR);
+		button.setLayout(new GridLayout());
+		JLabel label = new JLabel(text,SwingConstants.CENTER);
 		label.setForeground(Constants.FONT_COLOR);
-		button.add(
-			Box.createRigidArea(
-				new Dimension(
-					Constants.PAGE_WIDTH / 4,
-					Constants.VIDEOLIST_ENTRY_HEIGHT
-				)
-			)
-		);
 		button.add(label);
 
 		button.addMouseListener(new MouseListener() {

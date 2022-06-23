@@ -18,6 +18,7 @@ import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 import um.tds.projects.appvideo.backend.Playlist;
 import um.tds.projects.appvideo.backend.User;
+import um.tds.projects.appvideo.backend.Video;
 import um.tds.projects.appvideo.backend.filters.IVideoFilter;
 
 public class TdsUserAdapter implements IUserAdapter {
@@ -28,6 +29,7 @@ public class TdsUserAdapter implements IUserAdapter {
 	
 	private SimpleDateFormat   dateFormat; // Format of the date in the DB
 	private TdsPlaylistAdapter playlistAdapter;
+	private TdsVideoAdapter videoAdapter;
 
 	public static TdsUserAdapter getUniqueInstance() {
 		if (instance == null)
@@ -55,6 +57,10 @@ public class TdsUserAdapter implements IUserAdapter {
 		// Register playlist
 		for (Playlist playlist : u.getPlaylists())
 			playlistAdapter.registerPlaylist(playlist);
+		
+		// Register videos
+		for(Video v : u.getHistory())
+			videoAdapter.registerVideo(v);
 
 		// Create user entity
 		eUser = new Entidad();
@@ -69,9 +75,10 @@ public class TdsUserAdapter implements IUserAdapter {
 					new Propiedad("email",                         u.getEmail()),
 					new Propiedad("username",                      u.getUsername()),
 					new Propiedad("password",                      u.getPassword()),
-					new Propiedad("isPremium",   String.valueOf(   u.isPremium())),
-					new Propiedad("playlists",   getCodesPlaylist( u.getPlaylists())),
-					new Propiedad("filter",     				   IVideoFilter.getFilterName(u.getFilter()))
+					new Propiedad("isPremium",      String.valueOf(u.isPremium())),
+					new Propiedad("playlists",    getCodesPlaylist(u.getPlaylists())),
+					new Propiedad("filter", IVideoFilter.getFilterName(u.getFilter())),
+					new Propiedad("history", 	   getCodesHistory(u.getHistory()))
 				)
 			)
 		);
@@ -114,12 +121,12 @@ public class TdsUserAdapter implements IUserAdapter {
 			modifyField(prop, "isPremium",   String.valueOf(   u.isPremium()));
 			modifyField(prop, "playlists",   getCodesPlaylist( u.getPlaylists()));
 			modifyField(prop, "filter",     				   IVideoFilter.getFilterName(u.getFilter()));
+			modifyField(prop, "history", 	   				   getCodesHistory(u.getHistory()));
 			servPersistencia.modificarPropiedad(prop);
 		}
 	}
 	
-	/* Removes the deleted playlists and registers the new ones.
-	 */
+	/* Removes the deleted playlists and registers the new ones. */
 	private void modifyPlaylists(User oldUser, User newUser) {
 		// We will store the playlists in two hash sets for rapidly
 		// computing whether some playlist belongs to both users.
@@ -142,8 +149,6 @@ public class TdsUserAdapter implements IUserAdapter {
 			if (!newPl.contains(pl.getCode()))
 				playlistAdapter.removePlaylist(pl);
 	}
-	
-	
 
 	@Override
 	public User loadUser(int code) {
@@ -174,6 +179,10 @@ public class TdsUserAdapter implements IUserAdapter {
 		for (Playlist playlist : playlists)
 			user.addPlaylist(playlist);
 
+		// Load history
+		List<Video> history = getHistoryFromCodes(getFieldValue(eUser, "history"));
+		user.setHistory(history);
+		
 		String filterName = getFieldValue(eUser, "filter");
 		IVideoFilter filter = IVideoFilter.makeFilter(filterName);
 		user.setFilter(filter);
@@ -212,6 +221,13 @@ public class TdsUserAdapter implements IUserAdapter {
 			plays += String.valueOf(list.getCode()) + " ";
 		return plays.trim();
 	}
+	
+	private String getCodesHistory(List<Video> history) {
+		String videos = "";
+		for (Video list : history)
+			videos += String.valueOf(list.getCode()) + " ";
+		return videos.trim();
+	}
 
 	private List<Playlist> getPlaylistsFromCodes(String playlists) {
 		List<Playlist>     playlistList    = new LinkedList<Playlist>();
@@ -227,5 +243,20 @@ public class TdsUserAdapter implements IUserAdapter {
 			);
 		}
 		return playlistList;
+	}
+	private List<Video> getHistoryFromCodes(String history) {
+		List<Video>     historyList    = new LinkedList<Video>();
+		StringTokenizer    strTok          = new StringTokenizer(history, " ");
+		TdsVideoAdapter videoAdapter = TdsVideoAdapter.getUniqueInstance();
+		while (strTok.hasMoreTokens()) {
+			historyList.add(
+				videoAdapter.loadVideo(
+					Integer.valueOf(
+						(String) strTok.nextElement()
+					)
+				)
+			);
+		}
+		return historyList;
 	}
 }

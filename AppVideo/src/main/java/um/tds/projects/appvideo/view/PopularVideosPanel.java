@@ -50,6 +50,7 @@ public class PopularVideosPanel extends CommonPanel {
 				JPanel p = new JPanel();
 				p.setLayout    (new BoxLayout(p, BoxLayout.Y_AXIS));
 				p.setAlignmentX(CENTER_ALIGNMENT);
+				p.setBackground(Constants.FOREGROUND_COLOR);
 
 				ComponentFactory componentFactory = ComponentFactory.getUniqueInstance();
 				JLabel           titleLabel       = null;

@@ -24,7 +24,7 @@ public class RecentsPanel extends CommonPanel {
 	protected JPanel createInnerPanel() {
 		List<ListEntry> entries = Controller
 			.getUniqueInstance  ()
-			.getMostRecentVideos(NUM_ENTRIES)
+			.getMostRecentVideos()
 			.stream             ()
 			.map                (v -> new VideoListEntry(mainWindow, v))
 			.collect            (Collectors.toList());
@@ -43,6 +43,7 @@ public class RecentsPanel extends CommonPanel {
 				JPanel p = new JPanel();
 				p.setLayout    (new BoxLayout(p, BoxLayout.Y_AXIS));
 				p.setAlignmentX(CENTER_ALIGNMENT);
+				p.setBackground(Constants.FOREGROUND_COLOR);
 
 				ComponentFactory componentFactory = ComponentFactory.getUniqueInstance();
 				JLabel           titleLabel       = componentFactory.specialLabel("Showing the " + NUM_ENTRIES + " most recent entries");

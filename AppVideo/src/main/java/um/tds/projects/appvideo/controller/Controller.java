@@ -61,9 +61,7 @@ public class Controller implements VideosListener{
 	
 	// Current user
 	private User currentUser;
-	
-	private List<Video> history;
-	
+
 	// Main window
 	private MainWindow mainWindow;
 	
@@ -73,7 +71,6 @@ public class Controller implements VideosListener{
 		this.currentUser    = null;
 		this.searchedTitle  = "";
 		this.selectedLabels = new LinkedList<Label>();
-		this.history        = new LinkedList<Video>();
 	}
 	
 	public static Controller getUniqueInstance() {
@@ -125,20 +122,8 @@ public class Controller implements VideosListener{
 		mainWindow.activateSearchPanel(UpdateOption.CENTER);
 	}
 	
-	public void registerVideo(Video v) {
-		history.add(0, v);
-	}
-	
-	public List<Video> getMostRecentVideos(int n) {
-		history = history.stream().distinct().collect(Collectors.toList());
-		if (history.isEmpty() || n == 0) {
-			return new LinkedList<Video>();
-		} else {
-			return history.subList(
-				0,
-				Math.min(n, history.size() - 1)
-			);
-		}
+	public List<Video> getMostRecentVideos() {
+		return this.currentUser.getHistory();
 	}
 	
 	public List<Video> getMostPopularVideos(int n) {
@@ -226,7 +211,6 @@ public class Controller implements VideosListener{
 		currentUser    = null;
 		searchedTitle  = "";
 		selectedLabels = new LinkedList<Label>();
-		history        = new LinkedList<Video>();
 	}
 	
 	/**
@@ -266,11 +250,8 @@ public class Controller implements VideosListener{
 
 	public boolean createPlaylist(String name) {
 		boolean created = currentUser.createPlaylist(name);
-		
-		if (created) {
+		if (created) 
 			userAdapter.modifyUser(currentUser);
-		}
-		
 		return created;
 	}
 
@@ -306,9 +287,11 @@ public class Controller implements VideosListener{
 		return labelRepository.getAllLabels();
 	}
 
-	public void addViewToVideo(Video v) {
+	public void viewVideo(Video v) {
 		v.addView();
 		videoAdapter.modifyVideo(v);
+		currentUser.addBeginningHistory(v);
+		userAdapter.modifyUser(currentUser);
 	}
 	
 	public Label addLabelToVideo(Video v,String name) {

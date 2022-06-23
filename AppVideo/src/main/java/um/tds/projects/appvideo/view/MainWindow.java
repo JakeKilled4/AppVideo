@@ -106,7 +106,6 @@ public class MainWindow extends JFrame {
 	}
 
 	public void activateVideoViewingPanel(Video video) {
-		Controller.getUniqueInstance().registerVideo(video);
 		videoWeb.cancel();
 		videoViewingPanel = new VideoViewingPanel(this, video);
 		setContentPane(videoViewingPanel);
@@ -115,25 +114,25 @@ public class MainWindow extends JFrame {
 	
 	public void activateSinglePlaylistPanel(Playlist playlist) {
 		singlePlaylistPanel = new SinglePlaylistPanel(this, playlist);
+		videoWeb.cancel();
 		setContentPane(singlePlaylistPanel);
 		validate();
 	}
 	
 	public void showPopUp(String title,String message, int type) {
-		 UIManager.put("OptionPane.background",        Constants.BACKGROUND_COLOR);
-		 UIManager.put("Panel.background",             Constants.BACKGROUND_COLOR);
-		 UIManager.put("OptionPane.messageForeground", Constants.FONT_COLOR);
 		 JOptionPane.showMessageDialog(null, message, title, type);
 	}
 	
 	public void activateRecentsPanel() {
 		setContentPane(recentsPanel);
+		videoWeb.cancel();
 		recentsPanel.updateCenterPanel();
 		validate();
 	}
 	
 	public void activatePopularVideosPanel() {
 		setContentPane(popularVideosPanel);
+		videoWeb.cancel();
 		popularVideosPanel.updateCenterPanel();
 		validate();
 	}

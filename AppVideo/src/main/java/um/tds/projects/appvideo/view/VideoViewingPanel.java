@@ -43,7 +43,7 @@ public class VideoViewingPanel extends CommonPanel  {
 		this.video      = video;
 		this.videoWeb   = mainWindow.getVideoWeb();
 		this.controller = Controller.getUniqueInstance();
-		this.controller.addViewToVideo(video);
+		this.controller.viewVideo(video);
 		createScreen();
 	}
 	

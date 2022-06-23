@@ -2,8 +2,13 @@ package um.tds.projects.appvideo.view;
 
 import um.tds.projects.appvideo.controller.Controller;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -18,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 public class PlaylistsPanel extends CommonPanel {
@@ -63,6 +69,8 @@ public class PlaylistsPanel extends CommonPanel {
 				CardLayout layout       = new CardLayout();
 				
 				controlPanel.setLayout(layout);
+				controlPanel.setAlignmentX(CENTER_ALIGNMENT);
+				fixSize(controlPanel,400,60);
 
 				controlPanel.add(
 					makeButtonsPanel(controlPanel, layout),
@@ -86,11 +94,11 @@ public class PlaylistsPanel extends CommonPanel {
 	private JComponent makeButtonsPanel(JPanel controlPanel, CardLayout layout) {
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setBackground(Constants.BUTTON_COLOR);
-		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
-
+		buttonsPanel.setLayout(new GridLayout(0,2));
+		buttonsPanel.setAlignmentX(CENTER_ALIGNMENT);
 		JPanel newListBtn = defineButton("Add");
-		newListBtn.setAlignmentX(RIGHT_ALIGNMENT);
 		JPanel rmvListBtn = defineButton("Remove");
+		
 		
 		addClicker(
 			newListBtn,
@@ -115,6 +123,10 @@ public class PlaylistsPanel extends CommonPanel {
 	}
 	
 	private JComponent makeAddPlaylistPanel(JPanel controlPanel, CardLayout layout) {
+		JPanel p = new JPanel();
+		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+		fixSize(p, 400, 30);
+		p.setBackground(Constants.FOREGROUND_COLOR);
 		JTextField res = componentFactory.specialTextField("Playlist name...",true);
 		
 		res.addActionListener(
@@ -132,11 +144,12 @@ public class PlaylistsPanel extends CommonPanel {
 					);
 				}
 
-				res.setText("Playlist name");
+				res.setText("Playlist name...");
 			}
 		);
-
-		return res;
+		fixSize(res, 400, 30);
+		p.add(res);
+		return p;
 	}
 	
 	private JComponent makeRemovePlaylistPanel(JPanel controlPanel, CardLayout layout) {
@@ -159,19 +172,10 @@ public class PlaylistsPanel extends CommonPanel {
 	private JPanel defineButton(String text) {
 		JPanel button = new JPanel();
 		button.setBackground(Constants.BUTTON_COLOR);
-		button.setLayout    (new BoxLayout(button, BoxLayout.X_AXIS));
-		fixSize(button, Constants.PAGE_WIDTH / 2, Constants.VIDEOLIST_ENTRY_HEIGHT);
-
-		JLabel label = new JLabel(text);
+		button.setLayout(new GridLayout());
+		
+		JLabel label = new JLabel(text,SwingConstants.CENTER);
 		label.setForeground(Constants.FONT_COLOR);
-		button.add(
-			Box.createRigidArea(
-				new Dimension(
-					Constants.PAGE_WIDTH / 4,
-					Constants.VIDEOLIST_ENTRY_HEIGHT
-				)
-			)
-		);
 		button.add(label);
 
 		button.addMouseListener(new MouseListener() {
