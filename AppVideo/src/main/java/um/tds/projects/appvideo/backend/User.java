@@ -3,6 +3,7 @@ package um.tds.projects.appvideo.backend;
 import um.tds.projects.appvideo.backend.filters.IVideoFilter;
 import um.tds.projects.appvideo.backend.filters.NoFilter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -163,5 +164,14 @@ public class User extends Identifiable {
 	public boolean checkPassword(String _password) {
 		return password.equals(_password);
 	}
-
+	
+	public void dataTopPdf(Chapter chapter) {
+		chapter.add(new Paragraph("Name: "+name));
+	    if(surname != null && !surname.isBlank()) 
+	    	chapter.add(new Paragraph("Surname: "+surname));
+	    chapter.add(new Paragraph("Username: "+username));
+	    chapter.add(new Paragraph("Date of birth: " + new SimpleDateFormat("dd/MM/yyyy").format(dateOfBirth)));
+	    if(email != null && !email.isBlank()) 
+	    	chapter.add(new Paragraph("Email: "+email));
+	}
 }

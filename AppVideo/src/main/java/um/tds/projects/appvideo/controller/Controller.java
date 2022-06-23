@@ -325,18 +325,11 @@ public class Controller implements VideosListener{
 		    
 		    Paragraph title1 = new Paragraph("Personal data", FontFactory.getFont(FontFactory.TIMES_BOLDITALIC, 18, Font.BOLD, BaseColor.BLACK));
 		    Chapter chapter1 = new Chapter(title1, 1);
-		    chapter1.add(new Paragraph("Name: "+currentUser.getName()));
-		    if(currentUser.getSurname() != null && !currentUser.getSurname().isBlank()) 
-		    	chapter1.add(new Paragraph("Surname: "+currentUser.getSurname()));
-		    chapter1.add(new Paragraph("Username: "+currentUser.getUsername()));
-		    chapter1.add(new Paragraph("Date of birth: " + new SimpleDateFormat("dd/MM/yyyy").format(currentUser.getDateOfBirth())));
-		    if(currentUser.getEmail() != null && !currentUser.getEmail().isBlank()) 
-		    	chapter1.add(new Paragraph("Email: "+currentUser.getEmail()));
-		    
+		  
 		    Paragraph title2 = new Paragraph("Playlists", FontFactory.getFont(FontFactory.TIMES_BOLDITALIC, 18, Font.BOLD, BaseColor.BLACK));
 		    
 		    Chapter chapter2 = new Chapter(title2, 2);
-		
+		    currentUser.dataTopPdf(chapter1);
 		    currentUser.playListsToPdf(chapter2);
 		
 		    document.add(chapter1);
