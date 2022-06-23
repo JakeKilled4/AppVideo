@@ -69,9 +69,7 @@ public class TdsLabelAdapter implements ILabelAdapter {
 	public Label loadLabel(int code) {
 		Entidad eLabel = servPersistencia.recuperarEntidad(code);
 		
-		Label label = new Label(
-			getFieldValue(eLabel, "name")
-		);
+		Label label = new Label(getFieldValue(eLabel, "name"));
 		label.setCode(code);
 		return label;
 	}
@@ -85,13 +83,13 @@ public class TdsLabelAdapter implements ILabelAdapter {
 		return labels;
 	}
 
-	/* Auxiliar functions */
+	/* Private functions */
+	
 	private void modifyField(Entidad entity, String fieldName, String newValue) {
 		servPersistencia.eliminarPropiedadEntidad(entity, fieldName);
 		servPersistencia.anadirPropiedadEntidad  (entity, fieldName, newValue);
 	}
 	
-
 	private String getFieldValue(Entidad entity, String field) {
 		return servPersistencia.recuperarPropiedadEntidad(entity, field);
 	}

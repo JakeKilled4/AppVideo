@@ -27,7 +27,7 @@ public class TdsUserAdapter implements IUserAdapter {
 	private static Logger               logger = Logger.getLogger("um.tds.projects.appvideo.persistence.tdsuseradapter");
 	private static ServicioPersistencia servPersistencia;
 	
-	private SimpleDateFormat   dateFormat; // Format of the date in the DB
+	private SimpleDateFormat   dateFormat;
 	private TdsPlaylistAdapter playlistAdapter;
 	private TdsVideoAdapter videoAdapter;
 
@@ -40,6 +40,8 @@ public class TdsUserAdapter implements IUserAdapter {
 	private TdsUserAdapter() {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 		playlistAdapter  = TdsPlaylistAdapter.getUniqueInstance();
+		
+		// To store the date
 		dateFormat       = new SimpleDateFormat("dd/MM/yyyy");
 	}
 
@@ -58,14 +60,15 @@ public class TdsUserAdapter implements IUserAdapter {
 		for (Playlist playlist : u.getPlaylists())
 			playlistAdapter.registerPlaylist(playlist);
 		
-		// Register videos
+		// Register videos of the history
 		for(Video v : u.getHistory())
 			videoAdapter.registerVideo(v);
 
 		// Create user entity
 		eUser = new Entidad();
-
 		eUser.setNombre("user");
+		
+		// Register all properties
 		eUser.setPropiedades(
 			new ArrayList<Propiedad>(
 				Arrays.asList(
@@ -94,6 +97,7 @@ public class TdsUserAdapter implements IUserAdapter {
 
 	@Override
 	public void removeUser(User u) {
+		
 		// Remove the user's playlists
 		for (Playlist playlist : u.getPlaylists())
 			playlistAdapter.removePlaylist(playlist);
@@ -107,10 +111,15 @@ public class TdsUserAdapter implements IUserAdapter {
 		logger.info("Modifying an user");
 		Entidad eUser;
 		
+		// Get the actual user data
 		User oldUser = loadUser(u.getCode());
+		
+		// Modify playlist of the user
 		modifyPlaylists(oldUser, u);
 
 		eUser = servPersistencia.recuperarEntidad(u.getCode());
+		
+		// Modify all properties
 		for (Propiedad prop: eUser.getPropiedades()) {
 			modifyField(prop, "name",                          u.getName());
 			modifyField(prop, "surname",                       u.getSurname());
@@ -126,41 +135,19 @@ public class TdsUserAdapter implements IUserAdapter {
 		}
 	}
 	
-	/* Removes the deleted playlists and registers the new ones. */
-	private void modifyPlaylists(User oldUser, User newUser) {
-		// We will store the playlists in two hash sets for rapidly
-		// computing whether some playlist belongs to both users.
-		Set<Integer> oldPl = new HashSet<Integer>();
-		Set<Integer> newPl = new HashSet<Integer>();
-
-		// Populate the sets with each users's playlists.
-		for (Playlist pl: oldUser.getPlaylists())
-			oldPl.add(pl.getCode());
-		for (Playlist pl: newUser.getPlaylists())
-			newPl.add(pl.getCode());
-		
-		// Register the added playlists, remove the deleted ones.
-		for (Playlist pl: newUser.getPlaylists()) {
-			if (!oldPl.contains(pl.getCode())) {
-				playlistAdapter.registerPlaylist(pl);
-			}
-		}
-		for (Playlist pl: oldUser.getPlaylists())
-			if (!newPl.contains(pl.getCode()))
-				playlistAdapter.removePlaylist(pl);
-	}
-
 	@Override
 	public User loadUser(int code) {
 		Entidad eUser = servPersistencia.recuperarEntidad(code);
 
+		// Try to load the date stored
 		Date dateOfBirth = null;
 		try {
 			dateOfBirth = (Date) dateFormat.parse(getFieldValue(eUser, "dateOfBirth"));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-
+		
+		// Create new user with all properties
 		User user = new User(
 			getFieldValue(eUser, "name"),
 			getFieldValue(eUser, "surname"),
@@ -169,23 +156,27 @@ public class TdsUserAdapter implements IUserAdapter {
 			getFieldValue(eUser, "username"),
 			getFieldValue(eUser, "password")
 		);
+	
 		user.setPremium(
 			Boolean.parseBoolean(getFieldValue(eUser, "isPremium"))
 		);
 		user.setCode(code);
 
-		// Load playlists
+		// Load playlists and add playlist to the user
 		List<Playlist> playlists = getPlaylistsFromCodes(getFieldValue(eUser, "playlists"));
+		
 		for (Playlist playlist : playlists)
 			user.addPlaylist(playlist);
 
-		// Load history
+		// Load history and add to the user
 		List<Video> history = getHistoryFromCodes(getFieldValue(eUser, "history"));
 		user.setHistory(history);
 		
+		// Set filter to the user
 		String filterName = getFieldValue(eUser, "filter");
 		IVideoFilter filter = IVideoFilter.makeFilter(filterName);
 		user.setFilter(filter);
+		
 		return user;
 	}
 
@@ -204,11 +195,36 @@ public class TdsUserAdapter implements IUserAdapter {
 		return users;
 	}
 
-	/* Auxiliar functions */
+	/* Private functions */
+	
+	/* Removes the deleted playlists and registers the new ones. */
+	private void modifyPlaylists(User oldUser, User newUser) {
+		// We will store the playlists in two hash sets for rapidly
+		// computing whether some playlist belongs to both users.
+		Set<Integer> oldPl = new HashSet<Integer>();
+		Set<Integer> newPl = new HashSet<Integer>();
+
+		// Populate the sets with each users's playlists.
+		for (Playlist pl: oldUser.getPlaylists())
+			oldPl.add(pl.getCode());
+		for (Playlist pl: newUser.getPlaylists())
+			newPl.add(pl.getCode());
+		
+		// Register the added playlists
+		for (Playlist pl: newUser.getPlaylists()) {
+			if (!oldPl.contains(pl.getCode())) {
+				playlistAdapter.registerPlaylist(pl);
+			}
+		}
+		// Remove the deleted playlists
+		for (Playlist pl: oldUser.getPlaylists())
+			if (!newPl.contains(pl.getCode()))
+				playlistAdapter.removePlaylist(pl);
+	}
+
 	private String getFieldValue(Entidad entity, String field) {
 		return servPersistencia.recuperarPropiedadEntidad(entity, field);
 	}
-	
 	
 	private void modifyField(Propiedad prop, String fieldName, String newValue) {
 		if (prop.getNombre().equals(fieldName))
@@ -244,6 +260,7 @@ public class TdsUserAdapter implements IUserAdapter {
 		}
 		return playlistList;
 	}
+	
 	private List<Video> getHistoryFromCodes(String history) {
 		List<Video>     historyList    = new LinkedList<Video>();
 		StringTokenizer    strTok          = new StringTokenizer(history, " ");
