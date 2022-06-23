@@ -15,18 +15,15 @@ public class Video extends Identifiable {
 		this.url = url;
 		this.title = title;
 		this.numViews = numViews;
+		
+		// Compare labels using the name
 		this.labels = new TreeSet<Label>((l1, l2) -> l1.getName().compareTo(l2.getName()));
-	}
-
-	public Video(String url, String title, int numViews,Set<Label> labels) {
-		this(url, title, numViews);
-		this.labels = labels;
 	}
 
 	public String getUrl() {
 		return url;
 	}
-
+	
 	public String getTitle() {
 		return title;
 	}
@@ -48,22 +45,18 @@ public class Video extends Identifiable {
 	}
 	
 	public boolean containsLabel(String l) {
-		if (labels.contains(new Label(l))) {
-			return true;
-		} else {
-			return false;
-		}
+		if (labels.contains(new Label(l))) return true;
+		return false;
 	}
 	
+	/* Returns true if the label was not already in the video */
 	public boolean addLabel(Label l) {
-		if (labels.contains(l)) {
-			return false;
-		} else {
-			labels.add(l);
-			return true;
-		}
+		if (labels.contains(l)) return false;
+		labels.add(l);
+		return true;
 	}
 	
+	/* Compare videos, comparing the Url */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

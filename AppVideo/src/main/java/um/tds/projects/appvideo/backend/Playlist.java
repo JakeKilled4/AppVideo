@@ -29,15 +29,18 @@ public class Playlist extends Identifiable {
 		return this.videos;
 	}
 	
+	public int getNumVideos() {
+		return videos.size();
+	}
+	
 	public boolean containsVideo(Video video) {
 		for (Video v: videos) {
-			if (v.equals(video)) {
-				return true;
-			}
+			if (v.equals(video)) return true;
 		}
 		return false;
 	}
-
+	
+	/* Return true if the video was not in the playlist */
 	public boolean addVideo(Video video) {
 		if (containsVideo(video)) return false;
 		videos.add(video);
@@ -46,12 +49,9 @@ public class Playlist extends Identifiable {
 
 	public void removeVideo(Video video) {
 		videos.remove(video);
-	}
-
-	public int getNumVideos() {
-		return videos.size();
-	}
+	}	
 	
+	/* Add the information of all the videos to the PDF */
 	public void playListToPdf(Section s) {
 		for (Video video : videos) {
 			Paragraph p = new Paragraph(video.getTitle() + " (" + video.getNumViews() + " views)");

@@ -26,18 +26,23 @@ public class UserRepository {
 			e.printStackTrace();
 		}
 	}
-
-	private void loadRepository() throws DaoException {
-		List<User> users = userAdapter.loadAllUsers();
-		for (User u : users) {
-			cache.put(u.getUsername(), u);
-		}
-	}
-
+	
+	/* Just one repository */
 	public static UserRepository getUniqueInstance() {
 		if (instance == null)
 			instance = new UserRepository();
 		return instance;
+	}
+	
+	/* Returns null iff there is not a user with username 'username' */
+	public User getUser(String username) {
+		if (cache.containsKey(username))
+			return cache.get(username);
+		return null;
+	}
+
+	public boolean containsUser(String username) {
+		return cache.containsKey(username);
 	}
 
 	public void addUser(User u) {
@@ -49,18 +54,12 @@ public class UserRepository {
 		if (cache.containsKey(u.getUsername()))
 			cache.remove(u.getUsername());
 	}
-
-	public User getUser(String username) {
-		if (cache.containsKey(username))
-			return cache.get(username);
-		return null;
-	}
-
-	public boolean containsUser(String username) {
-		return cache.containsKey(username);
-	}
-
-	public void findUser() {
-		return;
+	
+	/* Private functions */
+	private void loadRepository() throws DaoException {
+		List<User> users = userAdapter.loadAllUsers();
+		for (User u : users) {
+			cache.put(u.getUsername(), u);
+		}
 	}
 }

@@ -77,11 +77,66 @@ public class Controller implements VideosListener{
 		this.selectedLabels = new LinkedList<Label>();
 	}
 	
+	/* Just one controller */
 	public static Controller getUniqueInstance() {
 		if (instance == null)
 			instance = new Controller();
 		return instance;
 	}
+	
+	public void setMainWindow(MainWindow mainWindow) {
+		this.mainWindow = mainWindow;
+	}
+	
+	public List<Label> getSelectedLabels(){
+		return selectedLabels;
+	}
+	
+	/* Transform the list of strings in a list of labels */
+	public void setSelectedLabel(List<String> l) {
+		selectedLabels = l.stream().map(s -> new Label(s)).collect(Collectors.toList());
+	}
+	
+	public String getSearchTitle(){
+		return searchedTitle;
+	}
+	
+	public List<Video> getMostRecentVideos() {
+		return this.currentUser.getHistory();
+	}
+	
+	public List<Video> getMostPopularVideos(int n) {
+		return videoRepository.getMostPopularVideos(n);
+	}
+	
+	public List<Video> getSearchedVideos() {
+		return videoRepository.findVideo(searchedTitle, currentUser.getFilter(), selectedLabels);
+	}
+	
+	public boolean userIsPremium() {
+		return currentUser.isPremium();
+	}
+	
+	public boolean userIsRegistered(String username) {
+		return userRepository.containsUser(username);
+	}
+	
+	public User getCurrentUser() {
+		return this.currentUser;
+	}
+	
+	public List<Playlist> getPlaylists() {
+		return currentUser.getPlaylists();
+	}
+	
+	public List<Video> getAllVideos() {
+		return videoRepository.getAllVideos();
+	}
+	
+	public List<Label> getAllLabels(){
+		return labelRepository.getAllLabels();
+	}
+
 	
 	/* Return true if the current user ages is less than 18 and false in other case */
 	public boolean underEighteen() {
@@ -110,44 +165,10 @@ public class Controller implements VideosListener{
 		return false;
 	}
 	
-	public boolean userIsPremium() {
-		return currentUser.isPremium();
-	}
-	
-	public void setMainWindow(MainWindow mainWindow) {
-		this.mainWindow = mainWindow;
-	}
-	
-	public List<Label> getSelectedLabels(){
-		return selectedLabels;
-	}
-	
-	public void setSelectedLabel(List<String> l) {
-		
-		// Transform the list of strings in a list of labels
-		selectedLabels = l.stream().map(s -> new Label(s)).collect(Collectors.toList());
-	}
-	
-	public String getSearchTitle(){
-		return searchedTitle;
-	}
-	
 	/* Load SearchPanel and filter videos with title: text */ 
 	public void searchVideos(String text) {
 		searchedTitle = text;
 		mainWindow.activateSearchPanel(UpdateOption.CENTER);
-	}
-	
-	public List<Video> getMostRecentVideos() {
-		return this.currentUser.getHistory();
-	}
-	
-	public List<Video> getMostPopularVideos(int n) {
-		return videoRepository.getMostPopularVideos(n);
-	}
-	
-	public List<Video> getSearchedVideos() {
-		return videoRepository.findVideo(searchedTitle, currentUser.getFilter(), selectedLabels);
 	}
 	
 	/* Function that runs when the user load the videos from a file*/
@@ -214,14 +235,6 @@ public class Controller implements VideosListener{
 				 mainWindow.showPopUp("Error","Invalid file",JOptionPane.ERROR_MESSAGE);
 			}
 		}
-	}
-	
-	public boolean userIsRegistered(String username) {
-		return userRepository.containsUser(username);
-	}
-	
-	public User getCurrentUser() {
-		return this.currentUser;
 	}
 
 	/* Return true iff username was in the user db and the password is correct */
@@ -306,18 +319,6 @@ public class Controller implements VideosListener{
 		playlistAdapter.modifyPlaylist(playlist);
 	}
 
-	public List<Playlist> getPlaylists() {
-		return currentUser.getPlaylists();
-	}
-	
-	public List<Video> getAllVideos() {
-		return videoRepository.getAllVideos();
-	}
-	
-	public List<Label> getAllLabels(){
-		return labelRepository.getAllLabels();
-	}
-
 	/* Add a view to the video and add the video to the history of the user */
 	public void viewVideo(Video v) {
 		v.addView();
@@ -374,6 +375,7 @@ public class Controller implements VideosListener{
         }
     }
 
+	/* Private functions */
 	private void initializeAdapters(){
 		logger.info("Initialising adapters");
 		
