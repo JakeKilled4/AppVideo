@@ -106,7 +106,7 @@ public class Controller implements VideosListener{
 	}
 	
 	public List<Video> getMostPopularVideos(int n) {
-		return videoRepository.getMostPopularVideos(n);
+		return videoRepository.getMostPopularVideos(n,this.currentUser.getFilter());
 	}
 	
 	public List<Video> getSearchedVideos() {

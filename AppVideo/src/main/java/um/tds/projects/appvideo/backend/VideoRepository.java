@@ -66,18 +66,19 @@ public class VideoRepository {
 	
 	/* Return a list with less or equals videos than 'n' 
 	 * ordered by the number of views of each video */
-	public List<Video> getMostPopularVideos(int n) {
+	public List<Video> getMostPopularVideos(int n, IVideoFilter filter) {
 		return cache
 			.values()
 			.stream()
 			.distinct()
+			.filter(v -> filter.isVideoOk(v))
 			.sorted((v1, v2) -> v2.getNumViews() - v1.getNumViews())
 			.limit(n)
 			.collect(Collectors.toList());
 	}
 	
 	/* Filter videos in the repository using the title of the video, 
-	 * the filter and the labels that a video contains */
+	 * the filter, and the labels that a video contains */
 	public List<Video> findVideo(String str, IVideoFilter filter, List<Label> labels) {
 		LinkedList<Video> res = new LinkedList<Video>();
 		
@@ -95,6 +96,7 @@ public class VideoRepository {
 						break;
 					}
 				}
+				
 				// If the video contains at least one of the labels of the selected (or no labels selected)
 				// and all the others conditions add the video to the list to return
 				if(labels.isEmpty() || containLabel) res.add(v);
