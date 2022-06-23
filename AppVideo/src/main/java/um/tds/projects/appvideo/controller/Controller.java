@@ -21,8 +21,10 @@ import umu.tds.componente.Videos;
 import umu.tds.componente.VideosEvent;
 import umu.tds.componente.VideosListener;
 
-import java.lang.Math;
+import java.awt.Font;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EventObject;
@@ -34,6 +36,12 @@ import java.util.stream.Collectors;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chapter;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 
 public class Controller implements VideosListener{
@@ -308,6 +316,39 @@ public class Controller implements VideosListener{
 		}
 		return null;
 	}
+	
+	public void generatePdf() {      
+		Document document = new Document();
+        try{
+		    PdfWriter.getInstance(document, new FileOutputStream("Playlists" + currentUser.getUsername() +".pdf"));
+		    document.open();
+		    
+		    Paragraph title1 = new Paragraph("Personal data", FontFactory.getFont(FontFactory.TIMES_BOLDITALIC, 18, Font.BOLD, BaseColor.BLACK));
+		    Chapter chapter1 = new Chapter(title1, 1);
+		    chapter1.add(new Paragraph("Name: "+currentUser.getName()));
+		    if(currentUser.getSurname() != null && !currentUser.getSurname().isBlank()) 
+		    	chapter1.add(new Paragraph("Surname: "+currentUser.getSurname()));
+		    chapter1.add(new Paragraph("Username: "+currentUser.getUsername()));
+		    chapter1.add(new Paragraph("Date of birth: " + new SimpleDateFormat("dd/MM/yyyy").format(currentUser.getDateOfBirth())));
+		    if(currentUser.getEmail() != null && !currentUser.getEmail().isBlank()) 
+		    	chapter1.add(new Paragraph("Email: "+currentUser.getEmail()));
+		    
+		    Paragraph title2 = new Paragraph("Playlists", FontFactory.getFont(FontFactory.TIMES_BOLDITALIC, 18, Font.BOLD, BaseColor.BLACK));
+		    
+		    Chapter chapter2 = new Chapter(title2, 2);
+		
+		    currentUser.playListsToPdf(chapter2);
+		
+		    document.add(chapter1);
+		    document.add(chapter2);
+		    document.close();
+			mainWindow.showPopUp("Information", "Pdf generated correctly with name: "+"Playlists" + currentUser.getUsername() +".pdf", JOptionPane.INFORMATION_MESSAGE);
+		    
+        }
+        catch (Exception e){
+        	mainWindow.showPopUp("Error", "Error creating pdf", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
 	private void initializeAdapters(){
 		logger.info("Initialising adapters");

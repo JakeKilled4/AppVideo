@@ -73,7 +73,7 @@ public class PreferencesList extends JPanel {
 
 		addTitle();
 		addSeparator();
-		addLoadVideo();
+		addLoadVideoAndPdfGenerator();
 		addSeparator();
 		addPremiumButton();
 		addChangeForm();
@@ -140,7 +140,7 @@ public class PreferencesList extends JPanel {
 		innerPage.add(sep);
 	}
 	
-	private void addLoadVideo() {
+	private void addLoadVideoAndPdfGenerator() {
 		JPanel loadPanel = new JPanel();
 		loadPanel.setLayout(new BoxLayout(loadPanel, BoxLayout.X_AXIS));
 		loadPanel.setAlignmentY(CENTER_ALIGNMENT);
@@ -164,6 +164,9 @@ public class PreferencesList extends JPanel {
 		loadPanel.add(luz);
 		if(u.isPremium()) {
 			generatePdf = new JButton("Generate Pdf");
+			generatePdf.addActionListener(e -> {
+				controller.generatePdf();
+			});
 			loadPanel.add(Box.createRigidArea(new Dimension(200,0)));
 			loadPanel.add(generatePdf);
 		}

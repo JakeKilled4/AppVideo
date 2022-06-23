@@ -8,6 +8,10 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.itextpdf.text.Chapter;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Section;
+
 public class User extends Identifiable {
 	private static int NUM_VIDEOS_HISTORY = 5;
 	private String name;
@@ -47,6 +51,13 @@ public class User extends Identifiable {
 		this.history.add(0, v);
 		if(this.history.size() > NUM_VIDEOS_HISTORY) this.history.remove(NUM_VIDEOS_HISTORY);
 		
+	}
+	
+	public void playListsToPdf(Chapter c) {
+		for (Playlist pl : playlists) {
+			Section section = c.addSection(new Paragraph(pl.getName()));
+			pl.playListToPdf(section);
+		}
 	}
 	
 	public void setHistory(List<Video> history){

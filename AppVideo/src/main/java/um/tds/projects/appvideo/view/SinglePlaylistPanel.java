@@ -3,7 +3,6 @@ package um.tds.projects.appvideo.view;
 import um.tds.projects.appvideo.backend.Playlist;
 
 import java.awt.CardLayout;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
@@ -12,7 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;

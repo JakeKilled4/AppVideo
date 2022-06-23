@@ -3,6 +3,9 @@ package um.tds.projects.appvideo.backend;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Section;
+
 public class Playlist extends Identifiable {
 
 	private String name;
@@ -51,5 +54,11 @@ public class Playlist extends Identifiable {
 	public int getNumVideos() {
 		return videos.size();
 	}
-
+	
+	public void playListToPdf(Section s) {
+		for (Video video : videos) {
+			Paragraph p = new Paragraph(video.getTitle() + " (" + video.getNumViews() + " views)");
+			s.add(p);
+		} 
+	}
 }
