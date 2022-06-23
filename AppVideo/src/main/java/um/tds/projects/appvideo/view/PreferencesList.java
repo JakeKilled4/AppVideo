@@ -200,7 +200,7 @@ public class PreferencesList extends JPanel {
 			String confirmPassword = String.valueOf(confirmNewPasswordFl.getPassword());
 			boolean isPremium = premium.isSelected();
 			String filter = "No filter";
-			if(u.isPremium()) filter = (String) comboBox.getSelectedItem();
+			if(u.isPremium() && isPremium) filter = (String) comboBox.getSelectedItem();
 						
 			if(name.isBlank() || username.isBlank() || dateOfBirth == null ||  password.isBlank()) {
 				mainWindow.showPopUp("Error","Complete correctly all the mandatory fields", JOptionPane.ERROR_MESSAGE);
@@ -218,15 +218,7 @@ public class PreferencesList extends JPanel {
 				name, surname, dateOfBirth, email,
 				username, password,isPremium,filter);
 			
-			if (changeOk) {/*
-				nameFl.setText(u.getName());
-	    		surnameFl.setText(u.getSurname());
-	    		date.setDate(u.getDateOfBirth());
-	    		emailFl.setText(u.getEmail());
-	    		usernameFl.setText(u.getUsername());
-	    		newPasswordFl.setText(u.getPassword());
-	    		confirmNewPasswordFl.setText(u.getPassword());
-				mainWindow.enterApp();*/
+			if (changeOk) {
 				mainWindow.showPopUp("Saved", "Saved correctly", JOptionPane.INFORMATION_MESSAGE);
 				mainWindow.activatePreferencesPanel();
 			}

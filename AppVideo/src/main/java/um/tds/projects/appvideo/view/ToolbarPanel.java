@@ -108,15 +108,15 @@ public class ToolbarPanel extends JPanel {
 		entryPopularVideos.addClickAction(() -> mainWindow.activatePopularVideosPanel());
 
 		add(Box.createRigidArea(new Dimension(0, 30)));
-		add(entryPlaylists);
-		addSeparator();
-		add(entryPreferences);
-		addSeparator();
 		add(entrySearch);
+		addSeparator();
+		add(entryPopularVideos);
 		addSeparator();
 		add(entryRecents);
 		addSeparator();
-		add(entryPopularVideos);
+		add(entryPlaylists);
+		addSeparator();
+		add(entryPreferences);
 	}
 	
 	private void addSeparator() {

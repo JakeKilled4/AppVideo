@@ -8,7 +8,6 @@ public class Video extends Identifiable {
 	private String url;
 	private String title;
 	private int numViews;
-	//private List<Label> labels;
 	private Set<Label> labels;
 
 	public Video(String url, String title, int numViews) {
