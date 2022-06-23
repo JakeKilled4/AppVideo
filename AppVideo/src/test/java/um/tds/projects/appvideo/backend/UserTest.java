@@ -90,6 +90,7 @@ public class UserTest {
 		user.addBeginningHistory(new Video("c", "x", 1));
 		user.addBeginningHistory(new Video("a", "x", 1));
 		assertTrue(user.getHistory().size() == 3);
+		assertTrue(user.getHistory().get(0).getUrl().equals("a"));
 	}
 	
 	@Test
