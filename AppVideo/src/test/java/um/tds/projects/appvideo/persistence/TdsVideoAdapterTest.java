@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import um.tds.projects.appvideo.backend.Label;
 import um.tds.projects.appvideo.backend.Video;
 
 public class TdsVideoAdapterTest {
@@ -50,7 +51,6 @@ public class TdsVideoAdapterTest {
 		assertEquals("newtitle", v2.getTitle());
 	}
 	
-	/* MODIFICAR PUES AHORA ES UN SET 
 	@Test
 	public void canStoreLabels() {
 		Video v1 = new Video("a", "b", 1);
@@ -60,27 +60,11 @@ public class TdsVideoAdapterTest {
 		videoAdpt.registerVideo(v1);
 		Video v2 = videoAdpt.loadVideo(v1.getCode());
 		assertEquals(1, v2.getLabels().size());
-		Label l2 = v2.getLabels().get(0);
-		assertEquals(l1.getCode(), l2.getCode());
+		assertTrue  (v2.containsLabel(l1.getName()));
 		
 		videoAdpt.removeVideo(v1);
 	}
-	
-	@Test
-	public void canStoreLabelName() {
-		Video v1 = new Video("a", "b", 1);
-		Label l1 = new Label("l");
-		v1.addLabel(l1);
-		
-		videoAdpt.registerVideo(v1);
-		Video v2 = videoAdpt.loadVideo(v1.getCode());
-		assertEquals(1, v2.getLabels().size());
-		Label l2 = v2.getLabels().get(0);
-		assertEquals("l", l2.getName());
-		
-		videoAdpt.removeVideo(v1);
-	}
-	
+
 	@Test
 	public void canStoreMultipleLabels() {
 		Video v1 = new Video("a", "b", 1);
@@ -95,9 +79,9 @@ public class TdsVideoAdapterTest {
 		Video v2 = videoAdpt.loadVideo(v1.getCode());
 
 		assertEquals(3,    v2.getLabels().size());
-		assertEquals("l1", v2.getLabels().get(0).getName());
-		assertEquals("l2", v2.getLabels().get(1).getName());
-		assertEquals("l3", v2.getLabels().get(2).getName());
+		assertTrue  (v2.containsLabel("l1"));
+		assertTrue  (v2.containsLabel("l2"));
+		assertTrue  (v2.containsLabel("l3"));
 		
 		videoAdpt.removeVideo(v1);
 	}	
@@ -111,8 +95,7 @@ public class TdsVideoAdapterTest {
 		Video v2 = videoAdpt.loadVideo(video.getCode());
 		
 		assertEquals(2,    v2.getLabels().size());
-		assertEquals("l1", v2.getLabels().get(0).getName());
-		assertEquals("l2", v2.getLabels().get(1).getName());
+		assertTrue  (v2.containsLabel("l1"));
+		assertTrue  (v2.containsLabel("l2"));
 	}
-	*/
 }
