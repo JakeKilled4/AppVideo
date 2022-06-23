@@ -43,7 +43,7 @@ public class User extends Identifiable {
 	public void addBeginningHistory(Video v) {
 		for(int i = 0;i<this.history.size();i++) {
 			Video video = this.history.get(i);
-			if(video.getUrl().equals(v.getUrl())) {
+			if(video.equals(v)) {
 				this.history.remove(i);
 				break;
 			}
@@ -146,10 +146,8 @@ public class User extends Identifiable {
 			if (name.equals(p.getName()))
 				return false;
 
-		playlists.add(
-			new Playlist(name)
-		);
-
+		playlists.add(new Playlist(name));
+		
 		return true;
 	}
 

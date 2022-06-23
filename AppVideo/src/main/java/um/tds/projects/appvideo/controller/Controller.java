@@ -24,7 +24,6 @@ import umu.tds.componente.VideosListener;
 import java.awt.Font;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EventObject;
@@ -64,13 +63,10 @@ public class Controller implements VideosListener{
 	// Text searched by user
 	private String searchedTitle;
 	
-	// List of labels selected to search
+	// List of labels selected by the user to search
 	private List<Label> selectedLabels;
 	
-	// Current user
 	private User currentUser;
-
-	// Main window
 	private MainWindow mainWindow;
 	
 	private Controller() {
@@ -87,10 +83,17 @@ public class Controller implements VideosListener{
 		return instance;
 	}
 	
+	/* Return true if the current user ages is less than 18 and false in other case */
 	public boolean underEighteen() {
+		
+		// Get day of birth of the user
 		Calendar a = Calendar.getInstance();
 		a.setTime(currentUser.getDateOfBirth());
+		
+		// Get actual day
 		Calendar b = Calendar.getInstance();
+		
+		// Calculate the difference between two dates
 	    int diff = b.get(Calendar.YEAR) - a.get(Calendar.YEAR);
 	    if (a.get(Calendar.MONTH) > b.get(Calendar.MONTH) || 
 	        (a.get(Calendar.MONTH) == b.get(Calendar.MONTH) && a.get(Calendar.DATE) > b.get(Calendar.DATE))) {
@@ -99,6 +102,7 @@ public class Controller implements VideosListener{
 	    return diff < 18;
 	}
 	
+	/* Return true if the video is in some playlist of the actual user */
 	public boolean videoInSomePlaylist(Video v) {
 		for(Playlist p : currentUser.getPlaylists()) {
 			if(p.containsVideo(v)) return true;
@@ -113,11 +117,14 @@ public class Controller implements VideosListener{
 	public void setMainWindow(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 	}
+	
 	public List<Label> getSelectedLabels(){
 		return selectedLabels;
 	}
 	
 	public void setSelectedLabel(List<String> l) {
+		
+		// Transform the list of strings in a list of labels
 		selectedLabels = l.stream().map(s -> new Label(s)).collect(Collectors.toList());
 	}
 	
@@ -125,6 +132,7 @@ public class Controller implements VideosListener{
 		return searchedTitle;
 	}
 	
+	/* Load SearchPanel and filter videos with title: text */ 
 	public void searchVideos(String text) {
 		searchedTitle = text;
 		mainWindow.activateSearchPanel(UpdateOption.CENTER);
@@ -142,13 +150,20 @@ public class Controller implements VideosListener{
 		return videoRepository.findVideo(searchedTitle, currentUser.getFilter(), selectedLabels);
 	}
 	
+	/* Function that runs when the user load the videos from a file*/
 	@Override
 	public void hayNuevosVideos(EventObject arg) {
+		
+		// Get the list of videos that the component return
 		VideosEvent e = (VideosEvent)arg;
 		Videos videos =  e.getVideos();
+		
+		// Iterate over the list of videos
 		for(umu.tds.componente.Video v : videos.getVideo()) {
 			Video video;
 			boolean videoExits = false;
+			
+			// If the video is in the repository update it (remove and add again) else create new one
 			if(videoRepository.containsVideo(v.getURL())) {
 				video = videoRepository.getVideo(v.getURL());
 				videoRepository.removeVideo(video);
@@ -156,8 +171,11 @@ public class Controller implements VideosListener{
 			}
 			else video = new Video(v.getURL(), v.getTitulo(), 0);
 			
+			// Iterate over the labels of the actual video we want to add
 			for(String l : v.getEtiqueta()) {
 				Label label;
+				
+				// If the label exists in the repository get from it else add to it
 				if(labelRepository.containsLabel(l)) 
 					label = labelRepository.getLabel(l);
 				else {
@@ -165,23 +183,32 @@ public class Controller implements VideosListener{
 					labelRepository.addLabel(label);
 					labelAdapter.registerLabel(label);
 				}
+				
+				// Add the label to the video
 				video.addLabel(label);
 			}
 			videoRepository.addVideo(video);
+			
+			// If the video was in the repository, just modify else register the new video
 			if(videoExits) videoAdapter.modifyVideo(video);
 			else videoAdapter.registerVideo(video);
 		}
 	}
 	
+	/* Function called by graphical interface to select a xml file to load videos */
 	public void selectFile() {
 		JFileChooser fileChooser = new JFileChooser();
 		int returnValue = fileChooser.showOpenDialog(null);
-
+		
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = fileChooser.getSelectedFile();
 			CargadorVideos cargadorVideos = new CargadorVideos();
+			
+			// Add the controller as a listener
 			cargadorVideos.addVideosListener(this);
 			try {
+				
+				// Call the listeners (only the controller) to execute function hayNuevosVideos
 				cargadorVideos.cargarVideos(selectedFile);
 			} catch (FicheroIncorrectoException e) {
 				 mainWindow.showPopUp("Error","Invalid file",JOptionPane.ERROR_MESSAGE);
@@ -189,9 +216,6 @@ public class Controller implements VideosListener{
 		}
 	}
 	
-	/**
-	 * Returns true if the user is already registered.
-	 */
 	public boolean userIsRegistered(String username) {
 		return userRepository.containsUser(username);
 	}
@@ -200,30 +224,27 @@ public class Controller implements VideosListener{
 		return this.currentUser;
 	}
 
-	/**
-	 * Returns true iff the login was successful (If username was in the user db and the password is correct)
-	 */
+	/* Return true iff username was in the user db and the password is correct */
 	public boolean login(String username, String password) {
 		User u = userRepository.getUser(username);
 		if (u != null && u.checkPassword(password)) {
 			currentUser = u;
+			logger.info("User login successful");
 			return true;
-		} else {
-			logger.info("User login unsuccessful");
-			return false;
-		}
+		} 
+		logger.info("User login unsuccessful");
+		return false;
 	}
 
+	
 	public void logout() {
-		logger.info("User logged out");
 		currentUser    = null;
 		searchedTitle  = "";
 		selectedLabels = new LinkedList<Label>();
+		logger.info("User logged out");
 	}
 	
-	/**
-	 * Returns true iff the change process was successful (If the username was not already taken)
-	 */
+	/* Returns true iff the username was not already taken */
 	public boolean changeUserData(String name, String surname, Date dateOfBirth, String email, String username, String password, boolean isPremium, String filter) {
 		if(this.currentUser == null) return false;
 		if(!this.currentUser.getUsername().equals(username) && userRepository.containsUser(username)) return false;
@@ -242,24 +263,24 @@ public class Controller implements VideosListener{
 		return true;
 	}
 	
-	/**
-	 * Returns true iff the register process was successful (If the username was not already taken)
-	 */
+	/* Returns true iff the username was not already taken */
 	public boolean register(String name, String surname, Date dateOfBirth, String email, String username, String password) {
 		if (userRepository.containsUser(username))
 			return false;
 		
-		// If the username is not already taken, create the new user.
 		currentUser = new User(name, surname, dateOfBirth, email, username, password);
 		userAdapter.registerUser(currentUser);
 		userRepository.addUser(currentUser);
 		return true;
 	}
 
+	/* Returns true iff the playlist name was not already taken*/
 	public boolean createPlaylist(String name) {
 		boolean created = currentUser.createPlaylist(name);
-		if (created) 
+		if (created) { 
+			logger.info("Creating the playlist '" + name + "'");
 			userAdapter.modifyUser(currentUser);
+		}
 		return created;
 	}
 
@@ -269,16 +290,18 @@ public class Controller implements VideosListener{
 		userAdapter.modifyUser(currentUser);
 	}
 
+	/* Returns true iff the videos was not already in the playlist */
 	public boolean addVideoToPlaylist(Playlist playlist, Video video) {
 		if (playlist.addVideo(video)) {
+			logger.info("Adding video with title '" + video.getTitle() + "' to playlist '"+ playlist.getName() +"'" );
 			playlistAdapter.modifyPlaylist(playlist);
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	public void removeVideoFromPlaylist(Playlist playlist, Video video) {
+		logger.info("Removing video with title '" + video.getTitle() + "' of the playlist '"+ playlist.getName() +"'" );
 		playlist.removeVideo(video);
 		playlistAdapter.modifyPlaylist(playlist);
 	}
@@ -295,6 +318,7 @@ public class Controller implements VideosListener{
 		return labelRepository.getAllLabels();
 	}
 
+	/* Add a view to the video and add the video to the history of the user */
 	public void viewVideo(Video v) {
 		v.addView();
 		videoAdapter.modifyVideo(v);
@@ -302,14 +326,18 @@ public class Controller implements VideosListener{
 		userAdapter.modifyUser(currentUser);
 	}
 	
+	/* Return null if the label was already in the video */
 	public Label addLabelToVideo(Video v,String name) {
+		
+		// Try to get the label from the repository, else create new one
 		Label l = labelRepository.getLabel(name);
 		if(l == null) {
 			l = new Label(name);
 			labelAdapter.registerLabel(l);
 			labelRepository.addLabel(l);
 		}
-		// If the label isn't in the video
+		
+		// If the label is not in the video
 		if(v.addLabel(l)) {
 			videoAdapter.modifyVideo(v);
 			return l;
@@ -317,24 +345,27 @@ public class Controller implements VideosListener{
 		return null;
 	}
 	
+	/* Generate a PDF with the personal data of the current user and the data of his playlists */
 	public void generatePdf() {      
 		Document document = new Document();
         try{
 		    PdfWriter.getInstance(document, new FileOutputStream("Playlists" + currentUser.getUsername() +".pdf"));
 		    document.open();
 		    
+		    // Personal data information to export
 		    Paragraph title1 = new Paragraph("Personal data", FontFactory.getFont(FontFactory.TIMES_BOLDITALIC, 18, Font.BOLD, BaseColor.BLACK));
 		    Chapter chapter1 = new Chapter(title1, 1);
-		  
-		    Paragraph title2 = new Paragraph("Playlists", FontFactory.getFont(FontFactory.TIMES_BOLDITALIC, 18, Font.BOLD, BaseColor.BLACK));
-		    
-		    Chapter chapter2 = new Chapter(title2, 2);
 		    currentUser.dataTopPdf(chapter1);
+		    
+		    // Playlist data to export
+		    Paragraph title2 = new Paragraph("Playlists", FontFactory.getFont(FontFactory.TIMES_BOLDITALIC, 18, Font.BOLD, BaseColor.BLACK));
+		    Chapter chapter2 = new Chapter(title2, 2);
 		    currentUser.playListsToPdf(chapter2);
 		
 		    document.add(chapter1);
 		    document.add(chapter2);
 		    document.close();
+		    
 			mainWindow.showPopUp("Information", "Pdf generated correctly with name: "+"Playlists" + currentUser.getUsername() +".pdf", JOptionPane.INFORMATION_MESSAGE);
 		    
         }

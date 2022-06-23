@@ -39,12 +39,9 @@ public class Playlist extends Identifiable {
 	}
 
 	public boolean addVideo(Video video) {
-		if (containsVideo(video)) {
-			return false;
-		} else {
-			videos.add(video);
-			return true;
-		}
+		if (containsVideo(video)) return false;
+		videos.add(video);
+		return true;
 	}
 
 	public void removeVideo(Video video) {
