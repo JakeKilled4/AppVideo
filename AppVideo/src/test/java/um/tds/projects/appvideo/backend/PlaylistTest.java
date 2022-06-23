@@ -33,7 +33,7 @@ public class PlaylistTest {
 			playlist.addVideo(new Video(String.valueOf(i), "x", 1));
 		}
 		for (int i = 0; i < NUM_VIDEOS; i++) {
-			playlist.containsVideo(new Video(String.valueOf(i), "x", 1));
+			assertTrue(playlist.containsVideo(new Video(String.valueOf(i), "x", 1)));
 		}
 	}
 	
