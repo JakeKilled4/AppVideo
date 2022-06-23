@@ -2,10 +2,8 @@ package um.tds.projects.appvideo.persistence;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
@@ -44,17 +42,17 @@ public class TdsPlaylistAdapter implements IPlaylistAdapter {
 			ePlaylist = servPersistencia.recuperarEntidad(p.getCode());
 		} catch (NullPointerException e) {}
 		logger.info("... Correctly checked whether the playlist was already registered");
-		if (ePlaylist != null)
-			return;
+		if (ePlaylist != null) return;
 		
-		// Register Videos
+		// Register videos
 		for (Video video : p.getVideos())
 			videoAdapter.registerVideo(video);
 		
-		// Create video entity
+		// Create playlist entity
 		ePlaylist = new Entidad();
-				
 		ePlaylist.setNombre("playlist");
+		
+		// Add properties
 		ePlaylist.setPropiedades(
 			new ArrayList<Propiedad>(
 				Arrays.asList(
@@ -83,9 +81,8 @@ public class TdsPlaylistAdapter implements IPlaylistAdapter {
 	@Override
 	public void modifyPlaylist(Playlist p) {
 		Entidad ePlaylist = servPersistencia.recuperarEntidad(p.getCode());
-		
-		modifyVideos(loadPlaylist(p.getCode()), p);
 
+		// Modify propierties
 		for (Propiedad prop: ePlaylist.getPropiedades()) {
 			modifyField(prop, "name",                  p.getName());
 			modifyField(prop, "videos", getCodesVideos(p.getVideos()));
@@ -96,11 +93,10 @@ public class TdsPlaylistAdapter implements IPlaylistAdapter {
 	@Override
 	public Playlist loadPlaylist(int code) {
 		Entidad ePlaylist = servPersistencia.recuperarEntidad(code);
-
-		Playlist playlist = new Playlist(
-			getFieldValue(ePlaylist, "name")
-		);
-		logger.info(playlist.getName());
+		
+		// Create playlist using the name
+		Playlist playlist = new Playlist(getFieldValue(ePlaylist, "name"));
+		logger.info("Name of the playlist to load: '"+playlist.getName()+"'");
 		playlist.setCode(code);
 
 		// Load all videos
@@ -123,22 +119,7 @@ public class TdsPlaylistAdapter implements IPlaylistAdapter {
 		return playlists;
 	}
 	
-	/* Auxiliar functions */
-	/* Removes the deleted videos and registers the new ones */
-	private void modifyVideos(Playlist oldPl, Playlist newPl) {
-		// We will store the videos in two hash sets for rapidly
-		// computing whether some videos belongs to both playlists.
-		Set<Integer> oldVideos = new HashSet<Integer>();
-
-		// Populate the sets with each playlist's videos.
-		for (Video v: oldPl.getVideos())
-			oldVideos.add(v.getCode());
-		
-		// Register the added videos, remove the deleted ones.
-		for (Video v: newPl.getVideos())
-			if (!oldVideos.contains(v.getCode()))
-				videoAdapter.registerVideo(v);
-	}
+	/* Private functions */
 	
 	private String getCodesVideos(List<Video> videos) {
 		String out = "";
@@ -163,7 +144,6 @@ public class TdsPlaylistAdapter implements IPlaylistAdapter {
 		return videoList;
 	}
 	
-
 	private void modifyField(Propiedad prop, String fieldName, String newValue) {
 		if (prop.getNombre().equals(fieldName))
 			prop.setValor(newValue);

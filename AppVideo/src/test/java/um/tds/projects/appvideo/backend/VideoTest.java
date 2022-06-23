@@ -5,9 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.List;
-import java.util.LinkedList;
 import java.util.Set;
 
 public class VideoTest {

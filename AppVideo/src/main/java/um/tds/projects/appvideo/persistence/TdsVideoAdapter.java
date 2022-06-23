@@ -51,6 +51,8 @@ public class TdsVideoAdapter implements IVideoAdapter {
 		// Create video entity
 		eVideo = new Entidad();
 		eVideo.setNombre("video");
+		
+		// Register all properties
 		eVideo.setPropiedades(
 			new ArrayList<Propiedad>(
 				Arrays.asList(
@@ -71,12 +73,6 @@ public class TdsVideoAdapter implements IVideoAdapter {
 
 	@Override
 	public void removeVideo(Video v) {
-		TdsLabelAdapter labelAdapter = TdsLabelAdapter.getUniqueInstance();
-
-		// Remove labels in the video
-		for (Label label : v.getLabels())
-			labelAdapter.removeLabel(label);
-
 		servPersistencia.borrarEntidad(
 			servPersistencia.recuperarEntidad(v.getCode())
 		);
@@ -86,9 +82,8 @@ public class TdsVideoAdapter implements IVideoAdapter {
 	public void modifyVideo(Video v) {
 		Entidad eVideo;
 		eVideo = servPersistencia.recuperarEntidad(v.getCode());
-		
-		modifyLabels(loadVideo(v.getCode()), v);
 
+		// Modify all properties
 		for (Propiedad prop: eVideo.getPropiedades()) {
 			modifyField(prop, "url",                     v.getUrl());
 			modifyField(prop, "title",                   v.getTitle());
@@ -98,12 +93,11 @@ public class TdsVideoAdapter implements IVideoAdapter {
 		}
 	}
 	
-	
-
 	@Override
 	public Video loadVideo(int code) {
 		Entidad eVideo   = servPersistencia.recuperarEntidad(code);
 		
+		// Create new video with all properties
 		Video video = new Video(
 			getFieldValue(eVideo, "url"),
 			getFieldValue(eVideo, "title"),
@@ -111,9 +105,8 @@ public class TdsVideoAdapter implements IVideoAdapter {
 		);
 		video.setCode(code);
 
-		// Load all labels
+		// Load all labels and add it to the video
 		List<Label> labels = getLabelsFromCodes(getFieldValue(eVideo, "labels"));
-		
 		for (Label label : labels)
 			video.addLabel(label);
 
@@ -131,31 +124,7 @@ public class TdsVideoAdapter implements IVideoAdapter {
 		return videos;
 	}
 
-	/* Auxiliar functions */
-	/* Removes the deleted labels and registers the new ones */
-	private void modifyLabels(Video oldVideo, Video newVideo) {
-		// We will store the labels in two hash sets for rapidly
-		// computing whether some label belongs to both videos.
-		Set<Integer> oldLabels = new HashSet<Integer>();
-		Set<Integer> newLabels = new HashSet<Integer>();
-
-		// Populate the sets with each video's labels.
-		for (Label label: oldVideo.getLabels())
-			oldLabels.add(label.getCode());
-		
-		for (Label label: newVideo.getLabels())
-			newLabels.add(label.getCode());
-		
-		// Register the added labels, remove the deleted ones.
-		for (Label label : newVideo.getLabels())
-			if(!oldLabels.contains(label.getCode()))
-				labelAdapter.registerLabel(label);
-		
-		for (Label label: oldVideo.getLabels())
-			if(!newLabels.contains(label.getCode()))
-				labelAdapter.removeLabel(label);
-	}
-	
+	/* Private functions */
 	
 	private String getCodesLabels(Set<Label> labels) {
 		String out = "";
@@ -183,7 +152,6 @@ public class TdsVideoAdapter implements IVideoAdapter {
 		if (prop.getNombre().equals(fieldName))
 			prop.setValor(newValue);
 	}
-	
 
 	private String getFieldValue(Entidad entity, String field) {
 		return servPersistencia.recuperarPropiedadEntidad(entity, field);
