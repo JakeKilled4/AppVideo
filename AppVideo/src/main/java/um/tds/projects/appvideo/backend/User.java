@@ -3,6 +3,7 @@ package um.tds.projects.appvideo.backend;
 import um.tds.projects.appvideo.backend.filters.IVideoFilter;
 import um.tds.projects.appvideo.backend.filters.NoFilter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -37,27 +38,6 @@ public class User extends Identifiable {
 		this.playlists = new LinkedList<Playlist>();
 		this.history = new ArrayList<Video>();
 		this.filter = new NoFilter();
-	}
-	
-	public void addBeginningHistory(Video v) {
-		for(int i = 0;i<this.history.size();i++) {
-			Video video = this.history.get(i);
-			if(video.getUrl().equals(v.getUrl())) {
-				this.history.remove(i);
-				break;
-			}
-		}
-		
-		this.history.add(0, v);
-		if(this.history.size() > NUM_VIDEOS_HISTORY) this.history.remove(NUM_VIDEOS_HISTORY);
-		
-	}
-	
-	public void playListsToPdf(Chapter c) {
-		for (Playlist pl : playlists) {
-			Section section = c.addSection(new Paragraph(pl.getName()));
-			pl.playListToPdf(section);
-		}
 	}
 	
 	public void setHistory(List<Video> history){
@@ -140,15 +120,17 @@ public class User extends Identifiable {
 		this.name = name;
 	}
 	
+	public boolean checkPassword(String _password) {
+		return password.equals(_password);
+	}
+	
+	/* Returns true iff the name of the playlist was already taken*/
 	public boolean createPlaylist(String name) {
 		for (Playlist p: playlists)
 			if (name.equals(p.getName()))
 				return false;
 
-		playlists.add(
-			new Playlist(name)
-		);
-
+		playlists.add(new Playlist(name));
 		return true;
 	}
 
@@ -159,9 +141,41 @@ public class User extends Identifiable {
 	public void removePlaylist(Playlist pl) {
 		playlists.remove(pl);
 	}
-
-	public boolean checkPassword(String _password) {
-		return password.equals(_password);
+	
+	/* Add the personal information of the user to the PDF */
+	public void dataTopPdf(Chapter chapter) {
+		chapter.add(new Paragraph("Name: "+name));
+	    if(surname != null && !surname.isBlank()) 
+	    	chapter.add(new Paragraph("Surname: "+surname));
+	    chapter.add(new Paragraph("Username: "+username));
+	    chapter.add(new Paragraph("Date of birth: " + new SimpleDateFormat("dd/MM/yyyy").format(dateOfBirth)));
+	    if(email != null && !email.isBlank()) 
+	    	chapter.add(new Paragraph("Email: "+email));
 	}
-
+	
+	/* Add the playlists information of the user's playlists to the PDF */
+	public void playListsToPdf(Chapter c) {
+		for (Playlist pl : playlists) {
+			Section section = c.addSection(new Paragraph(pl.getName()));
+			pl.playListToPdf(section);
+		}
+	}
+	
+	/* Add a new video to the history */
+	public void addBeginningHistory(Video v) {
+		
+		// Check if the video was already in the history and delete it
+		for(int i = 0;i<this.history.size();i++) {
+			Video video = this.history.get(i);
+			if(video.equals(v)) {
+				this.history.remove(i);
+				break;
+			}
+		}
+		// Add the video at the beginning of the list
+		this.history.add(0, v);
+		
+		// Limit the size of the list
+		if(this.history.size() > NUM_VIDEOS_HISTORY) this.history.remove(NUM_VIDEOS_HISTORY);
+	}
 }

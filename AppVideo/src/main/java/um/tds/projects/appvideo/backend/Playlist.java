@@ -29,32 +29,29 @@ public class Playlist extends Identifiable {
 		return this.videos;
 	}
 	
-	public boolean containsVideo(Video video) {
-		for (Video v: videos) {
-			if (v.equals(video)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean addVideo(Video video) {
-		if (containsVideo(video)) {
-			return false;
-		} else {
-			videos.add(video);
-			return true;
-		}
-	}
-
-	public void removeVideo(Video video) {
-		videos.remove(video);
-	}
-
 	public int getNumVideos() {
 		return videos.size();
 	}
 	
+	public boolean containsVideo(Video video) {
+		for (Video v: videos) {
+			if (v.equals(video)) return true;
+		}
+		return false;
+	}
+	
+	/* Return true if the video was not in the playlist */
+	public boolean addVideo(Video video) {
+		if (containsVideo(video)) return false;
+		videos.add(video);
+		return true;
+	}
+
+	public void removeVideo(Video video) {
+		videos.remove(video);
+	}	
+	
+	/* Add the information of all the videos to the PDF */
 	public void playListToPdf(Section s) {
 		for (Video video : videos) {
 			Paragraph p = new Paragraph(video.getTitle() + " (" + video.getNumViews() + " views)");
