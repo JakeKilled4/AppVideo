@@ -77,7 +77,7 @@ public class VideoRepository {
 	}
 	
 	/* Filter videos in the repository using the title of the video, 
-	 * the filter and the labels that a video contains */
+	 * the filter, and the labels that a video contains */
 	public List<Video> findVideo(String str, IVideoFilter filter, List<Label> labels) {
 		LinkedList<Video> res = new LinkedList<Video>();
 		
@@ -95,6 +95,7 @@ public class VideoRepository {
 						break;
 					}
 				}
+				
 				// If the video contains at least one of the labels of the selected (or no labels selected)
 				// and all the others conditions add the video to the list to return
 				if(labels.isEmpty() || containLabel) res.add(v);
