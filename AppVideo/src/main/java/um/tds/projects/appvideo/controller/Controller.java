@@ -13,6 +13,7 @@ import um.tds.projects.appvideo.persistence.ILabelAdapter;
 import um.tds.projects.appvideo.persistence.IPlaylistAdapter;
 import um.tds.projects.appvideo.persistence.IUserAdapter;
 import um.tds.projects.appvideo.persistence.IVideoAdapter;
+import um.tds.projects.appvideo.view.Constants;
 import um.tds.projects.appvideo.view.MainWindow;
 import um.tds.projects.appvideo.view.UpdateOption;
 import umu.tds.componente.CargadorVideos;
@@ -329,6 +330,10 @@ public class Controller implements VideosListener{
 	
 	/* Return null if the label was already in the video */
 	public Label addLabelToVideo(Video v,String name) {
+		
+		if (name.length() > Constants.MAX_LABEL_LENGTH) {
+			return null;
+		}
 		
 		// Try to get the label from the repository, else create new one
 		Label l = labelRepository.getLabel(name);

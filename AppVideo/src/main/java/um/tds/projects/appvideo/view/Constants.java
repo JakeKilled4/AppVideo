@@ -19,6 +19,7 @@ public class Constants {
 	public static final int SEPARATOR_HEIGHT 			= 6;
 	public static final int VIDEO_WIDTH 				= 400;
 	public static final int VIDEO_HEIGHT 				= 300;
+	public static final int MAX_LABEL_LENGTH            = 20;
 
 	public static final Color FOREGROUND_COLOR   		= new Color( 23,  33,  43);
 	public static final Color BACKGROUND_COLOR   		= new Color( 18,  28,  38);//(7,11,17);
