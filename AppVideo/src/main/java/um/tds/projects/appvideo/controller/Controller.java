@@ -328,7 +328,7 @@ public class Controller implements VideosListener{
 		userAdapter.modifyUser(currentUser);
 	}
 	
-	/* Return null if the label was already in the video */
+	/* Return null if the label was already in the video or the length is too long */
 	public Label addLabelToVideo(Video v,String name) {
 		
 		if (name.length() > Constants.MAX_LABEL_LENGTH) {

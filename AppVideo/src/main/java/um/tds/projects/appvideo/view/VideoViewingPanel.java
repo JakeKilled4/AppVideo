@@ -215,7 +215,7 @@ public class VideoViewingPanel extends CommonPanel  {
 				if (l == null) {
 					mainWindow.showPopUp(
 						"Information",
-						"The label is alredy in the video" ,
+						"The label is alredy in the video or the length is greater than 20 characters" ,
 						JOptionPane.INFORMATION_MESSAGE
 					);
 				} else {
