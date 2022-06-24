@@ -66,12 +66,11 @@ public class VideoRepository {
 	
 	/* Return a list with less or equals videos than 'n' 
 	 * ordered by the number of views of each video */
-	public List<Video> getMostPopularVideos(int n, IVideoFilter filter) {
+	public List<Video> getMostPopularVideos(int n) {
 		return cache
 			.values()
 			.stream()
 			.distinct()
-			.filter(v -> filter.isVideoOk(v))
 			.sorted((v1, v2) -> v2.getNumViews() - v1.getNumViews())
 			.limit(n)
 			.collect(Collectors.toList());

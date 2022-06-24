@@ -266,7 +266,7 @@ public class PreferencesList extends JPanel {
 		String[] opt = new String[options.size()];
 		options.toArray(opt);
 		comboBox = componentFactory.specialComboBox(opt);
-		comboBox.setSelectedItem(IVideoFilter.getFilterName(u.getFilter()));
+		comboBox.setSelectedItem(Controller.getFilterName(u.getFilter()));
 		p.add(selectFilter);
 		p.add(Box.createRigidArea(new Dimension(20,0)));
 		p.add(comboBox);

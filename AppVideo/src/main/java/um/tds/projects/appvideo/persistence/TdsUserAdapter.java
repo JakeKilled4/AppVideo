@@ -20,6 +20,7 @@ import um.tds.projects.appvideo.backend.Playlist;
 import um.tds.projects.appvideo.backend.User;
 import um.tds.projects.appvideo.backend.Video;
 import um.tds.projects.appvideo.backend.filters.IVideoFilter;
+import um.tds.projects.appvideo.controller.Controller;
 
 public class TdsUserAdapter implements IUserAdapter {
 
@@ -80,7 +81,7 @@ public class TdsUserAdapter implements IUserAdapter {
 					new Propiedad("password",                      u.getPassword()),
 					new Propiedad("isPremium",      String.valueOf(u.isPremium())),
 					new Propiedad("playlists",    getCodesPlaylist(u.getPlaylists())),
-					new Propiedad("filter", IVideoFilter.getFilterName(u.getFilter())),
+					new Propiedad("filter", 	 Controller.getFilterName(u.getFilter())),
 					new Propiedad("history", 	   getCodesHistory(u.getHistory()))
 				)
 			)
@@ -129,7 +130,7 @@ public class TdsUserAdapter implements IUserAdapter {
 			modifyField(prop, "password",                      u.getPassword());
 			modifyField(prop, "isPremium",   String.valueOf(   u.isPremium()));
 			modifyField(prop, "playlists",   getCodesPlaylist( u.getPlaylists()));
-			modifyField(prop, "filter",     				   IVideoFilter.getFilterName(u.getFilter()));
+			modifyField(prop, "filter",     				  Controller.getFilterName(u.getFilter()));
 			modifyField(prop, "history", 	   				   getCodesHistory(u.getHistory()));
 			servPersistencia.modificarPropiedad(prop);
 		}
@@ -174,7 +175,7 @@ public class TdsUserAdapter implements IUserAdapter {
 		
 		// Set filter to the user
 		String filterName = getFieldValue(eUser, "filter");
-		IVideoFilter filter = IVideoFilter.makeFilter(filterName);
+		IVideoFilter filter = Controller.getFilter(filterName);
 		user.setFilter(filter);
 		
 		return user;

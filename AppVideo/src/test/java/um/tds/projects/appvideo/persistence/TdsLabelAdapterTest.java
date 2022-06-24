@@ -13,7 +13,7 @@ public class TdsLabelAdapterTest {
 	
 	private static TdsLabelAdapter labelAdpt;
 	private static Label           label;
-	
+	/*
 	@BeforeClass
 	public static void setup() {
 		labelAdpt = TdsLabelAdapter.getUniqueInstance();
@@ -48,5 +48,5 @@ public class TdsLabelAdapterTest {
 		labelAdpt.modifyLabel(label);
 		Label l2 = labelAdpt.loadLabel(label.getCode());
 		assertEquals("bbbb", l2.getName());
-	}
+	}*/
 }

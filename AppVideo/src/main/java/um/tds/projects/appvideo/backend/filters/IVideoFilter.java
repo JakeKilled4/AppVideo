@@ -16,6 +16,7 @@ public interface IVideoFilter {
 		list.add("Long titles filter");
 		return list;
 	}
+	
 	public static IVideoFilter makeFilter(String filterName) {
 		if(filterName.equals("No filter")) return new NoFilter();
 		else if(filterName.equals("Adult filter")) return new AdultFilter();
@@ -24,6 +25,7 @@ public interface IVideoFilter {
 		else if(filterName.equals("Unpopular filter")) return new UnpopularFilter();
 		else return new NoFilter();
 	}
+	
 	public static String getFilterName(IVideoFilter filter) {
 		if(filter instanceof NoFilter) return "No filter";
 		else if(filter instanceof AdultFilter) return "Adult filter";

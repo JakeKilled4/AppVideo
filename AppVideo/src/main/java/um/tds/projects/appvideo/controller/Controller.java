@@ -28,8 +28,10 @@ import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EventObject;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -66,9 +68,18 @@ public class Controller implements VideosListener{
 	
 	// List of labels selected by the user to search
 	private List<Label> selectedLabels;
-	
+
 	private User currentUser;
 	private MainWindow mainWindow;
+	
+	// Map of filters
+	private static Map<String,IVideoFilter> filters;
+	{
+		filters = new HashMap<String, IVideoFilter>();
+		for(String s : IVideoFilter.getAllFiltersNames()) 
+			filters.put(s, IVideoFilter.makeFilter(s));
+		
+	}
 	
 	private Controller() {
 		initializeAdapters();
@@ -83,6 +94,14 @@ public class Controller implements VideosListener{
 		if (instance == null)
 			instance = new Controller();
 		return instance;
+	}
+	
+	public static IVideoFilter getFilter(String filter) {
+		return filters.get(filter);
+	}
+	
+	public static String getFilterName (IVideoFilter filter) {
+		return IVideoFilter.getFilterName(filter);
 	}
 	
 	public void setMainWindow(MainWindow mainWindow) {
@@ -107,7 +126,7 @@ public class Controller implements VideosListener{
 	}
 	
 	public List<Video> getMostPopularVideos(int n) {
-		return videoRepository.getMostPopularVideos(n,this.currentUser.getFilter());
+		return videoRepository.getMostPopularVideos(n);
 	}
 	
 	public List<Video> getSearchedVideos() {
@@ -405,5 +424,4 @@ public class Controller implements VideosListener{
 		videoRepository = VideoRepository.getUniqueInstance(); 
 		labelRepository = LabelRepository.getUniqueInstance();
 	}
-
 }
