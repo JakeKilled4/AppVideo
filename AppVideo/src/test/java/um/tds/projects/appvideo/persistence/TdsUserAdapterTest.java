@@ -16,7 +16,7 @@ public class TdsUserAdapterTest {
 	
 	private static TdsUserAdapter userAdpt;
 	private static User           user;
-	/*
+	
 	@BeforeClass
 	public static void setup() {
 		userAdpt = TdsUserAdapter.getUniqueInstance();
@@ -115,5 +115,5 @@ public class TdsUserAdapterTest {
 		assertEquals(2,    u2.getPlaylists().size());
 		assertEquals("p1", u2.getPlaylists().get(0).getName());
 		assertEquals("p2", u2.getPlaylists().get(1).getName());
-	}*/
+	}
 }

@@ -1,3 +1,5 @@
-﻿Main-Class: um/tds/projects/appvideo/main/Launcher.class
+﻿Manifest-Version: 1.0
+Main-Class: um/tds/projects/appvideo/main/Launcher.class
+
 
 

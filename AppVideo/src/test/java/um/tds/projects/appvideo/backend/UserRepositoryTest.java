@@ -12,7 +12,7 @@ public class UserRepositoryTest {
 
 	User           user;
 	UserRepository repo;
-/*
+
 	@Before
 	public void loadRepository() {
 		repo = UserRepository.getUniqueInstance();
@@ -33,5 +33,5 @@ public class UserRepositoryTest {
 		assertTrue (repo.containsUser(user.getUsername()));
 		repo.removeUser(user);
 		assertFalse(repo.containsUser(user.getUsername()));
-	}*/
+	}
 }

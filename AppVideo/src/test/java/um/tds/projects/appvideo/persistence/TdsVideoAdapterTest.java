@@ -14,7 +14,7 @@ public class TdsVideoAdapterTest {
 	
 	private static TdsVideoAdapter videoAdpt;
 	private static Video           video;
-	/*
+	
 	@BeforeClass
 	public static void setup() {
 		videoAdpt = TdsVideoAdapter.getUniqueInstance();
@@ -97,5 +97,5 @@ public class TdsVideoAdapterTest {
 		assertEquals(2,    v2.getLabels().size());
 		assertTrue  (v2.containsLabel("l1"));
 		assertTrue  (v2.containsLabel("l2"));
-	}*/
+	}
 }
